@@ -1,14 +1,30 @@
 import os
-import json
-import sqlite3
+import urllib.request
 from typing import Dict, Any, Iterator, Tuple
 from lib import ProviderType, build_u8_searchable_text
 from lib import u8_utils
 
 class BaseDictProvider(u8_utils.U8Provider):
-    U8_FILE = os.path.join(os.path.dirname(__file__), "cedict_ts.u8")
+    """English definitions parsed statically from CxDICT-English-SuperFull.u8.
+
+    Using the Super avoids removed headwords management.
+
+    Same .u8 logic as the base dictionary stage: entries are grouped by
+    simplified headword and formatted identically. The file is generated
+    externally; update() downloads the latest release into the current directory.
+
+    With a distinction, because we're the base_dict, also yield chinese_word records.
+    """
+    URL = "https://github.com/licryle/CxDICT/releases/download/latest-en/CxDICT-English-SuperFull.u8"
+    U8_FILE = os.path.join(os.path.dirname(__file__), "CxDICT-English-SuperFull.u8")
     LANGUAGE = "en"
     FILTER_TO_BASE = False
+
+    def update(self):
+        self.logger.info(f"Downloading English base dictionary from {self.URL}...")
+        req = urllib.request.Request(self.URL, headers={"User-Agent": "MandarinAssistant/1.0"})
+        with urllib.request.urlopen(req) as response, open(self.U8_FILE, "wb") as f:
+            f.write(response.read())
 
     def schema(self) -> Dict[str, Dict[str, Any]]:
         schema = super().schema()
@@ -23,7 +39,6 @@ class BaseDictProvider(u8_utils.U8Provider):
         if not grouped:
             return
 
-        base_words = set(grouped)
         for simplified, data in grouped.items():
             traditional, pinyins = data["display"]
             yield ("chinese_word", {
@@ -35,54 +50,3 @@ class BaseDictProvider(u8_utils.U8Provider):
             })
 
         yield from self._yield_definitions(grouped)
-
-        # CEDICT occasionally removes headwords. Preserve records from the previous
-        # generated dictionary so an update never turns existing definitions into
-        # foreign-key orphans merely because the upstream source changed.
-        previous_path = os.path.join(os.path.dirname(__file__), "../../output/Mandarin_Assistant - Copy.db")
-        if not previous_path or not os.path.exists(previous_path):
-            return
-
-        with sqlite3.connect(previous_path) as conn:
-            columns = {row[1] for row in conn.execute("PRAGMA table_info(chinese_word)")}
-            word_columns = [
-                "simplified", "traditional", "hsk_level", "pinyins", "popularity",
-                "examples", "collocations", "modality", "type", "synonyms", "antonym", "searchable_text"
-            ]
-            available_columns = [column for column in word_columns if column in columns]
-            if "simplified" not in available_columns:
-                return
-
-            select_columns = ", ".join(available_columns)
-            for row in conn.execute(f"SELECT {select_columns} FROM chinese_word"):
-                record = dict(zip(available_columns, row))
-                simplified = record["simplified"]
-                if simplified in base_words:
-                    continue
-                yield ("chinese_word", record)
-
-                # v3 source database: definitions are already normalized.
-                if conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='word_definition'").fetchone():
-                    for language, definition in conn.execute(
-                        "SELECT language, definition FROM word_definition WHERE simplified = ?", (simplified,)
-                    ):
-                        yield ("word_definition", {
-                            "simplified": simplified,
-                            "language": language,
-                            "definition": definition
-                        })
-                # v1/v2 source database: unpack its legacy JSON map only for preserved words.
-                elif "definition" in columns:
-                    legacy = conn.execute("SELECT definition FROM chinese_word WHERE simplified = ?", (simplified,)).fetchone()
-                    if legacy and legacy[0]:
-                        try:
-                            definitions = json.loads(legacy[0])
-                        except json.JSONDecodeError:
-                            definitions = {}
-                        for language, definition in definitions.items():
-                            if isinstance(definition, str):
-                                yield ("word_definition", {
-                                    "simplified": simplified,
-                                    "language": language,
-                                    "definition": definition
-                                })

@@ -15,7 +15,7 @@ COLLOCATIONS_DIR = os.path.join(INPUTS_DIR, '5_Collocations')
 LANGUAGE_FRENCH_DIR = os.path.join(INPUTS_DIR, '6_Language_French')
 
 # File Paths
-CEDICT_FILE = os.path.join(BASE_DICT_DIR, 'cedict_ts.u8')
+CEDICT_FILE = os.path.join(BASE_DICT_DIR, 'CxDICT-English-SuperFull.u8')
 ANNOTATIONS_FILE = os.path.join(ANNOTATIONS_DIR, 'annotations.csv')
 DB_FILE = 'output/Mandarin_Assistant.db'
 AI_CACHE_DB = os.path.join(AI_FIELDS_DIR, 'ai_fields_cache.db')

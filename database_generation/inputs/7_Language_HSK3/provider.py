@@ -10,8 +10,8 @@ class LanguageHsk3Provider(u8_utils.U8Provider):
     from the legacy AiFields LLM cache and is generated externally from
     now on; update() downloads the latest release into the current directory.
     """
-    URL = "https://github.com/licryle/CxDICT/releases/download/latest-zh-CN-HSK03/CxDICT-HSK3-Full.u8"
-    U8_FILE = os.path.join(os.path.dirname(__file__), "CxDICT-HSK3-Full.u8")
+    URL = "https://github.com/licryle/CxDICT/releases/download/latest-zh-CN-HSK03/CxDICT-HSK3-SuperFull.u8"
+    U8_FILE = os.path.join(os.path.dirname(__file__), "CxDICT-HSK3-SuperFull.u8")
     LANGUAGE = DEFINITION_AI_LOCALE
 
     def update(self):

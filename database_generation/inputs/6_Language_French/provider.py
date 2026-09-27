@@ -3,14 +3,14 @@ import urllib.request
 from lib import u8_utils
 
 class LanguageFrenchProvider(u8_utils.U8Provider):
-    """French definitions parsed statically from CxDICT-French-Full.u8.
+    """French definitions parsed statically from CxDICT-French-SuperFull.u8.
 
     Same .u8 logic as the base dictionary stage: entries are grouped by
     simplified headword and formatted identically. The file is generated
     externally; update() downloads the latest release into the current directory.
     """
-    URL = "https://github.com/licryle/CxDICT/releases/download/latest-fr/CxDICT-French-Full.u8"
-    U8_FILE = os.path.join(os.path.dirname(__file__), "CxDICT-French-Full.u8")
+    URL = "https://github.com/licryle/CxDICT/releases/download/latest-fr/CxDICT-French-SuperFull.u8"
+    U8_FILE = os.path.join(os.path.dirname(__file__), "CxDICT-French-SuperFull.u8")
     LANGUAGE = "fr"
 
     def update(self):
