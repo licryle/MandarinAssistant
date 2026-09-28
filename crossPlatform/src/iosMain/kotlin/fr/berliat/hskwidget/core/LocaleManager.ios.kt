@@ -2,6 +2,7 @@ package fr.berliat.hskwidget.core
 
 import platform.Foundation.NSLocale
 import platform.Foundation.NSUserDefaults
+import platform.Foundation.preferredLanguages
 
 internal actual object PlatformLocaleManager {
     actual fun setLocale(languageCode: String?) {
