@@ -21,6 +21,9 @@ import fr.berliat.hskwidget.dbrestore_start
 import fr.berliat.hskwidget.dbrestore_success
 import fr.berliat.hskwidget.domain.GoogleBackupFlowState
 import fr.berliat.hskwidget.domain.GoogleBackupService
+import fr.berliat.hskwidget.ui.navigation.NavigationManager
+import fr.berliat.hskwidget.ui.navigation.Screen
+import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
 
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.PlatformFile
@@ -38,6 +41,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 import org.jetbrains.compose.resources.getString
 
@@ -99,6 +103,12 @@ class BackupCloudViewModel (
                 val fileToRestore = GoogleBackupFlowState.globalCloudRestoreFile ?: cloudRestoreFile
                 DatabaseHelper.getInstance().replaceLiveUserDataFromFile(fileToRestore)
                 HSKAppServices.snackbar.show(SnackbarType.SUCCESS, Res.string.dbrestore_success)
+
+                // Backup was successful, let's redirect to the dictionary & trigger widget updates, hoping any matches
+                NavigationManager.navigate(Screen.Dictionary())
+                withContext(AppDispatchers.Main) {
+                    FlashcardWidgetProvider().updateAllFlashCardWidgets()
+                }
             } catch (e: IllegalStateException) {
                 HSKAppServices.snackbar.show(SnackbarType.ERROR, Res.string.dbrestore_failure_fileformat)
                 Logging.logAnalyticsError(
