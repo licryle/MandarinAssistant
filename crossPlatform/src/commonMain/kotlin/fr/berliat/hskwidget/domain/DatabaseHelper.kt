@@ -687,7 +687,13 @@ class DatabaseHelper private constructor() {
                         dbToUpdate.wordListDAO().deleteAllUserLists()
 
                         val oldToNewListIdMap = mutableMapOf<Long, Long>()
-                        oldToNewListIdMap.putAll(dbToUpdate.wordListDAO().getAllLists().map { it.id to it.id })
+                        val targetSystemLists = dbToUpdate.wordListDAO().getSystemLists()
+                        systemLists.forEach { sourceSystemList ->
+                            targetSystemLists.find { target -> target.name == sourceSystemList.name }?.let { matchingTarget ->
+                                oldToNewListIdMap[sourceSystemList.id] = matchingTarget.id
+                            }
+                        }
+
                         importedLists.forEach { listWithCount ->
                             val oldId = listWithCount.id
                             val newId = dbToUpdate.wordListDAO().insertList(listWithCount.wordList.copy(id = 0))
@@ -706,11 +712,12 @@ class DatabaseHelper private constructor() {
                         dbToUpdate.wordListDAO().insertAllWords(remappedAndValidListEntries)
 
                         Logger.d(tag = TAG, messageString = "Starting to update the AnkiDeckIds on System lists")
-                        systemLists.forEach {
+                        systemLists.forEach { sourceSystemList ->
+                            val targetListId = oldToNewListIdMap[sourceSystemList.id] ?: return@forEach
                             try {
-                                dbToUpdate.wordListDAO().updateAnkiDeckId(it.id, it.ankiDeckId)
+                                dbToUpdate.wordListDAO().updateAnkiDeckId(targetListId, sourceSystemList.ankiDeckId)
                             } catch (e: Exception) {
-                                Logger.d(tag = TAG, messageString = "Couldn't update the AnkiDeckIds on list ${it.id}", throwable = e)
+                                Logger.d(tag = TAG, messageString = "Couldn't update the AnkiDeckIds on list $targetListId", throwable = e)
                             }
                         }
 
