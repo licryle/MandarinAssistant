@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 
@@ -38,8 +39,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         // App context first: everything downstream takes applicationContext,
         // never the Activity (no static Activity reference).
@@ -77,7 +78,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContent {
-            configureSystemBars(isSystemInDarkTheme())
+            val darkTheme = isSystemInDarkTheme()
+            // Once per theme change, not per recomposition.
+            LaunchedEffect(darkTheme) { configureSystemBars(darkTheme) }
 
             AppView(viewModel = viewModel)
         }
