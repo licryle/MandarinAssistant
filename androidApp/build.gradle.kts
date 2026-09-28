@@ -47,6 +47,11 @@ android {
 
 dependencies {
     implementation(project(":crossPlatform"))
+    implementation(project(":googledrivebackup"))
+    implementation(project(":AnkiDroidAPIHelper"))
+    implementation(libs.filekit.core)
+    implementation(libs.filekit.dialogs)
+    implementation(libs.google.api.services.drive)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.material)

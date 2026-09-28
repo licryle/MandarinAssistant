@@ -2,8 +2,6 @@ package fr.berliat.hskwidget.domain
 
 import android.content.Context
 
-import androidx.fragment.app.FragmentActivity
-
 import fr.berliat.ankidroidhelper.AnkiDelegate
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.anki_must_start
@@ -12,6 +10,7 @@ import fr.berliat.hskwidget.anki_operation_cancelled
 import fr.berliat.hskwidget.anki_operation_failed
 import fr.berliat.hskwidget.anki_operation_success
 import fr.berliat.hskwidget.anki_permission_denied
+import fr.berliat.hskwidget.core.ExpectedUtils
 import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.core.SnackbarType
 import fr.berliat.hskwidget.data.store.AnkiStore
@@ -22,10 +21,10 @@ import kotlinx.coroutines.withContext
 
 import kotlin.reflect.KClass
 
-actual class HSKAnkiDelegate(val activity: FragmentActivity,
+actual class HSKAnkiDelegate(context: Context = ExpectedUtils.context,
                              handler: HandlerInterface? = null,
-                             var appConfig: AppPreferencesStore? = HSKAppServices.appPreferences,
-                             var ankiStore: AnkiStore? = HSKAppServices.ankiStore)  : AnkiDelegate(activity, handler) {
+                             var appConfig: AppPreferencesStore? = null,
+                             var ankiStore: AnkiStore? = null)  : AnkiDelegate(context, handler) {
     actual suspend fun modifyAnki(ankiAction: (suspend () -> Result<Unit>)?) {
         super.delegateToAnki(ankiAction)
     }

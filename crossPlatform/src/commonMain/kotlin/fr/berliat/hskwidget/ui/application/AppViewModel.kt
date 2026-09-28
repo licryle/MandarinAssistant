@@ -34,7 +34,9 @@ import io.github.vinceglb.filekit.filesDir
 import io.github.vinceglb.filekit.fromBookmarkData
 import io.github.vinceglb.filekit.path
 import io.github.vinceglb.filekit.resolve
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -50,6 +52,10 @@ open class CommonAppViewModel(val navigationManager: NavigationManager): ViewMod
 
     private val _isReady = MutableStateFlow(false)
     val isReady: StateFlow<Boolean> = _isReady
+
+    // Used for listening/applying the widget configuration change.
+    private val _finishWidgetConfig = MutableSharedFlow<Int>(extraBufferCapacity = 1)
+    val finishWidgetConfig: SharedFlow<Int> = _finishWidgetConfig
 
     // Queue for actions that need to be executed after initialization
     private val pendingActions = mutableListOf<() -> Unit>()
@@ -234,7 +240,11 @@ open class CommonAppViewModel(val navigationManager: NavigationManager): ViewMod
         navigationManager.navigate(Screen.OCRCapture())
     }
 
-    open fun finalizeWidgetConfiguration(widgetId: Int) { }
+    open fun finalizeWidgetConfiguration(widgetId: Int) {
+        viewModelScope.launch {
+            _finishWidgetConfig.emit(widgetId)
+        }
+    }
 
     /**
      * Execute an action either immediately (if initialized) or queue it for later execution.

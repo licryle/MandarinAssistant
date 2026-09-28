@@ -1,45 +1,30 @@
 package fr.berliat.hskwidget.ui.application
 
-import android.Manifest
-import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_CONFIGURE
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Parcelable
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
 
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.Purchase
-import com.google.api.client.googleapis.media.MediaHttpUploader
-import fr.berliat.googledrivebackup.GoogleDriveBackup
 
 import fr.berliat.hskwidget.core.ExpectedUtils
 import fr.berliat.hskwidget.core.ExpectedUtils.INTENT_SEARCH_WORD
 import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.core.StrictModeManager
-import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
-import fr.berliat.hskwidget.domain.HSKAnkiDelegate
 import fr.berliat.hskwidget.core.Utils
 import fr.berliat.hskwidget.data.store.PrefCompat.PrefCompatMigration
 import fr.berliat.hskwidget.data.store.SupportDevStore
+import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
 import fr.berliat.hskwidget.domain.SearchQuery
 import fr.berliat.hskwidget.ui.navigation.NavigationManager
 
-import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.PlatformFile
-import io.github.vinceglb.filekit.dialogs.init
 
-actual class AppViewModel(navigationManager: NavigationManager, val activityProvider: () -> FragmentActivity)
+actual class AppViewModel(navigationManager: NavigationManager)
     : CommonAppViewModel(navigationManager) {
-
-    private lateinit var ankiDelegate : HSKAnkiDelegate
-    private lateinit var notificationPermissionLauncher: ActivityResultLauncher<String>
 
     override fun init() {
         // Enable StrictMode in Debug mode
@@ -47,39 +32,15 @@ actual class AppViewModel(navigationManager: NavigationManager, val activityProv
             StrictModeManager.init()
         }
 
-        val activity = activityProvider.invoke()
-        FileKit.init(activity)
-        ExpectedUtils.init(activity)
-
-        notificationPermissionLauncher = activity.registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { _ -> }
-
-        val gDrive = GoogleDriveBackup(
-            activityProvider.invoke(),
-            fr.berliat.hskwidget.core.CachedResources.appName
-        )
-        gDrive.transferChunkSize = MediaHttpUploader.MINIMUM_CHUNK_SIZE * 2
-        HSKAppServices.registerGoogleBackup(gDrive)
-
-        // HSKAnkiDelegate must be init before onResume, yet HSKAppServices aren't ready
-        ankiDelegate = HSKAnkiDelegate(
-            activity = activityProvider.invoke(),
-            handler = null,
-            appConfig = null,
-            ankiStore = null
-        )
-
         super.init()
     }
 
     override suspend fun finishInitialization() {
-        // Now we may be after onResume() and HSK AppServices is ready for consumption
-        ankiDelegate.ankiStore = HSKAppServices.ankiStore
-        ankiDelegate.appConfig = HSKAppServices.appPreferences
-        HSKAppServices.registerAnkiDelegators(ankiDelegate)
+        // Patch the MainActivity-built delegates with live services.
+        HSKAppServices.ankiDelegate.ankiStore = HSKAppServices.ankiStore
+        HSKAppServices.ankiDelegate.appConfig = HSKAppServices.appPreferences
 
-        FlashcardWidgetProvider.init(activityProvider) // Depends on HSKAppServices
+        FlashcardWidgetProvider.init { ExpectedUtils.context } // Depends on HSKAppServices
 
         // Init done
         super.finishInitialization()
@@ -87,21 +48,8 @@ actual class AppViewModel(navigationManager: NavigationManager, val activityProv
         syncPlayPurchases()
     }
 
-    override fun askNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val activity = activityProvider.invoke()
-            if (ContextCompat.checkSelfPermission(
-                    activity,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-    }
-
     fun syncPlayPurchases() {
-        val supportDevStore = SupportDevStore.getInstance(activityProvider.invoke())
+        val supportDevStore = SupportDevStore.getInstance(ExpectedUtils.context)
 
         lateinit var listener : SupportDevStore.SupportDevListener
         listener = object : SupportDevStore.SupportDevListener {
@@ -135,13 +83,6 @@ actual class AppViewModel(navigationManager: NavigationManager, val activityProv
 
         // Hack to fix an Android bug
         FlashcardWidgetProvider().updateAllFlashCardWidgets()
-    }
-
-    override fun finalizeWidgetConfiguration(widgetId: Int) {
-        val resultIntent = Intent()
-        resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        activityProvider.invoke().setResult(Activity.RESULT_OK, resultIntent)
-        activityProvider.invoke().finish()
     }
 
     companion object {
