@@ -32,25 +32,27 @@ object GoogleBackupSharedLogic {
     suspend fun runBackupInternal(
         onProgress: (progressPercent: Float, message: String) -> Unit = { _, _ -> }
     ) {
+        val gDriveBackup = HSKAppServices.gDriveBackup
         try {
-            val gDriveBackup = HSKAppServices.gDriveBackup
-
-            val gDriveBackupSnapshot = DatabaseHelper.getInstance().snapshotLiveUserDataToFile()
-            if (gDriveBackupSnapshot == null) {
-                GoogleBackupFlowState.globalTransferState.emit(BackupCloudTransferEvent.BackupFailed(Exception("Database snapshot failed")))
-                return
-            }
+            GoogleBackupFlowState.globalTransferState.emit(BackupCloudTransferEvent.BackupStarted)
 
             val flow = gDriveBackup.backup(
-                listOf(
-                    GoogleDriveBackupFile.UploadFile(
-                        "database.sqlite",
-                        SystemFileSystem.source(gDriveBackupSnapshot.toKotlinxIoPath()).buffered(),
-                        "application/octet-stream",
-                        gDriveBackupSnapshot.size()
-                    )
-                ),
-                onlyKeepMostRecent = true
+                onlyKeepMostRecent = true,
+                prepareFiles = {
+                    val gDriveBackupSnapshot = DatabaseHelper.getInstance().snapshotLiveUserDataToFile()
+                    if (gDriveBackupSnapshot == null) {
+                        null
+                    } else {
+                        listOf(
+                            GoogleDriveBackupFile.UploadFile(
+                                "database.sqlite",
+                                SystemFileSystem.source(gDriveBackupSnapshot.toKotlinxIoPath()).buffered(),
+                                "application/octet-stream",
+                                gDriveBackupSnapshot.size()
+                            )
+                        )
+                    }
+                }
             )
 
             flow.takeUntilInclusive { event ->
@@ -97,8 +99,9 @@ object GoogleBackupSharedLogic {
     suspend fun runRestoreInternal(
         onProgress: (progressPercent: Float, message: String) -> Unit = { _, _ -> }
     ) {
+        val gDriveBackup = HSKAppServices.gDriveBackup
         try {
-            val gDriveBackup = HSKAppServices.gDriveBackup
+            GoogleBackupFlowState.globalTransferState.emit(BackupCloudTransferEvent.RestorationStarted)
 
             val targetFile = PlatformFile(FileKit.cacheDir.path + "/" + fr.berliat.hskwidget.core.Utils.getRandomString(10))
 
