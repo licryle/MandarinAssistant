@@ -37,4 +37,7 @@ interface ChineseWordFrequencyDAO {
 
     @Query("DELETE FROM chinese_word_frequency")
     suspend fun deleteAll(): Int
+
+    @Query("SELECT COUNT(*) FROM chinese_word_frequency")
+    suspend fun getCount(): Int
 }

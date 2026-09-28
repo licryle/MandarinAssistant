@@ -34,6 +34,12 @@ interface WordListDAO {
     @Query("SELECT * FROM word_list_entry WHERE list_id IN (SELECT id FROM word_list WHERE list_type = 'USER')")
     suspend fun getUserListEntries(): List<WordListEntry>
 
+    @Query("SELECT COUNT(*) FROM word_list_entry WHERE list_id IN (SELECT id FROM word_list WHERE list_type = 'USER')")
+    suspend fun getUserListEntriesCount(): Int
+
+    @Query("SELECT COUNT(*) FROM word_list WHERE list_type = 'USER'")
+    suspend fun getUserListsCount(): Int
+
     @Query("$wordlist_with_count WHERE list_type = 'SYSTEM' $wordlist_with_count_groupby ORDER BY last_modified DESC")
     suspend fun getSystemLists(): List<WordListWithCount>
 

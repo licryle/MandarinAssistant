@@ -29,4 +29,7 @@ interface WidgetListDAO {
 
     @Query("DELETE FROM widget_list_entry")
     suspend fun deleteAllWidgets()
+
+    @Query("SELECT COUNT(*) FROM widget_list_entry")
+    suspend fun getCount(): Int
 }

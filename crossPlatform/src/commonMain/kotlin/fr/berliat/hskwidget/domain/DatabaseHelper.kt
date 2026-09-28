@@ -151,11 +151,11 @@ class DatabaseHelper private constructor() {
 
         private suspend fun collectUserCounts(db: ChineseWordsDatabase): UserDataCounts = withContext(AppDispatchers.IO) {
             UserDataCounts(
-                annotations = try { db.chineseWordAnnotationDAO().getAll().size } catch (_: Exception) { -1 },
-                listEntries = try { db.wordListDAO().getUserListEntries().size } catch (_: Exception) { -1 },
-                userLists = try { db.wordListDAO().getUserLists().size } catch (_: Exception) { -1 },
-                widgets = try { db.widgetListDAO().getAllEntries().size } catch (_: Exception) { -1 },
-                freq = try { db.chineseWordFrequencyDAO().getAll().size } catch (_: Exception) { -1 },
+                annotations = try { db.chineseWordAnnotationDAO().getCount() } catch (_: Exception) { -1 },
+                listEntries = try { db.wordListDAO().getUserListEntriesCount() } catch (_: Exception) { -1 },
+                userLists = try { db.wordListDAO().getUserListsCount() } catch (_: Exception) { -1 },
+                widgets = try { db.widgetListDAO().getCount() } catch (_: Exception) { -1 },
+                freq = try { db.chineseWordFrequencyDAO().getCount() } catch (_: Exception) { -1 },
                 dictionary = try { db.chineseWordDAO().getCount() } catch (_: Exception) { -1 }
             )
         }
@@ -492,24 +492,6 @@ class DatabaseHelper private constructor() {
                         backupFile.atomicMove(liveFile)
                     } catch (e: Exception) {
                         Logger.e(tag = TAG, messageString = "Recovery: backup restore failed", throwable = e)
-                    }
-                    return@withContext
-                }
-                // Live present but unreadable and backup readable => restore.
-                if (liveFile.exists() && backupFile.exists()) {
-                    val liveCounts = verifyDbFile(liveFile)
-                    if (liveCounts == null) {
-                        val backupCounts = verifyDbFile(backupFile)
-                        if (backupCounts != null) {
-                            Logger.d(tag = TAG, messageString = "Recovery: live corrupt, restoring backup")
-                            try {
-                                deleteFileAndSidecars(liveFile)
-                                backupFile.copyTo(liveFile)
-                                deleteSidecars(liveFile)
-                            } catch (e: Exception) {
-                                Logger.e(tag = TAG, messageString = "Recovery: backup restore failed", throwable = e)
-                            }
-                        }
                     }
                 }
                 return@withContext
