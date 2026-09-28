@@ -71,8 +71,9 @@ object HSKAppServices : AppServices() {
         register("appPreferences", HSKAppServicesPriority.Widget) {
             AppPreferencesStore.getInstance(PrefixedPreferencesStore.getDataStore(Utils.getAppDatabasePath() / "app.preferences_pb"))
         }
-        // Must be after appPreferences because of aggressive db update when starting up app on app updates.
-        register("database", HSKAppServicesPriority.Widget) { DatabaseHelper.getInstance().liveDatabase }
+
+        // Depends on appPreferences because of aggressive db update when starting up app on app updates.
+        register("database", HSKAppServicesPriority.Widget, dependsOn = setOf("appPreferences")) { DatabaseHelper.getInstance().liveDatabase }
 
         register("widgetsPreferencesProvider", HSKAppServicesPriority.Widget) {
             val provider : WidgetPreferencesStoreProvider = { widgetId: Int ->
@@ -83,13 +84,13 @@ object HSKAppServices : AppServices() {
         }
 
         // Required for fullApp -- but still partial set (missing Anki & GoogleDrive) Set
-        register("ankiStore", HSKAppServicesPriority.PartialApp) {
+        register("ankiStore", HSKAppServicesPriority.PartialApp, dependsOn = setOf("database", "appPreferences")) {
             AnkiStore(
                 Utils.getAnkiDAO(),
                 get<ChineseWordsDatabase>("database").wordListDAO(),
                 get("appPreferences"))
         }
-        register("wordListRepo", HSKAppServicesPriority.PartialApp) {
+        register("wordListRepo", HSKAppServicesPriority.PartialApp, dependsOn = setOf("ankiStore", "database")) {
             WordListRepository(
                 get("ankiStore"),
                 get<ChineseWordsDatabase>("database").wordListDAO(),
