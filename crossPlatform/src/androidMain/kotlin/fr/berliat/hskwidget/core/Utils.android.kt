@@ -66,9 +66,13 @@ actual object ExpectedUtils {
     val context
         get() = _context!!
 
-    // Initialize once from Compose or Activity
+    // Initialize once, first writer wins (app: applicationContext from
+    // MainActivity; widget process: receiver context). Always keep the
+    // application context so a destroyed Activity is never retained.
     fun init(context: Context) {
-        _context = context
+        if (_context == null) {
+            _context = context.applicationContext
+        }
     }
 
     internal actual fun getAppDataPath(): PlatformFile = FileKit.filesDir
