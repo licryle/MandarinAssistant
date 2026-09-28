@@ -341,7 +341,7 @@ Modèle de l'appareil : %4$sº
     <string name="enum_word_type_conjunction">Conjonction</string>
     <string name="enum_word_type_preposition">Préposition</string>
     <string name="enum_word_type_interjection">Interjection</string>
-    <string name="enum_word_type_idiom">Idiome</string>
+    <string name="enum_word_type_idiom">Idiotisme</string>
 
     <string name="enum_modality_oral">Oral</string>
     <string name="enum_modality_written">Écrit</string>
