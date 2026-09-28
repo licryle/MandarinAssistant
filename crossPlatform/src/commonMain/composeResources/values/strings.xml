@@ -237,25 +237,25 @@ We recommend to choose the level you're at plus the one below, or above dependin
 
     <string name="googledrive_backup_start_title">Google backup in progress</string>
     <string name="googledrive_backup_start_message">Preparing for backup.</string>
-    <string name="googledrive_backup_success_title">Backup complete</string>
+    <string name="googledrive_backup_success_title">Google Backup complete</string>
     <string name="googledrive_backup_success_message">Backup succeeded at %1$s.</string>
-    <string name="googledrive_backup_cancel_title">Backup cancelled</string>
+    <string name="googledrive_backup_cancel_title">Google Backup cancelled</string>
     <string name="googledrive_backup_cancel_message">Backup cancelled.</string>
     <string name="googledrive_backup_progress_message">Backup in progress: %1$s MB / %2$s MB.</string>
     <string name="googledrive_backup_denied_scope">Google authorization not secured</string>
-    <string name="googledrive_backup_failed_title">Backup failed</string>
+    <string name="googledrive_backup_failed_title">Google Backup failed</string>
     <string name="googledrive_backup_failed_message">Backup failed with error message: %1$s.</string>
     <string name="googledrive_backup_nogoogleapi">No Google API available on this device</string>
     <string name="googledrive_backup_noaccountselected">No Google account was selected, cancelling.</string>
     <string name="googledrive_restore_start_title">Google Restoration in progress</string>
     <string name="googledrive_restore_start_message">Restoration from Google Drive started.</string>
-    <string name="googledrive_restore_success_title">Restoration download complete</string>
+    <string name="googledrive_restore_success_title">Google Restoration download complete</string>
     <string name="googledrive_restore_success_message">Files from Google Drive downloaded at %1$s.</string>
     <string name="googledrive_restore_confirm_overwrite">You're about to delete your local data and replace it with a backup from %1$s.\n\nThis is irrevocable. Proceed?</string>
-    <string name="googledrive_restore_cancel_title">Restoration cancelled</string>
+    <string name="googledrive_restore_cancel_title">Google Restoration cancelled</string>
     <string name="googledrive_restore_cancel_message">Restoration cancelled.</string>
     <string name="googledrive_restore_progress_message">Restoration in progress: %1$s MB / %2$s MB.</string>
-    <string name="googledrive_restore_failed_title">Restoration failed</string>
+    <string name="googledrive_restore_failed_title">Google Restoration failed</string>
     <string name="googledrive_restore_failed_message">Restoration from Google Drive failed with error message: %1$s.</string>
 
     <string name="config_anki_title">Anki integration</string>

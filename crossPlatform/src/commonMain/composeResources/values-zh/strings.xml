@@ -231,26 +231,26 @@ AI 字段覆盖率：
 
     <string name="googledrive_backup_start_title">Google 的备份中</string>
     <string name="googledrive_backup_start_message">正在准备备份。</string>
-    <string name="googledrive_backup_success_title">备份完成</string>
+    <string name="googledrive_backup_success_title">Google 的备份完成</string>
     <string name="googledrive_backup_success_message">备份成功，时间为 %1$s。</string>
-    <string name="googledrive_backup_cancel_title">备份已取消</string>
+    <string name="googledrive_backup_cancel_title">Google 的备份已取消</string>
     <string name="googledrive_backup_cancel_message">备份已取消。</string>
     <string name="googledrive_backup_progress_message">正在备份：%1$s MB / %2$s MB。</string>
     <string name="googledrive_backup_denied_scope">Google 授权未获得保障</string>
-    <string name="googledrive_backup_failed_title">备份失败</string>
+    <string name="googledrive_backup_failed_title">Google 的备份失败</string>
     <string name="googledrive_backup_failed_message">备份失败，错误信息为：%1$s。</string>
     <string name="googledrive_backup_nogoogleapi">此设备上没有可用的 Google API</string>
     <string name="googledrive_backup_noaccountselected">未选择 Google 账号，正在取消。</string>
-    <string name="googledrive_restore_start_title">从 Google 的恢复启动中</string>
-    <string name="googledrive_restore_start_message">从 Google Drive 恢复已开始。</string>
-    <string name="googledrive_restore_success_title">恢复下载完成</string>
+    <string name="googledrive_restore_start_title">来自 Google 的恢复启动中</string>
+    <string name="googledrive_restore_start_message">来自 Google Drive 恢复已开始。</string>
+    <string name="googledrive_restore_success_title">来自 Google 的恢复下载完成</string>
     <string name="googledrive_restore_success_message">来自 Google Drive 的文件已在 %1$s 下载。</string>
     <string name="googledrive_restore_confirm_overwrite">您即将删除本地数据并将其替换为来自 %1$s 的备份。\n\n此操作不可撤销。是否继续？</string>
-    <string name="googledrive_restore_cancel_title">恢复已取消</string>
+    <string name="googledrive_restore_cancel_title">来自 Google 的恢复已取消</string>
     <string name="googledrive_restore_cancel_message">恢复已取消。</string>
     <string name="googledrive_restore_progress_message">正在恢复：%1$s MB / %2$s MB。</string>
-    <string name="googledrive_restore_failed_title">恢复失败</string>
-    <string name="googledrive_restore_failed_message">从 Google Drive 恢复失败，错误信息为：%1$s。</string>
+    <string name="googledrive_restore_failed_title">来自 Google 的恢复失败</string>
+    <string name="googledrive_restore_failed_message">来自 Google Drive 恢复失败，错误信息为：%1$s。</string>
 
     <string name="config_anki_title">Anki 集成</string>
     <string name="config_anki_activate">激活 Anki 集成</string>

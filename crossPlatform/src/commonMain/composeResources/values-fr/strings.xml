@@ -237,25 +237,25 @@ Nous vous recommandons de choisir le niveau où vous en êtes plus celui du dess
 
     <string name="googledrive_backup_start_title">Sauvegarde Google en cours</string>
     <string name="googledrive_backup_start_message">Préparation de la sauvegarde.</string>
-    <string name="googledrive_backup_success_title">Sauvegarde terminée</string>
+    <string name="googledrive_backup_success_title">Sauvegarde Google terminée</string>
     <string name="googledrive_backup_success_message">Sauvegarde réussie à %1$s.</string>
-    <string name="googledrive_backup_cancel_title">Sauvegarde annulée</string>
+    <string name="googledrive_backup_cancel_title">Sauvegarde Google annulée</string>
     <string name="googledrive_backup_cancel_message">Sauvegarde annulée.</string>
     <string name="googledrive_backup_progress_message">Sauvegarde en cours : %1$s Mo / %2$s Mo.</string>
     <string name="googledrive_backup_denied_scope">Autorisation Google non obtenue</string>
-    <string name="googledrive_backup_failed_title">Sauvegarde échouée</string>
+    <string name="googledrive_backup_failed_title">Sauvegarde Google échouée</string>
     <string name="googledrive_backup_failed_message">La sauvegarde a échoué avec le message d'erreur : %1$s.</string>
     <string name="googledrive_backup_nogoogleapi">Aucune API Google disponible sur cet appareil</string>
     <string name="googledrive_backup_noaccountselected">Aucun compte Google n'a été sélectionné, annulation.</string>
     <string name="googledrive_restore_start_title">Restauration Google en cours</string>
     <string name="googledrive_restore_start_message">Restauration depuis Google Drive commencée.</string>
-    <string name="googledrive_restore_success_title">Téléchargement de la restauration terminé</string>
+    <string name="googledrive_restore_success_title">Téléchargement de la restauration Google terminé</string>
     <string name="googledrive_restore_success_message">Fichiers de Google Drive téléchargés à %1$s.</string>
     <string name="googledrive_restore_confirm_overwrite">Vous êtes sur le point de supprimer vos données locales et de les remplacer par une sauvegarde de %1$s.\n\nC'est irrévocable. Continuer ?</string>
-    <string name="googledrive_restore_cancel_title">Restauration annulée</string>
+    <string name="googledrive_restore_cancel_title">Restauration Google annulée</string>
     <string name="googledrive_restore_cancel_message">Restauration annulée.</string>
     <string name="googledrive_restore_progress_message">Restauration en cours : %1$s Mo / %2$s Mo.</string>
-    <string name="googledrive_restore_failed_title">Restauration échouée</string>
+    <string name="googledrive_restore_failed_title">Restauration Google échouée</string>
     <string name="googledrive_restore_failed_message">La restauration depuis Google Drive a échoué avec le message d'erreur : %1$s.</string>
 
     <string name="config_anki_title">Intégration Anki</string>
