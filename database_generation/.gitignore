@@ -3,3 +3,4 @@ logs
 __pycache__
 .direnv
 *.u8
+* - Copy*.db
