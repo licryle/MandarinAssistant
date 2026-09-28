@@ -474,4 +474,14 @@ Please describe the issue you are facing:
     <string name="enum_modality_written">Written</string>
     <string name="enum_modality_oral_written">Oral &amp; Written</string>
 
+    <string name="enum_system_list_hsk_1">HSK1</string>
+    <string name="enum_system_list_hsk_2">HSK2</string>
+    <string name="enum_system_list_hsk_3">HSK3</string>
+    <string name="enum_system_list_hsk_4">HSK4</string>
+    <string name="enum_system_list_hsk_5">HSK5</string>
+    <string name="enum_system_list_hsk_6">HSK6</string>
+    <string name="enum_system_list_hsk_7">HSK7</string>
+    <string name="enum_system_list_annotated_words">Annotated words</string>
+    <string name="enum_system_list_at_exam">At the exam</string>
+
 </resources>

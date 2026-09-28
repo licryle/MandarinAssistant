@@ -42,6 +42,7 @@ import fr.berliat.hskwidget.ui.components.LoadingView
 import fr.berliat.hskwidget.ui.screens.widget.WidgetView
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.format_list_bulleted_add_24px
+import fr.berliat.hskwidget.ui.localizedName
 import fr.berliat.hskwidget.ui.theme.widgetDefaultBox
 import fr.berliat.hskwidget.widget_configure
 import fr.berliat.hskwidget.widget_configure_close
@@ -257,7 +258,7 @@ private fun WidgetConfigListItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = list.name,
+            text = list.localizedName(),
             modifier = Modifier.weight(1f),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground

@@ -1,6 +1,7 @@
 package fr.berliat.hskwidget.core
 
 import fr.berliat.hskwidget.*
+import fr.berliat.hskwidget.data.type.SystemList
 import org.jetbrains.compose.resources.getString
 
 object CachedResources {
@@ -39,6 +40,9 @@ object CachedResources {
         private set
     var widgetConfigSelectedLists: String = "Selected Lists"
         private set
+    /** DB list name -> localized display name for system lists. Keep in sync with SystemList.toRes(). */
+    var systemListNames: Map<String, String> = emptyMap()
+        private set
 
     suspend fun load(): CachedResources = CachedResources.apply {
         appName = getString(Res.string.app_name)
@@ -58,5 +62,16 @@ object CachedResources {
         widgetConfigTitle = getString(Res.string.widget_configure)
         widgetConfigDescription = getString(Res.string.widget_configure_wordlist_title)
         widgetConfigSelectedLists = getString(Res.string.widget_config_selected_lists)
+        systemListNames = mapOf(
+            SystemList.HSK1.dbName to getString(Res.string.enum_system_list_hsk_1),
+            SystemList.HSK2.dbName to getString(Res.string.enum_system_list_hsk_2),
+            SystemList.HSK3.dbName to getString(Res.string.enum_system_list_hsk_3),
+            SystemList.HSK4.dbName to getString(Res.string.enum_system_list_hsk_4),
+            SystemList.HSK5.dbName to getString(Res.string.enum_system_list_hsk_5),
+            SystemList.HSK6.dbName to getString(Res.string.enum_system_list_hsk_6),
+            SystemList.HSK7.dbName to getString(Res.string.enum_system_list_hsk_7),
+            SystemList.ANNOTATED_WORDS.dbName to getString(Res.string.enum_system_list_annotated_words),
+            SystemList.AT_EXAM.dbName to getString(Res.string.enum_system_list_at_exam)
+        )
     }
 }

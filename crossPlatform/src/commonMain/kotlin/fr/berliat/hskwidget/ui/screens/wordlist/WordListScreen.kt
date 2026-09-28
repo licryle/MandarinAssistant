@@ -44,6 +44,7 @@ import fr.berliat.hskwidget.delete_24px
 import fr.berliat.hskwidget.edit_24px
 import fr.berliat.hskwidget.ic_add_24dp
 import fr.berliat.hskwidget.ui.components.PrettyCardShapeModifier
+import fr.berliat.hskwidget.ui.localizedName
 import fr.berliat.hskwidget.ui.theme.AppSizes.screenWithFABBottomPadding
 import fr.berliat.hskwidget.wordlist_create_new_list_button
 import fr.berliat.hskwidget.wordlist_createddate
@@ -180,7 +181,7 @@ private fun WordListRow(
                 .weight(1f)
                 .padding(10.dp)) {
                 Text(
-                    text = wordList.name,
+                    text = wordList.localizedName(),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Row(modifier = Modifier.fillMaxWidth().padding(top = 15.dp),

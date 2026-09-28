@@ -11,7 +11,8 @@ struct WordListEntity: AppEntity, Equatable {
     var name: String
 
     var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(title: "\(name)")
+        let localized = (crossPlatform.CachedResources.shared.systemListNames as? [String: String])?[name] ?? name
+        return DisplayRepresentation(title: "\(localized)")
     }
     
     static func == (lhs: WordListEntity, rhs: WordListEntity) -> Bool {

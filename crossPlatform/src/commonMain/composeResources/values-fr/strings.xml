@@ -347,4 +347,7 @@ Modèle de l'appareil : %4$sº
     <string name="enum_modality_written">Écrit</string>
     <string name="enum_modality_oral_written">Oral &amp; Écrit</string>
 
+    <string name="enum_system_list_annotated_words">Mots annotés</string>
+    <string name="enum_system_list_at_exam">À l'examen</string>
+
 </resources>
