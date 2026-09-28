@@ -1,5 +1,6 @@
 package fr.berliat.hskwidget.core
 
+import platform.Foundation.NSLocale
 import platform.Foundation.NSUserDefaults
 
 internal actual object PlatformLocaleManager {
@@ -12,7 +13,11 @@ internal actual object PlatformLocaleManager {
     }
 
     actual fun getCurrentLocale(): String? {
+        // App-level override set via setLocale(), if any.
         val languages = NSUserDefaults.standardUserDefaults.objectForKey("AppleLanguages") as? List<*>
-        return languages?.firstOrNull() as? String
+        (languages?.firstOrNull() as? String)?.let { return it }
+
+        // No override: follow the system preferred language.
+        return NSLocale.preferredLanguages.firstOrNull() as? String
     }
 }

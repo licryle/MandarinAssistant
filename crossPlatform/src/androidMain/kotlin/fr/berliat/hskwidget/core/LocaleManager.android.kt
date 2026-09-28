@@ -14,7 +14,13 @@ internal actual object PlatformLocaleManager {
     }
 
     actual fun getCurrentLocale(): String? {
+        // App-level override set via setLocale(), if any.
         val locales = AppCompatDelegate.getApplicationLocales()
-        return if (locales.isEmpty) null else locales.get(0)?.toLanguageTag()
+        if (!locales.isEmpty) return locales.get(0)?.toLanguageTag()
+
+        // No override: follow the system locale.
+        val adjusted = LocaleListCompat.getAdjustedDefault()
+        if (!adjusted.isEmpty) return adjusted.get(0)?.toLanguageTag()
+        return java.util.Locale.getDefault().toLanguageTag()
     }
 }

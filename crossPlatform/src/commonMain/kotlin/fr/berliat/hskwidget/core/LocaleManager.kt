@@ -13,11 +13,22 @@ object LocaleManager {
 
     fun getCurrentLocale(): String {
         val platformLocale = PlatformLocaleManager.getCurrentLocale()
-        return if (supportedLocales.containsKey(platformLocale)) {
-            platformLocale!!
-        } else {
-            supportedLocales.keys.first()
+        if (platformLocale != null) {
+            // Exact match first (e.g. "en", "fr", "zh-Hans")
+            if (supportedLocales.containsKey(platformLocale)) {
+                return platformLocale
+            }
+
+            // Then language-prefix match (e.g. "fr-FR" -> "fr", "en-US" -> "en").
+            val lang = platformLocale.split("-", "_")[0].lowercase()
+            supportedLocales.keys.firstOrNull {
+                it.split("-", "_")[0].lowercase() == lang
+            }?.let { return it }
+
+            // Simplified Chinese, the only Chinese UI we support.
+            if (lang == "zh") return "zh-Hans"
         }
+        return supportedLocales.keys.first()
     }
 }
 
