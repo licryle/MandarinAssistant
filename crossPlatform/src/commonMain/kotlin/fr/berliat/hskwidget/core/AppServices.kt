@@ -8,16 +8,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.concurrent.Volatile
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.TimeSource
 
 open class AppServices {
     private val _status = MutableStateFlow<Status>(Status.NotInitialized)
     val status: StateFlow<Status> = _status.asStateFlow()
 
-    // Internal backing map for service factories and instances
-    private val services = mutableMapOf<String, FactoryEntry>()
+    @Volatile
+    private var services: Map<String, FactoryEntry> = emptyMap()
+    private val initMutex = Mutex()
 
     val appScope: CoroutineScope get() = get("appScope")
 
@@ -60,7 +64,7 @@ open class AppServices {
         if (isRegistered(name))
             throw Exception("Service $name Already registered")
 
-        services[name] = FactoryEntry(priority, factory)
+        services = services + (name to FactoryEntry(priority, factory))
         _status.value = evaluateStatus()
     }
 
@@ -70,12 +74,13 @@ open class AppServices {
     fun <T : Any> registerNow(name: String, priority: Priority = Priority.Standard, factory: () -> T) {
         if (isRegistered(name))
             throw Exception("Service $name Already registered")
-        services[name] = FactoryEntry(priority, factory, factory())
+        services = services + (name to FactoryEntry(priority, factory, factory()))
         _status.value = evaluateStatus()
     }
 
     /**
-     * Initialize all services concurrently.
+     * Initialize all services sequentially, in priority order (highest first).
+     * Each service init logs its wall time so startup can be profiled per-service.
      */
     open fun init(upToLevel: Priority) {
         val currStatus = _status.value
@@ -89,20 +94,43 @@ open class AppServices {
         _status.value = Status.Initialized
 
         appScope.launch(AppDispatchers.IO) {
+            val initStart = TimeSource.Monotonic.markNow()
             try {
-                services.entries
-                    .filter { it.value.priority <= upToLevel && !it.value.isReady() }
-                    .sortedBy { it.value.priority.priority } // highest first
-                    .forEach { (name, entry) ->
+                // Serialize overlapping init() calls; re-check readiness inside
+                // the lock so a second call only builds what's still missing.
+                initMutex.withLock {
+                    // Snapshot the immutable map: safe to iterate even if a
+                    // register() swaps in a new map concurrently.
+                    val pending = services.entries
+                        .filter { it.value.priority <= upToLevel && !it.value.isReady() }
+                        .sortedBy { it.value.priority.priority } // highest first
+                        .toList()
+                    if (pending.isEmpty()) {
+                        Logger.i(
+                            tag = "AppServices",
+                            messageString = "Init up to $upToLevel: nothing pending"
+                        )
+                    }
+                    pending.forEach { (name, entry) ->
+                        val serviceStart = TimeSource.Monotonic.markNow()
                         try {
                             entry.instance = entry.factory()
+                            Logger.i(
+                                tag = "AppServices",
+                                messageString = "Service ready: $name prio=${entry.priority} in ${serviceStart.elapsedNow()}"
+                            )
                         } catch (e: Throwable) {
-                            Logger.e(tag = "AppServices", messageString = "Failed to initialize service: $name", throwable = e)
+                            Logger.e(tag = "AppServices", messageString = "Failed to initialize service: $name after ${serviceStart.elapsedNow()}", throwable = e)
                             throw e
                         }
                     }
+                }
 
                 _status.value = evaluateStatus()
+                Logger.i(
+                    tag = "AppServices",
+                    messageString = "Init up to $upToLevel done in ${initStart.elapsedNow()} status=${_status.value}"
+                )
             } catch (t: Throwable) {
                 Logger.e(tag = "AppServices", messageString = "AppServices init failed", throwable = t)
                 _status.value = Status.Failed(t)
@@ -139,7 +167,7 @@ open class AppServices {
     private fun evaluateStatus(): Status {
         val levels = mutableMapOf<UInt, Boolean>()
 
-        // Build entries per level & readiness
+        // Reads see an immutable snapshot, so no lock is needed here.
         services.entries.forEach {
             levels[it.value.priority.priority] = it.value.isReady() && (levels[it.value.priority.priority] ?: true)
         }
