@@ -1,6 +1,7 @@
 package fr.berliat.hskwidget.domain
 
 import androidx.room3.RoomDatabase
+import androidx.room3.executeSQL
 import androidx.room3.immediateTransaction
 import androidx.room3.migration.Migration
 import androidx.room3.useWriterConnection
@@ -24,6 +25,7 @@ import fr.berliat.hskwidget.database_update_success
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.absolutePath
+import io.github.vinceglb.filekit.atomicMove
 import io.github.vinceglb.filekit.cacheDir
 import io.github.vinceglb.filekit.copyTo
 import io.github.vinceglb.filekit.delete
@@ -32,12 +34,19 @@ import io.github.vinceglb.filekit.exists
 import io.github.vinceglb.filekit.list
 import io.github.vinceglb.filekit.name
 import io.github.vinceglb.filekit.path
+import io.github.vinceglb.filekit.toKotlinxIoPath
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.io.buffered
+import kotlinx.io.files.SystemFileSystem
+import kotlinx.io.readString
+import kotlinx.io.writeString
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 data class DatabaseBuilderWithPath(
     val file: PlatformFile,
@@ -69,9 +78,128 @@ class DatabaseHelper private constructor() {
         const val DATABASE_ASSET_PATH = "databases/$DATABASE_FILENAME"
         private const val TAG = "ChineseWordsDatabase"
         const val TEMP_FILE_PREFIX = "DB_TMP_"
+        // Staged-swap files live in the same directory as the live DB so the
+        // final rename is atomic (same filesystem). Never stage in cacheDir.
+        const val STAGING_SUFFIX = ".new"
+        const val BACKUP_SUFFIX = ".bak"
+        const val JOURNAL_FILENAME = "Mandarin_Assistant.db.update.json"
 
         fun getDatabaseLiveDir() = Utils.getAppDatabasePath()
         fun getDatabaseLiveFile() = getDatabaseLiveDir() / DATABASE_FILENAME
+        fun getStagingFile() = getDatabaseLiveDir() / (DATABASE_FILENAME + STAGING_SUFFIX)
+        fun getBackupFile() = getDatabaseLiveDir() / (DATABASE_FILENAME + BACKUP_SUFFIX)
+        fun getJournalFile() = getDatabaseLiveDir() / JOURNAL_FILENAME
+
+        @Serializable
+        data class UserDataCounts(
+            val annotations: Int = 0,
+            val listEntries: Int = 0,
+            val userLists: Int = 0,
+            val widgets: Int = 0,
+            val freq: Int = 0,
+            val dictionary: Int = 0
+        )
+
+        @Serializable
+        data class DbUpdateJournal(
+            val state: String = "STAGED", // STAGED | SWAPPED
+            val expected: UserDataCounts = UserDataCounts()
+        ) {
+            companion object {
+                const val STAGED = "STAGED"
+                const val SWAPPED = "SWAPPED"
+            }
+        }
+
+        private val journalJson = Json { ignoreUnknownKeys = true }
+
+        private suspend fun readJournal(file: PlatformFile): DbUpdateJournal? = withContext(AppDispatchers.IO) {
+            try {
+                if (!file.exists()) return@withContext null
+                val text = SystemFileSystem.source(file.toKotlinxIoPath()).buffered().use { it.readString() }
+                journalJson.decodeFromString<DbUpdateJournal>(text)
+            } catch (_: Exception) { null }
+        }
+
+        private suspend fun writeJournal(file: PlatformFile, journal: DbUpdateJournal) = withContext(AppDispatchers.IO) {
+            val path = file.toKotlinxIoPath()
+            if (SystemFileSystem.exists(path)) {
+                try { SystemFileSystem.delete(path) } catch (_: Exception) {}
+            }
+            SystemFileSystem.sink(path, append = false).buffered().use { sink ->
+                sink.writeString(journalJson.encodeToString(journal))
+            }
+        }
+
+        private suspend fun deleteJournal(file: PlatformFile) = withContext(AppDispatchers.IO) {
+            try { if (file.exists()) file.delete() } catch (_: Exception) {}
+        }
+
+        private suspend fun deleteSidecars(file: PlatformFile) = withContext(AppDispatchers.IO) {
+            listOf("-wal", "-shm", "-journal").forEach { suffix ->
+                try {
+                    val sidecar = PlatformFile(file.path + suffix)
+                    if (sidecar.exists()) sidecar.delete()
+                } catch (_: Exception) {}
+            }
+        }
+
+        private suspend fun deleteFileAndSidecars(file: PlatformFile) = withContext(AppDispatchers.IO) {
+            try { if (file.exists()) file.delete() } catch (_: Exception) {}
+            deleteSidecars(file)
+        }
+
+        private suspend fun collectUserCounts(db: ChineseWordsDatabase): UserDataCounts = withContext(AppDispatchers.IO) {
+            UserDataCounts(
+                annotations = try { db.chineseWordAnnotationDAO().getAll().size } catch (_: Exception) { -1 },
+                listEntries = try { db.wordListDAO().getUserListEntries().size } catch (_: Exception) { -1 },
+                userLists = try { db.wordListDAO().getUserLists().size } catch (_: Exception) { -1 },
+                widgets = try { db.widgetListDAO().getAllEntries().size } catch (_: Exception) { -1 },
+                freq = try { db.chineseWordFrequencyDAO().getAll().size } catch (_: Exception) { -1 },
+                dictionary = try { db.chineseWordDAO().getCount() } catch (_: Exception) { -1 }
+            )
+        }
+
+        /** Staging must hold the fresh dictionary plus all non-filterable user data.
+         *  List entries / widget links may legitimately shrink (orphans of removed
+         *  words are dropped by replaceUserDataInDB), so those are upper bounds. */
+        private fun stagingMatchesExpected(staging: UserDataCounts, expected: UserDataCounts): Boolean {
+            if (staging.dictionary <= 0) return false
+            if (staging.annotations != expected.annotations) return false
+            if (staging.userLists != expected.userLists) return false
+            if (staging.freq != expected.freq) return false
+            if (staging.listEntries > expected.listEntries) return false
+            if (staging.widgets > expected.widgets) return false
+            if (staging.annotations < 0 || staging.listEntries < 0 || staging.userLists < 0 ||
+                staging.widgets < 0 || staging.freq < 0) return false
+            return true
+        }
+
+        private suspend fun verifyDbFile(file: PlatformFile): UserDataCounts? = withContext(AppDispatchers.IO) {
+            try {
+                if (!file.exists()) return@withContext null
+                var db: ChineseWordsDatabase? = null
+                try {
+                    db = buildDatabase(createRoomDatabaseBuilderFromFile(file))
+                    val counts = collectUserCounts(db)
+                    if (counts.dictionary < 0) return@withContext null
+                    counts
+                } finally {
+                    try { db?.close() } catch (_: Exception) {}
+                }
+            } catch (_: Exception) { null }
+        }
+
+        /** Snapshot [source] into [dest] with VACUUM INTO so the backup is a
+         *  consistent image even with WAL present. Dest is in liveDir (durable). */
+        suspend fun vacuumInto(source: ChineseWordsDatabase, dest: PlatformFile) = withContext(AppDispatchers.IO) {
+            deleteFileAndSidecars(dest)
+            source.useWriterConnection { connection ->
+                try { connection.executeSQL("PRAGMA wal_checkpoint(TRUNCATE)") } catch (_: Exception) {}
+                connection.executeSQL("VACUUM INTO '${dest.path.replace("'", "''")}'")
+            }
+            if (!dest.exists()) throw IllegalStateException("Backup snapshot failed at ${dest.path}")
+        }
 
         suspend fun getInstance(): DatabaseHelper = withContext(AppDispatchers.IO) {
             INSTANCE?.let { return@withContext it } // for optimization
@@ -226,50 +354,255 @@ class DatabaseHelper private constructor() {
             AppDispatchers.IO
         ) {
             val liveFile = getDatabaseLiveFile()
+            val stagingFile = getStagingFile()
+            val backupFile = getBackupFile()
+            val journalFile = getJournalFile()
+
+            // Always run crash recovery first, before any update decision and
+            // before cache cleanup can destroy evidence.
+            recoverPendingUpdate(liveFile, stagingFile, backupFile, journalFile)
+
             if (!liveFile.exists()) {
                 copyDatabaseAssetFile(liveFile)
                 if (!liveFile.exists()) throw IllegalStateException(
                     "Failed to provision live database from asset at ${liveFile.path}"
                 )
             } else if (shouldUpdateDatabaseFromAsset(HSKAppServices.appPreferences.appVersionCode.value)) {
-                _updateProgress.value = 0f
-                var original: ChineseWordsDatabase? = null
-                var clone: ChineseWordsDatabase? = null
-                var newDb: ChineseWordsDatabase? = null
-                try {
-                    HSKAppServices.snackbar.show(SnackbarType.INFO, Res.string.database_update_start)
-
-                    original = buildDatabase(createRoomDatabaseBuilderFromFile(liveFile))
-                    clone = original.clone()
-                    _updateProgress.value = 33f
-                    original.close()
-                    original = null
-                    if (clone == null) throw Exception("Couldn't clone existing db")
-
-                    copyDatabaseAssetFile(liveFile, overwrite = true)
-                    if (!liveFile.exists()) throw IllegalStateException(
-                        "Failed to replace live database from asset at ${liveFile.path}"
-                    )
-                    _updateProgress.value = 66f
-
-                    newDb = buildDatabase(createRoomDatabaseBuilderFromFile(liveFile))
-                    replaceUserDataInDB(newDb, clone)
-
-                    _updateProgress.value = 100f
-                    HSKAppServices.snackbar.show(SnackbarType.SUCCESS, Res.string.database_update_success)
-                } catch (e: Exception) {
-                    HSKAppServices.snackbar.show(SnackbarType.ERROR, Res.string.database_update_failure, listOf(e.message ?: ""))
-                    Logging.logAnalyticsError(TAG, "UpdateDatabaseFromAssetFailure", e.message ?: "")
-                } finally {
-                    try { newDb?.close() } catch (_: Exception) {}
-                    try { clone?.close() } catch (_: Exception) {}
-                    try { original?.close() } catch (_: Exception) {}
-                    _updateProgress.value = null
-                    cleanTempDatabaseFiles()
-                }
+                performStagedUpdate(liveFile, stagingFile, backupFile, journalFile)
             }
 
             return@withContext createRoomDatabaseBuilderFromFile(liveFile)
+        }
+
+        /**
+         * Blue-green update: live is never overwritten in place. The new asset is
+         * prepared in [stagingFile] (same directory, same filesystem), user data is
+         * imported there and verified, then staging is atomically moved over live.
+         * A durable [.bak] snapshot plus a small state journal make every crash
+         * window recoverable via [recoverPendingUpdate]. The backup is kept until
+         * the next update overwrites it.
+         */
+        private suspend fun performStagedUpdate(
+            liveFile: PlatformFile,
+            stagingFile: PlatformFile = getStagingFile(),
+            backupFile: PlatformFile = getBackupFile(),
+            journalFile: PlatformFile = getJournalFile()
+        ) = withContext(AppDispatchers.IO) {
+            _updateProgress.value = 0f
+            var original: ChineseWordsDatabase? = null
+            var source: ChineseWordsDatabase? = null
+            var newDb: ChineseWordsDatabase? = null
+            try {
+                HSKAppServices.snackbar.show(SnackbarType.INFO, Res.string.database_update_start)
+
+                // 1. Consistent durable backup of the current live DB (VACUUM INTO
+                // handles WAL). This is the fallback for every later step.
+                original = buildDatabase(createRoomDatabaseBuilderFromFile(liveFile))
+                vacuumInto(original, backupFile)
+                val expected = collectUserCounts(original)
+                if (expected.annotations < 0 || expected.userLists < 0 || expected.freq < 0) {
+                    throw IllegalStateException("Could not read user data from live database")
+                }
+                if (expected.annotations == 0 && expected.listEntries == 0 &&
+                    expected.widgets == 0 && expected.freq == 0
+                ) {
+                    Logger.i(tag = TAG, messageString = "Live DB holds no user data, aborting update")
+                    throw IllegalStateException("Database is empty")
+                }
+                _updateProgress.value = 20f
+                try { original.close() } catch (_: Exception) {}
+                original = null
+
+                // 2. Stage the fresh asset next to live (never over live).
+                deleteFileAndSidecars(stagingFile)
+                copyDatabaseAssetFile(stagingFile, overwrite = true)
+                if (!stagingFile.exists()) throw IllegalStateException(
+                    "Failed to stage database asset at ${stagingFile.path}"
+                )
+                _updateProgress.value = 45f
+
+                // 3. Import user data from the durable backup into staging.
+                source = buildDatabase(createRoomDatabaseBuilderFromFile(backupFile))
+                newDb = buildDatabase(createRoomDatabaseBuilderFromFile(stagingFile))
+                replaceUserDataInDB(newDb, source)
+                try { source.close() } catch (_: Exception) {}
+                source = null
+                _updateProgress.value = 70f
+
+                // 4. Verify staging before it ever becomes live.
+                val stagingCounts = collectUserCounts(newDb)
+                if (!stagingMatchesExpected(stagingCounts, expected)) {
+                    throw IllegalStateException(
+                        "Staged database failed verification " +
+                            "(annotations=${stagingCounts.annotations} vs ${expected.annotations}, " +
+                            "lists=${stagingCounts.userLists} vs ${expected.userLists})"
+                    )
+                }
+                try { newDb.close() } catch (_: Exception) {}
+                newDb = null
+                _updateProgress.value = 85f
+
+                // 5. Publish: journal first, then atomic move, then verify live.
+                writeJournal(journalFile, DbUpdateJournal(DbUpdateJournal.STAGED, expected))
+                completeSwap(liveFile, stagingFile, journalFile,
+                    DbUpdateJournal(DbUpdateJournal.STAGED, expected))
+
+                _updateProgress.value = 100f
+                HSKAppServices.snackbar.show(SnackbarType.SUCCESS, Res.string.database_update_success)
+            } catch (e: Exception) {
+                HSKAppServices.snackbar.show(SnackbarType.ERROR, Res.string.database_update_failure, listOf(e.message ?: ""))
+                Logging.logAnalyticsError(TAG, "UpdateDatabaseFromAssetFailure", e.message ?: "")
+                // Intentionally keep .bak + journal for recovery/retry. Only
+                // discard staging if it never verified (live untouched then).
+                try {
+                    if (readJournal(journalFile) == null) deleteFileAndSidecars(stagingFile)
+                } catch (_: Exception) {}
+            } finally {
+                try { newDb?.close() } catch (_: Exception) {}
+                try { source?.close() } catch (_: Exception) {}
+                try { original?.close() } catch (_: Exception) {}
+                _updateProgress.value = null
+                // Cache-only cleanup. LiveDir .new/.bak/journal are recovery
+                // evidence and must survive failures.
+                cleanTempDatabaseFiles()
+            }
+        }
+
+
+        /** Best-effort crash recovery. Runs before any update decision and before
+         *  cache cleanup touches anything. Never deletes the backup on failure. */
+        private suspend fun recoverPendingUpdate(
+            liveFile: PlatformFile,
+            stagingFile: PlatformFile = getStagingFile(),
+            backupFile: PlatformFile = getBackupFile(),
+            journalFile: PlatformFile = getJournalFile()
+        ) = withContext(AppDispatchers.IO) {
+            val journal = readJournal(journalFile)
+            if (journal == null) {
+                // Stray staging without journal => live was never touched. Drop it.
+                if (stagingFile.exists()) {
+                    Logger.d(tag = TAG, messageString = "Recovery: discarding stray staging file")
+                    deleteFileAndSidecars(stagingFile)
+                }
+                // Live missing but backup present => restore.
+                if (!liveFile.exists() && backupFile.exists()) {
+                    Logger.d(tag = TAG, messageString = "Recovery: live missing, restoring backup")
+                    try {
+                        deleteSidecars(liveFile)
+                        backupFile.atomicMove(liveFile)
+                    } catch (e: Exception) {
+                        Logger.e(tag = TAG, messageString = "Recovery: backup restore failed", throwable = e)
+                    }
+                    return@withContext
+                }
+                // Live present but unreadable and backup readable => restore.
+                if (liveFile.exists() && backupFile.exists()) {
+                    val liveCounts = verifyDbFile(liveFile)
+                    if (liveCounts == null) {
+                        val backupCounts = verifyDbFile(backupFile)
+                        if (backupCounts != null) {
+                            Logger.d(tag = TAG, messageString = "Recovery: live corrupt, restoring backup")
+                            try {
+                                deleteFileAndSidecars(liveFile)
+                                backupFile.copyTo(liveFile)
+                                deleteSidecars(liveFile)
+                            } catch (e: Exception) {
+                                Logger.e(tag = TAG, messageString = "Recovery: backup restore failed", throwable = e)
+                            }
+                        }
+                    }
+                }
+                return@withContext
+            }
+
+            Logger.d(tag = TAG, messageString = "Recovery: pending journal state=${journal.state}")
+            when (journal.state) {
+                DbUpdateJournal.STAGED -> {
+                    // Swap never started (or never finished writing SWAPPED).
+                    // Live still holds the old DB. Complete the swap if staging verifies.
+                    val liveCounts = verifyDbFile(liveFile)
+                    val stagingCounts = if (stagingFile.exists()) verifyDbFile(stagingFile) else null
+                    if (stagingCounts != null && stagingMatchesExpected(stagingCounts, journal.expected)) {
+                        try {
+                            completeSwap(liveFile, stagingFile, journalFile, journal)
+                        } catch (e: Exception) {
+                            Logger.e(tag = TAG, messageString = "Recovery: staged swap failed", throwable = e)
+                        }
+                    } else {
+                        Logger.d(tag = TAG, messageString = "Recovery: staging invalid, discarding")
+                        deleteFileAndSidecars(stagingFile)
+                        if (liveCounts == null && backupFile.exists() && verifyDbFile(backupFile) != null) {
+                            try {
+                                deleteFileAndSidecars(liveFile)
+                                backupFile.copyTo(liveFile)
+                            } catch (_: Exception) {}
+                        } else {
+                            deleteJournal(journalFile)
+                        }
+                    }
+                }
+                DbUpdateJournal.SWAPPED -> {
+                    // Swap was attempted. Live should be the new DB.
+                    val liveCounts = verifyDbFile(liveFile)
+                    if (liveCounts != null && stagingMatchesExpected(liveCounts, journal.expected)) {
+                        Logger.d(tag = TAG, messageString = "Recovery: swapped live verified")
+                        deleteJournal(journalFile)
+                    } else if (backupFile.exists() && verifyDbFile(backupFile) != null) {
+                        Logger.d(tag = TAG, messageString = "Recovery: swapped live bad, restoring backup")
+                        try {
+                            deleteFileAndSidecars(liveFile)
+                            backupFile.copyTo(liveFile)
+                            deleteSidecars(liveFile)
+                        } catch (e: Exception) {
+                            Logger.e(tag = TAG, messageString = "Recovery: backup restore failed", throwable = e)
+                        } finally {
+                            // Keep journal only if live still bad; else clear so next boot retries fresh.
+                            if (verifyDbFile(liveFile) != null) deleteJournal(journalFile)
+                        }
+                    } else {
+                        Logger.e(tag = TAG, messageString = "Recovery: live and backup both unverifiable, keeping live as-is")
+                    }
+                    // Staging was moved over live; any leftover is garbage.
+                    if (stagingFile.exists() && !liveFile.exists()) {
+                        try { stagingFile.atomicMove(liveFile) } catch (_: Exception) {}
+                    } else if (stagingFile.exists()) {
+                        deleteFileAndSidecars(stagingFile)
+                    }
+                }
+                else -> deleteJournal(journalFile)
+            }
+        }
+
+        /** live -> replaced by staging. Callers must have closed every handle on
+         *  both files. Backup already holds the pre-swap snapshot. */
+        private suspend fun completeSwap(
+            liveFile: PlatformFile,
+            stagingFile: PlatformFile,
+            journalFile: PlatformFile,
+            journal: DbUpdateJournal
+        ) = withContext(AppDispatchers.IO) {
+            deleteSidecars(liveFile)
+            deleteSidecars(stagingFile)
+            writeJournal(journalFile, journal.copy(state = DbUpdateJournal.SWAPPED))
+            try {
+                stagingFile.atomicMove(liveFile)
+            } catch (_: Exception) {
+                // atomicMove may not overwrite: live content is safe in .bak, so
+                // delete-then-move is an acceptable fallback (journal covers it).
+                deleteFileAndSidecars(liveFile)
+                stagingFile.atomicMove(liveFile)
+            }
+            deleteSidecars(liveFile)
+            val liveCounts = verifyDbFile(liveFile)
+                ?: throw IllegalStateException("Swapped live database failed verification")
+            if (!stagingMatchesExpected(liveCounts, journal.expected)) {
+                throw IllegalStateException(
+                    "Swapped live user data mismatch (annotations=${liveCounts.annotations} vs ${journal.expected.annotations})"
+                )
+            }
+            deleteJournal(journalFile)
+            // .bak is intentionally kept as durable fallback until the next update overwrites it.
+            Logger.i(tag = TAG, messageString = "Database swap complete and verified")
         }
 
         fun shouldUpdateDatabaseFromAsset(appVersion: Int): Boolean {

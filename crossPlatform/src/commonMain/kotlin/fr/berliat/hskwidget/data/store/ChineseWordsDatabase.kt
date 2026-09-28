@@ -80,10 +80,7 @@ abstract class ChineseWordsDatabase: RoomDatabase() {
         val dest = FileKit.cacheDir / (DatabaseHelper.TEMP_FILE_PREFIX + Utils.getRandomString(10))
         dest.delete(false)
 
-        useWriterConnection { connection ->
-            connection.executeSQL("PRAGMA wal_checkpoint(TRUNCATE)")
-            connection.executeSQL("VACUUM INTO '${dest.path.replace("'", "''")}'")
-        }
+        DatabaseHelper.vacuumInto(this, dest)
 
         dest
     } catch (e: Exception) {
