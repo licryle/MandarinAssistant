@@ -31,7 +31,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1C7166D42E71E186000B4154"
-               BuildableName = "hskwidget"
+               BuildableName = "hskwidget.app"
                BlueprintName = "hskwidget"
                ReferencedContainer = "container:hskwidget.xcodeproj">
             </BuildableReference>
