@@ -124,7 +124,6 @@ kotlin {
                 implementation(project(":pinyin4kot"))
                 implementation(project(":hsktextviews"))
                 implementation(project(":googledrivebackup"))
-                implementation(project(":pinyin4kot"))
             }
         }
 
