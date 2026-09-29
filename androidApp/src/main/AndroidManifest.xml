@@ -81,7 +81,8 @@
         <service
             android:name="fr.berliat.hskwidget.domain.AnkiSyncWordListsService"
             android:exported="false"
-            android:foregroundServiceType="dataSync" />
+            android:foregroundServiceType="dataSync"
+            tools:ignore="Instantiatable" />
 
         <service
             android:name="fr.berliat.hskwidget.domain.DatabaseUpdateService"
