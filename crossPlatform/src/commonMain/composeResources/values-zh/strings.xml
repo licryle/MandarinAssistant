@@ -70,6 +70,7 @@ AI 字段覆盖率：
     <string name="dictionary_search_loading">正在加载结果</string>
     <string name="dictionary_search_filter_hasannotation_hint"> 仅限</string>
     <string name="dictionary_filter_language_label">APP的言语</string>
+    <string name="dictionary_language_filter">词典语言</string>
     <string name="locale_en">英语</string>
     <string name="locale_fr">法语</string>
     <string name="locale_cn_hsk3">HSK 3.0</string>
@@ -141,6 +142,7 @@ AI 字段覆盖率：
 
     <string name="annotation_edit_notes_hint">输入您的笔记：</string>
     <string name="annotation_edit_is_exam_hint">考试</string>
+    <string name="annotation_exam_switch">考试开关</string>
     <string name="annotation_edit_class_level_hint">班级级别</string>
     <string name="annotation_edit_class_type_hint">班级类型</string>
     <string name="annotation_edit_delete_success">%1$s 已成功删除</string>

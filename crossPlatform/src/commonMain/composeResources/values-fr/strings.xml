@@ -71,6 +71,7 @@ Couverture des champs IA :
     <string name="dictionary_search_loading">Chargement des résultats</string>
     <string name="dictionary_search_filter_hasannotation_hint"> uniquement</string>
     <string name="dictionary_filter_language_label">Langue de l'app</string>
+    <string name="dictionary_language_filter">Langue du dictionnaire</string>
     <string name="locale_en">English</string>
     <string name="locale_fr">Français</string>
     <string name="locale_cn_hsk3">HSK 3.0</string>
@@ -142,6 +143,7 @@ Nous vous recommandons de choisir le niveau où vous en êtes plus celui du dess
 
     <string name="annotation_edit_notes_hint">Entrez vos notes :</string>
     <string name="annotation_edit_is_exam_hint">Examen</string>
+    <string name="annotation_exam_switch">Commutateur Examen</string>
     <string name="annotation_edit_class_level_hint">Niveau de classe</string>
     <string name="annotation_edit_class_type_hint">Type de classe</string>
     <string name="annotation_edit_delete_success">%1$s supprimé avec succès</string>

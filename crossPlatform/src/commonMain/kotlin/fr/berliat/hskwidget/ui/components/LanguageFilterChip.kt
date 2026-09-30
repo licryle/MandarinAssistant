@@ -6,10 +6,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.core.Locale
 import fr.berliat.hskwidget.dictionary_filter_language_label
+import fr.berliat.hskwidget.dictionary_language_filter
 import fr.berliat.hskwidget.keyboard_arrow_down_24px
 import fr.berliat.hskwidget.translate_24px
 import org.jetbrains.compose.resources.painterResource
@@ -25,6 +28,7 @@ fun LanguageFilterChip(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val languageDesc = stringResource(Res.string.dictionary_language_filter)
 
     Box(modifier = modifier) {
         FilterChip(
@@ -49,6 +53,7 @@ fun LanguageFilterChip(
             },
             shape = RoundedCornerShape(50),
             modifier = Modifier.padding(end = 8.dp)
+                .semantics { contentDescription = languageDesc }
         )
 
         DropdownMenu(

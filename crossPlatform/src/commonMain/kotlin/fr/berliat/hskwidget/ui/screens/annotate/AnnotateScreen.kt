@@ -28,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 
 import fr.berliat.hskwidget.core.Locale
@@ -40,6 +42,7 @@ import fr.berliat.hskwidget.ui.components.DropdownSelector
 import fr.berliat.hskwidget.ui.components.LoadingView
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.annotation_edit_class_level_hint
+import fr.berliat.hskwidget.annotation_exam_switch
 import fr.berliat.hskwidget.annotation_edit_class_type_hint
 import fr.berliat.hskwidget.annotation_edit_delete_confirm_message
 import fr.berliat.hskwidget.annotation_edit_delete_confirm_title
@@ -83,6 +86,7 @@ fun AnnotateScreen(
     var selectedClassLevel by remember { mutableStateOf(viewModel.lastAnnotatedClassLevel.value) }
 
     var confirmDeleteDialog by remember { mutableStateOf(false) }
+    val examToggleDesc = stringResource(Res.string.annotation_exam_switch)
 
     var notesFocused by remember { mutableStateOf(false) }
     val imeVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
@@ -215,7 +219,8 @@ fun AnnotateScreen(
             ) {
                 Switch(
                     checked = isExam,
-                    modifier = Modifier.dismissKeyboardOnClick(),
+                    modifier = Modifier.dismissKeyboardOnClick()
+                        .semantics { contentDescription = examToggleDesc },
                     onCheckedChange = { isExam = it }
                 )
             }
