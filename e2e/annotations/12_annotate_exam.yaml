@@ -1,0 +1,22 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Annotations / P1 / Flag word as exam + system Exam list updates.
+# Setup: setup1 (needs annotated 你好).
+- launchApp:
+    clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "nihao"
+- hideKeyboard
+- assertVisible: "你"
+- tapOn: "Annotate a word"
+- tapOn: "Exam switch"
+- tapOn: "Save"
+- assertVisible: "你好 successfully saved"
+- tapOn: "Menu"
+- tapOn: "Lists"
+- tapOn: "At the exam"
+- assertVisible: "你"

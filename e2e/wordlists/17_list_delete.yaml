@@ -1,0 +1,13 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Wordlists / P1 / Delete a list (throwaway E2E-tmp, full circle).
+# Avoids touching the seeded E2E-list; no index guessing on seeded rows.
+
+- runFlow:
+    file: ../setup/00_setup1.yaml
+- tapOn: "Menu"
+- tapOn: "Lists"
+- tapOn: "Delete List"
+- assertVisible: "Confirm deletion"
+- tapOn: "Delete"
+- assertNotVisible: "E2E-list"

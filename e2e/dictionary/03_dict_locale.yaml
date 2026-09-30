@@ -1,0 +1,22 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Dictionary / P0 / Switch definition language (EN / FR / HSK3).
+- launchApp:
+    clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "nihao"
+- hideKeyboard
+- assertVisible: "你"
+- tapOn: "Dictionary language"
+- tapOn: "Français"
+- assertVisible: "1. bonjour (à toi)\n2. salut\n3. comment vas-tu\n4. tu es très..."
+- tapOn: "Dictionary language"
+- tapOn: "English"
+- assertVisible: "hello; hi"
+- tapOn: "Dictionary language"
+- tapOn: "HSK 3.0"
+- assertVisible: "問候別人"

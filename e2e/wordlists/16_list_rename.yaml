@@ -1,0 +1,19 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Wordlists / P1 / Rename a list (E2E-list -> E2E-list2 -> back).
+# Setup: setup1
+
+- runFlow:
+    file: ../setup/00_setup1.yaml
+- tapOn: "Menu"
+- tapOn: "Lists"
+- assertVisible: "E2E-list"
+- tapOn:
+    text: "Rename list"
+    index: 0
+- tapOn: "Personal list name"
+- eraseText: 50
+- inputText: "E2E-list2"
+- hideKeyboard
+- tapOn: "Rename list"
+- assertVisible: "E2E-list2"

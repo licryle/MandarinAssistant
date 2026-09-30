@@ -1,0 +1,16 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Wordlists / P0 / Remove word from list. Self-restoring (re-adds at end).
+# Setup: setup1 (E2E-list contains 你好).
+
+- runFlow:
+    file: ../setup/00_setup1.yaml
+- tapOn: "Menu"
+- tapOn: "Lists"
+- tapOn: "E2E-list"
+- assertVisible: "你"
+- tapOn: "Manage lists for this word"
+- assertVisible: "Select personal list(s)"
+- tapOn: "E2E-list"
+- tapOn: "Save"
+- assertNotVisible: "Select personal list(s)"

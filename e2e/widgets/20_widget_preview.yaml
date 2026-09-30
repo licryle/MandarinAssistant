@@ -1,0 +1,12 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Widgets / P1 / Preview next-word / speak / open-dictionary.
+# SMOKE-ONLY (see 19_widget_configure.yaml): no widget => intro screen only.
+# With a placed widget, extend with next-word/speak taps + screenshot.
+- launchApp:
+    clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Widgets"
+- assertVisible: "Add a new widget"
+- takeScreenshot: widgets_preview

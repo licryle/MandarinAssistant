@@ -1,0 +1,17 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Config / P1 / Change app language.
+# FR strings verified in values-fr/strings.xml.
+- launchApp:
+    clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Settings"
+- assertVisible: "Interface language"
+- tapOn: "English"
+- tapOn: "Français"
+- tapOn: "Menu"
+- tapOn: "Listes"
+- tapOn: "Menu"
+- tapOn: "Dictionnaire"
+- assertVisible: "Dictionnaire"

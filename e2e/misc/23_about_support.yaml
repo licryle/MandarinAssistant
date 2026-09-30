@@ -1,0 +1,18 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Misc / P2 / Open About + Support screens.
+- launchApp:
+    clearState: true
+
+- tapOn: "Menu"
+- tapOn: "About"
+- assertVisible: "Statistics"
+- assertVisible: "Privacy Policy & Licences"
+- back
+- tapOn: "Menu"
+- tapOn: "Support the creator!"
+- takeScreenshot: support_screen
+- back
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- assertVisible: "Search pinyin, definition, hanzi"

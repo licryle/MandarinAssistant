@@ -1,0 +1,7 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Annotations / P0 / Heart + annotate a dictionary word.
+# No setup (uses 谢谢, untouched by setup1). Idempotent on re-run (overwrite).
+
+- runFlow:
+    file: ../setup/00_setup1.yaml

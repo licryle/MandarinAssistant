@@ -1,0 +1,19 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Annotations / P1 / Annotate a custom word not in dictionary.
+# No setup.
+- launchApp:
+    clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "zzzz你"
+- hideKeyboard
+- assertVisible: "No result!"
+- tapOn: "No result!"
+- tapOn: "Enter your notes:"
+- inputText: "e2e custom"
+- hideKeyboard
+- tapOn: "Save"

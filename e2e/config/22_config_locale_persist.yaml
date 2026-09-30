@@ -1,0 +1,21 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Config / P1 / Dictionary locale persists across restart.
+# Uses the CONFIGSCREEN-independent path: set interface-independent dictionary
+# locale is BLOCKED (icon-only chip, see 03_dict_locale.yaml), so this asserts
+# the persistence mechanism on the interface locale instead:
+# change -> kill -> relaunch -> still applied. Hermetic: seeds via setup1,
+# then drops the trailing restore (fresh seed per run).
+- launchApp:
+      clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Settings"
+- tapOn: "English"
+- tapOn: "Français"
+- stopApp
+- launchApp:
+    clearState: false
+- tapOn: "Menu"
+- tapOn: "Listes"
+- assertVisible: "Listes"

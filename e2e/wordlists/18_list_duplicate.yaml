@@ -1,0 +1,15 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Wordlists / P2 / Reject duplicate list name.
+
+- runFlow:
+    file: ../setup/00_setup1.yaml
+- tapOn: "Menu"
+- tapOn: "Lists"
+- tapOn: "Create personal List"
+- tapOn: "Personal list name"
+- inputText: "E2E-list"
+- hideKeyboard
+- tapOn: "Create list"
+- assertVisible: "Error: This list name already exist, use another one."
+- tapOn: "Cancel"

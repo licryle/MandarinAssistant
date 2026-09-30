@@ -1,0 +1,23 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Dictionary / P1 / Adjust dictionary text size (persists).
+- launchApp:
+    clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "nihao"
+- hideKeyboard
+- assertVisible: "你"
+- tapOn: "Increase Text Size"
+- tapOn: "Increase Text Size"
+- tapOn: "Decrease Text Size"
+- tapOn: "Decrease Text Size"
+# Revisit => size persisted (prefs), results still render
+- tapOn: "Menu"
+- tapOn: "Lists"
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- assertVisible: "你"

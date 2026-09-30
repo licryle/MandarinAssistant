@@ -1,0 +1,18 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Dictionary / P1 / Paginate long result list (smoke level:
+# asserts scroll works and list stays populated; exact counts are data-dependent).
+
+- runFlow:
+    file: ../setup/00_setup1.yaml
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "yi"
+- hideKeyboard
+- assertVisible: "一"
+- scroll
+- scroll
+- assertVisible: "一"
+- takeScreenshot: dict_paginate_bottom

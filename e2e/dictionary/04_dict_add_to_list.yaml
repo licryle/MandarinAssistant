@@ -1,0 +1,18 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Dictionary / P1 / Add word to list from search result
+# Setup: setup1 (needs E2E-Emptylist).
+- runFlow:
+    file: ../setup/00_setup1.yaml
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "妈妈"
+- hideKeyboard
+- assertVisible: "妈"
+- tapOn: "Manage lists for this word"
+- assertVisible: "Select personal list(s)"
+- tapOn: "E2E-List"
+- tapOn: "Save"
+- assertNotVisible: "Select personal list(s)"

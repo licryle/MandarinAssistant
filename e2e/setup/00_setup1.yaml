@@ -1,0 +1,55 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ setup1 — run ONCE before the suite (or before any single test).
+# Seeds: DB provisioned, 你好 annotated (e2e note / Speaking / Elementary 1),
+#   E2E-list (contains 你好).
+# NOTE: first launch copies a ~177MB asset DB — the first assert has a long timeout.
+# Subsequent tests start with `runFlow` of this file, so each gets a fresh seed.
+
+- launchApp:
+    clearState: true
+
+# Wait for DB provisioning + first frame (search bar hint visible)
+- assertVisible: "Search pinyin, definition, hanzi"
+
+# --- Annotate 你好 (e2e note / Speaking / Elementary 1) ---
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "nihao"
+- hideKeyboard
+- assertVisible: "你"
+- tapOn: "Annotate a word"
+- tapOn: "Enter your notes:"
+- inputText: "e2e note"
+- hideKeyboard
+- waitForAnimationToEnd
+- tapOn: "Other"
+- tapOn: "Other"
+- tapOn: "Speaking"
+- waitForAnimationToEnd
+- tapOn: "Other"
+- tapOn: "Elementary 1"
+- waitForAnimationToEnd
+- tapOn: "Save"
+- assertVisible: "你好 successfully saved"
+
+# --- Create E2E-list & Add ---
+- tapOn: "Manage lists for this word"
+- assertVisible: "Select personal list(s)"
+- tapOn: "Create list"
+- tapOn: "Personal list name"
+- inputText: "E2E-list"
+- hideKeyboard
+- tapOn: "Create list"
+- assertVisible: "E2E-list"
+- tapOn: "E2E-List"
+- tapOn: "Save"
+- assertNotVisible: "Select personal list(s)"
+
+# --- leave search empty so the next flow finds the hint tappable ---
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "nihao"
+- eraseText: 100
+- hideKeyboard
+- assertVisible: "Search pinyin, definition, hanzi"

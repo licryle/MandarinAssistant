@@ -1,0 +1,6 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Wordlists / P0 / Create a new list.
+
+- runFlow:
+    file: ../setup/00_setup1.yaml

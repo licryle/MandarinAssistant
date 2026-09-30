@@ -1,0 +1,21 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Annotations / P0 / Edit an existing annotation.
+# Setup: setup1 (needs annotated 你好).
+
+- runFlow:
+    file: ../setup/00_setup1.yaml
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "nihao"
+- hideKeyboard
+- assertVisible: "你"
+- tapOn: "Annotate a word"
+- tapOn: "Enter your notes:"
+- eraseText: 100
+- inputText: "e2e note v2"
+- hideKeyboard
+- tapOn: "Save"
+- assertVisible: "你好 successfully saved"

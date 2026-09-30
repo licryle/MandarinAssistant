@@ -38,3 +38,41 @@ tasks.register("allTests") {
         dependsOn(prj.tasks.matching { it.name == "test" })
     }
 }
+
+// Maestro E2E (flows in e2e/, see e2e/README.md).
+// Deliberately NOT wired into `check`: needs the Maestro CLI plus a booted
+// emulator/device and takes minutes (177MB asset DB on first launch).
+// Usage:
+//   ./gradlew maestroTest                          # full suite (fresh debug APK)
+//   ./gradlew maestroTest -Pmaestro.flow=e2e/dictionary/01_dict_search.yaml
+tasks.register<Exec>("maestroTest") {
+    group = "verification"
+    description = "Install debug APK, then run Maestro E2E flows (requires Maestro CLI + emulator/device)"
+
+    dependsOn(":androidApp:installDebug")
+
+    val e2eDir = rootDir.resolve("e2e")
+    val isWindows = org.gradle.internal.os.OperatingSystem.current().isWindows
+    val flow = providers.gradleProperty("maestro.flow").getOrElse("e2e")
+
+    executable(if (isWindows) "cmd" else "maestro")
+    if (isWindows) args("/c", "maestro", "test", flow)
+    else args("test", flow)
+
+    doFirst {
+        // Fail fast with an actionable message when the CLI is missing.
+        val probe = if (isWindows) listOf("cmd", "/c", "where", "maestro")
+                    else listOf("sh", "-c", "command -v maestro")
+        val found = try {
+            providers.exec { commandLine(probe) }.result.get().exitValue == 0
+        } catch (_: Exception) { false }
+        if (!found) {
+            throw GradleException(
+                "Maestro CLI not found on PATH. Install it " +
+                "(https://maestro.mobile.dev/getting-started/installing-maestro), " +
+                "boot an emulator (or plug a device), then re-run. See e2e/README.md."
+            )
+        }
+        if (!e2eDir.isDirectory) throw GradleException("e2e/ directory missing at $e2eDir.")
+    }
+}

@@ -1,0 +1,20 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Dictionary / P0 / Filter to annotated-only results
+# Setup: setup1 (needs annotated 你好).
+# Uses the EMPTY search (seed tail leaves the query cleared): unfiltered it
+# shows annotated 你好 plus popular unannotated words like 一; with the
+# annotated-only chip on, 一 must disappear and come back when toggled off.
+# (A "ni" query can't prove filtering: 你好 is its only mini-DB hit.)
+
+- runFlow:
+    file: ../setup/00_setup1.yaml
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- assertVisible: "你"
+- assertVisible: "的"
+- tapOn: " only"
+- assertVisible: "你"
+- assertNotVisible: "的"
+- tapOn: " only"
+- assertVisible: "的"

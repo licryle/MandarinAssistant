@@ -1,0 +1,11 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Wordlists / P0 / View list contents (E2E-list seeded with 你好).
+
+- runFlow:
+    file: ../setup/00_setup1.yaml
+- tapOn: "Menu"
+- tapOn: "Lists"
+- assertVisible: "E2E-list"
+- tapOn: "E2E-list"
+- assertVisible: "你"

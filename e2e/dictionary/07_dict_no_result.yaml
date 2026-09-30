@@ -1,0 +1,13 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Dictionary / P2 / Empty / no-result state.
+- launchApp:
+    clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "zzzzqqq"
+- hideKeyboard
+- assertVisible: "No result!"

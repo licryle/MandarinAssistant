@@ -1,0 +1,25 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Dictionary / P0 / Search word (hanzi / pinyin / EN / FR) and see ranked results
+# Hermetic: seeds via runFlow, then taps the search field before each query
+# (drawer use clears field focus, so blind erase/input would go nowhere).
+- launchApp:
+    clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "nihao"
+- hideKeyboard
+- assertVisible: "你"
+- tapOn: "nihao"
+- eraseText: 100
+- inputText: "hello"
+- hideKeyboard
+- assertVisible: "你"
+- tapOn: "hello"
+- eraseText: 100
+- inputText: "你好"
+- hideKeyboard
+- assertVisible: "你"

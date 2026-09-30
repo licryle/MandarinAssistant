@@ -1,0 +1,15 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Widgets / P0 / Configure widget lists (in-app).
+# SMOKE-ONLY: with no home-screen widget placed (Maestro cannot place one),
+# the screen shows the intro + manual instructions. Full config needs a real
+# widget (manual). If a widget IS placed on the device, extend with:
+# - tapOn "Widget 0" tab -> select E2E-list checkbox -> Save
+# - assertVisible "Widget configuration updated"
+- launchApp:
+    clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Widgets"
+- assertVisible: "Add a new widget"
+- takeScreenshot: widgets_intro
