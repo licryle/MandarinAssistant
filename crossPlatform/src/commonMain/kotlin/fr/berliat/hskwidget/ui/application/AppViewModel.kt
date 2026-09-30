@@ -164,9 +164,6 @@ open class CommonAppViewModel(val navigationManager: NavigationManager): ViewMod
         }
     }
 
-    protected open fun askNotificationPermission() {
-    }
-
     fun didUpdateApp(): Boolean {
         return appConfig.appVersionCode.value != Utils.getAppVersion()
     }
