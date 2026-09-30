@@ -1,13 +1,16 @@
 package fr.berliat.hskwidget.domain
 
 import fr.berliat.hskwidget.core.AppDispatchers
+import fr.berliat.hskwidget.core.Logging
 import fr.berliat.hskwidget.core.YYMMDDHHMMSS
 import fr.berliat.hskwidget.core.toSafeFileName
+import fr.berliat.hskwidget.data.store.AppPreferencesStore
 
 import io.github.vinceglb.filekit.BookmarkData
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.atomicMove
+import io.github.vinceglb.filekit.bookmarkData
 import io.github.vinceglb.filekit.delete
 import io.github.vinceglb.filekit.div
 import io.github.vinceglb.filekit.createdAt
@@ -19,6 +22,7 @@ import io.github.vinceglb.filekit.fromBookmarkData
 import io.github.vinceglb.filekit.isDirectory
 import io.github.vinceglb.filekit.list
 import io.github.vinceglb.filekit.name
+import io.github.vinceglb.filekit.releaseBookmark
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -124,6 +128,24 @@ object DatabaseDiskBackup {
         } else {
             onSuccess(dir)
         }
+    }
+
+    /**
+     * Persist a newly picked folder: release the old bookmark, store the new
+     * one, and re-enable disk backup. Single owner of this logic so the
+     * settings screen and the startup one-tap repair can't drift apart.
+     */
+    suspend fun persistSelectedFolder(appConfig: AppPreferencesStore, folder: PlatformFile) {
+        val oldBookmark = appConfig.dbBackUpDiskDirectory.value
+        if (oldBookmark != null) {
+            try {
+                PlatformFile.fromBookmarkData(oldBookmark).releaseBookmark()
+            } catch (_: Exception) {
+            }
+        }
+        appConfig.dbBackUpDiskDirectory.value = folder.bookmarkData()
+        appConfig.dbBackUpDiskActive.value = true
+        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.CONFIG_BACKUP_ON)
     }
 
     /**

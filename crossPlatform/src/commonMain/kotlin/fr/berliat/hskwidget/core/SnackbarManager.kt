@@ -5,7 +5,11 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withTimeoutOrNull
 import org.jetbrains.compose.resources.StringResource
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Defines the types of snackbar messages.
@@ -65,6 +69,16 @@ object SnackbarManager {
      * Flow of snackbar messages. Collect this in your UI layer to display snackbars.
      */
     val messages: SharedFlow<SnackbarMessage> = _messages.asSharedFlow()
+
+    /**
+     * Suspend until the UI collector ([AppSnackbarHost]) is active, so a
+     * boot-time emission isn't lost: with `replay = 0` an emission with no
+     * active collector is dropped. Times out silently when nothing will ever
+     * collect (e.g. widget-only init).
+     */
+    suspend fun awaitCollector(timeoutMs: Duration = 10_000.milliseconds) {
+        withTimeoutOrNull(timeoutMs) { _messages.subscriptionCount.first { it > 0 } }
+    }
     
     /**
      * Show a snackbar with the given parameters.

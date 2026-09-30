@@ -217,7 +217,7 @@ Nous vous recommandons de choisir le niveau où vous en êtes plus celui du dess
     <string name="database_update_starting">Lancement de la mise à jour…</string>
     <string name="dbbackup_success">Base de données sauvegardée avec succès</string>
     <string name="dbbackup_failure_write">Impossible de sauvegarder la base de données</string>
-    <string name="dbbackup_failure_folderpermission">Annulation de la sauvegarde : aucune autorisation d'écriture sur le dossier</string>
+    <string name="dbbackup_failure_folderpermission">Annulation de la sauvegarde : permission du dossier perdue</string>
 
     <string name="database_update_start">Mise à jour du dictionnaire de base, la sauvegarde sera retardée.</string>
     <string name="database_update_success">Dictionnaire de base mis à jour</string>

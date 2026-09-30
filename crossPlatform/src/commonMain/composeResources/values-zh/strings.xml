@@ -211,7 +211,7 @@ AI 字段覆盖率：
     <string name="database_update_starting">正在启动更新…</string>
     <string name="dbbackup_success">已成功备份数据库</string>
     <string name="dbbackup_failure_write">无法备份数据库</string>
-    <string name="dbbackup_failure_folderpermission">正在取消备份：文件夹无写入权限</string>
+    <string name="dbbackup_failure_folderpermission">备份已取消：文件夹权限丢失</string>
 
     <string name="database_update_start">正在更新基础词典，备份将延迟。</string>
     <string name="database_update_success">已更新基础词典</string>

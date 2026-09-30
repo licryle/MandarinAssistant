@@ -217,7 +217,7 @@ We recommend to choose the level you're at plus the one below, or above dependin
     <string name="database_update_starting">Starting update…</string>
     <string name="dbbackup_success">Successfully backed-up the database</string>
     <string name="dbbackup_failure_write">Couldn't back-up the database</string>
-    <string name="dbbackup_failure_folderpermission">Cancelling back-up: no write permission on folder</string>
+    <string name="dbbackup_failure_folderpermission">Cancelling back-up: folder permission lost</string>
 
     <string name="database_update_start">Updating base dictionary, backup will be delayed.</string>
     <string name="database_update_success">Updated base dictionary</string>

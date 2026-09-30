@@ -23,14 +23,11 @@ import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
 
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.PlatformFile
-import io.github.vinceglb.filekit.bookmarkData
 import io.github.vinceglb.filekit.cacheDir
 import io.github.vinceglb.filekit.copyTo
 import io.github.vinceglb.filekit.delete
 import io.github.vinceglb.filekit.div
-import io.github.vinceglb.filekit.fromBookmarkData
 import io.github.vinceglb.filekit.name
-import io.github.vinceglb.filekit.releaseBookmark
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -58,7 +55,9 @@ class BackupDiskViewModel(
         )
 
     init {
-        if (backupDiskFolder.value == null) {
+        // Only auto-disable when no folder was ever chosen. A stale/inaccessible
+        // bookmark keeps active=true so startup can offer a one-tap re-pick.
+        if (appConfig.dbBackUpDiskDirectory.value == null) {
             appConfig.dbBackUpDiskActive.value = false
         }
     }
@@ -147,18 +146,8 @@ class BackupDiskViewModel(
                 onSuccess = { folder ->
                     // persist permissions in Platform && DataStore
                     viewModelScope.launch {
-                        val oldBookmark = appConfig.dbBackUpDiskDirectory.value
-                        if (oldBookmark != null) {
-                            try {
-                                PlatformFile.fromBookmarkData(oldBookmark).releaseBookmark()
-                            } catch (_: Exception) {
-
-                            }
-                        }
-                        appConfig.dbBackUpDiskDirectory.value = folder.bookmarkData()
+                        DatabaseDiskBackup.persistSelectedFolder(appConfig, folder)
                     }
-                    appConfig.dbBackUpDiskActive.value = true
-                    Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.CONFIG_BACKUP_ON)
                 },
                 onFail = {
                     HSKAppServices.snackbar.show(SnackbarType.WARNING, Res.string.config_backup_directory_failed_selection)

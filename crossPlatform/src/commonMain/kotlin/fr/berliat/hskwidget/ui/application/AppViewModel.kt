@@ -17,6 +17,8 @@ import fr.berliat.hskwidget.core.HSKAppServicesPriority
 import fr.berliat.hskwidget.core.Logging
 import fr.berliat.hskwidget.core.SnackbarType
 import fr.berliat.hskwidget.data.store.PrefixedPreferencesStore
+import fr.berliat.hskwidget.config_backup_directory_choose
+import fr.berliat.hskwidget.config_backup_directory_failed_selection
 import fr.berliat.hskwidget.database_update_list_system
 import fr.berliat.hskwidget.dbbackup_failure_folderpermission
 import fr.berliat.hskwidget.dbbackup_failure_write
@@ -25,6 +27,7 @@ import fr.berliat.hskwidget.domain.SearchQuery
 import fr.berliat.hskwidget.ui.navigation.NavigationManager
 import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
 import io.github.vinceglb.filekit.FileKit
+import androidx.compose.material3.SnackbarDuration
 
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.delete
@@ -37,6 +40,7 @@ import io.github.vinceglb.filekit.resolve
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.Dispatchers
 
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -176,34 +180,84 @@ open class CommonAppViewModel(val navigationManager: NavigationManager): ViewMod
     }
 
     private fun handleBackupDisk() {
+        if (! appConfig.dbBackUpDiskActive.value) return
+
         val bookMark = appConfig.dbBackUpDiskDirectory.value
-        if (appConfig.dbBackUpDiskActive.value && bookMark != null) {
-            val backupFolder = PlatformFile.fromBookmarkData(bookMark)
-            viewModelScope.launch(AppDispatchers.IO) {
-                DatabaseDiskBackup.getFolder(
-                    bookMark,
-                    onSuccess = {
-                        viewModelScope.launch(AppDispatchers.IO) {
-                            DatabaseDiskBackup.backUp(
-                                bookMark,
-                                onSuccess = {
-                                    HSKAppServices.snackbar.show(SnackbarType.SUCCESS, Res.string.dbbackup_success)
-                                    viewModelScope.launch(AppDispatchers.IO) {
+        if (bookMark == null) {
+            showBackupPermissionFixSnackbar()
+            return
+        }
+        try {
+            PlatformFile.fromBookmarkData(bookMark)
+        } catch (_: Exception) {
+            Logging.logAnalyticsError(TAG, "BackupDiskStaleBookmark", "Stored bookmark unresolvable")
+            showBackupPermissionFixSnackbar()
+            return
+        }
+        viewModelScope.launch(AppDispatchers.IO) {
+            DatabaseDiskBackup.getFolder(
+                bookMark,
+                onSuccess = { backupFolder ->
+                    viewModelScope.launch(AppDispatchers.IO) {
+                        DatabaseDiskBackup.backUp(
+                            bookMark,
+                            onSuccess = {
+                                HSKAppServices.snackbar.show(SnackbarType.SUCCESS, Res.string.dbbackup_success)
+                                viewModelScope.launch(AppDispatchers.IO) {
+                                    try {
                                         DatabaseDiskBackup.cleanOldBackups(
                                             backupFolder,
                                             appConfig.dbBackUpDiskMaxFiles.value
                                         )
+                                    } catch (_: Exception) {
+                                        showBackupPermissionFixSnackbar()
                                     }
-                                },
-                                onFail = { HSKAppServices.snackbar.show(SnackbarType.ERROR, Res.string.dbbackup_failure_write) }
-                            )
-                        }
-                    },
-                    onFail = {
-                        HSKAppServices.snackbar.show(SnackbarType.WARNING, Res.string.dbbackup_failure_folderpermission)
+                                }
+                            },
+                            onFail = {
+                                if (DatabaseDiskBackup.getPlatformFileFromBookmarkOrNull(bookMark) == null)
+                                    showBackupPermissionFixSnackbar()
+                                else
+                                    HSKAppServices.snackbar.show(SnackbarType.ERROR, Res.string.dbbackup_failure_write)
+                            }
+                        )
                     }
-                )
-            }
+                },
+                onFail = {
+                    showBackupPermissionFixSnackbar()
+                }
+            )
+        }
+    }
+
+    private fun showBackupPermissionFixSnackbar() {
+        // Boot-time emission: the host collector starts a frame after isReady,
+        // so wait for it instead of emitting into the void (replay = 0 drops it).
+        viewModelScope.launch {
+            HSKAppServices.snackbar.awaitCollector()
+            HSKAppServices.snackbar.show(
+                SnackbarType.ERROR,
+                Res.string.dbbackup_failure_folderpermission,
+                duration = SnackbarDuration.Long,
+                actionLabelRes = Res.string.config_backup_directory_choose,
+                onAction = { reselectBackupFolder() }
+            )
+        }
+    }
+
+    private fun reselectBackupFolder() {
+        viewModelScope.launch(Dispatchers.Main) {
+            DatabaseDiskBackup.selectFolder(
+                onSuccess = { folder ->
+                    viewModelScope.launch {
+                        DatabaseDiskBackup.persistSelectedFolder(appConfig, folder)
+                        handleBackupDisk()
+                    }
+                },
+                onFail = {
+                    HSKAppServices.snackbar.show(SnackbarType.WARNING, Res.string.config_backup_directory_failed_selection)
+                }
+            )
         }
     }
 
