@@ -85,11 +85,6 @@
             tools:ignore="Instantiatable" />
 
         <service
-            android:name="fr.berliat.hskwidget.domain.DatabaseUpdateService"
-            android:exported="false"
-            android:foregroundServiceType="dataSync" />
-
-        <service
             android:name="fr.berliat.hskwidget.domain.GoogleBackupUploadService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />

@@ -8,10 +8,6 @@
             android:foregroundServiceType="dataSync"
             tools:ignore="Instantiatable" />
         <service
-            android:name=".domain.DatabaseUpdateService"
-            android:exported="false"
-            android:foregroundServiceType="dataSync" />
-        <service
             android:name=".domain.GoogleBackupUploadService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
