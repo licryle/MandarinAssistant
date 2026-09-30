@@ -44,6 +44,11 @@ kotlin {
         compileSdk = 37
         minSdk = 26
 
+        // Enables JVM host-side unit tests (commonTest) on this machine:
+        // e.g. ./gradlew :crossPlatform:testDebugUnitTest
+        withHostTest {
+        }
+
         androidResources {
             enable = true
         }

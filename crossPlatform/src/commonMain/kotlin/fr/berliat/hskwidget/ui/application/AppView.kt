@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import fr.berliat.hskwidget.core.SnackbarManager
 import fr.berliat.hskwidget.ui.dismissKeyboardOnTap
 import fr.berliat.hskwidget.ui.application.content.AppBar
+import fr.berliat.hskwidget.ui.application.content.AppBarViewModel
 import fr.berliat.hskwidget.ui.application.content.OCRReminder
 import fr.berliat.hskwidget.ui.application.drawer.AppDrawer
 import fr.berliat.hskwidget.ui.application.snackbar.AppSnackbarHost
@@ -70,6 +71,14 @@ fun AppView(
             return@AppTheme
         }
 
+        val appBarViewModel = remember {
+            AppBarViewModel(
+                prefsStore = viewModel.appConfig,
+                currentScreen = viewModel.navigationManager.currentScreen,
+                navigate = viewModel.navigationManager::navigate
+            )
+        }
+
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
@@ -93,8 +102,8 @@ fun AppView(
                 topBar = {
                     AppBar(
                         onOcrClick = { viewModel.navigationManager.navigate(Screen.OCRCapture()) },
-                        onSearch = { s -> viewModel.navigationManager.navigate(Screen.Dictionary(s)) },
-                        onMenuClick = { drawerIsOpen.value = !drawerIsOpen.value }
+                        onMenuClick = { drawerIsOpen.value = !drawerIsOpen.value },
+                        viewModel = appBarViewModel
                     )
                 },
                 content = { innerPadding ->

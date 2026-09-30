@@ -13,24 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.TextFieldValue
-
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 import fr.berliat.hskwidget.Res
-import fr.berliat.hskwidget.domain.SearchQuery
 import fr.berliat.hskwidget.menu
 import fr.berliat.hskwidget.menu_24px
 import fr.berliat.hskwidget.menu_ocr
@@ -39,47 +29,17 @@ import fr.berliat.hskwidget.search_hint
 
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(
     onOcrClick: () -> Unit,
-    onSearch: (String) -> Unit,
     onMenuClick: () -> Unit,
     viewModel: AppBarViewModel = remember { AppBarViewModel() }
 ) {
-    val searchQuery by viewModel.searchQuery.collectAsState()
-    var localText by remember { mutableStateOf(TextFieldValue(searchQuery.toString())) }
-    var lastRemoteValue by remember { mutableStateOf(searchQuery) }
-
-    // Update localText only when searchQuery changes externally (or to sync after debounce)
-    LaunchedEffect(searchQuery) {
-        if (searchQuery != lastRemoteValue) {
-            // Only update local text if it doesn't represent the same query semantically,
-            // otherwise it would mess with user input
-            if (SearchQuery.fromString(localText.text) != searchQuery) {
-                val newText = searchQuery.toString()
-                localText = TextFieldValue(newText, selection = TextRange(newText.length))
-            }
-            lastRemoteValue = searchQuery
-        }
-    }
-
-    val coroutineScope = rememberCoroutineScope()
-    var debounceJob by remember { mutableStateOf<Job?>(null) }
-
-    fun onValueChange(newValue: TextFieldValue) {
-        localText = newValue
-        debounceJob?.cancel()
-        debounceJob = coroutineScope.launch {
-            delay(300.milliseconds) // 300ms debounce
-            val currentText = localText.text
-            if (currentText != searchQuery.toString()) {
-                onSearch(currentText)
-            }
-        }
-    }
+    // All query state, sync and debounce live in the ViewModel; this stays a
+    // dumb renderer so typing can never race navigation from here.
+    val localText by viewModel.localText.collectAsState()
 
     TopAppBar(
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -100,21 +60,19 @@ fun AppBar(
 
                 PillSearchBar(
                     query = localText,
-                    onQueryChange = { onValueChange(it) },
+                    onQueryChange = viewModel::onQueryChange,
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(focusRequester)
                         .onFocusChanged { focusState ->
                             if (focusState.isFocused) {
-                                localText = localText.copy(
-                                    selection = TextRange(localText.text.length)
-                                )
+                                viewModel.moveCursorToEnd()
                             }
                         },
                     hint = stringResource(Res.string.search_hint),
                     onClear = {
                         focusRequester.requestFocus()
-                        onValueChange(localText.copy(""))
+                        viewModel.clearSearch()
                     }
                 )
             }
