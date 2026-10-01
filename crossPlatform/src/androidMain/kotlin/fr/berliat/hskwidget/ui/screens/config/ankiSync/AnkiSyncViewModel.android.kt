@@ -50,12 +50,18 @@ actual class AnkiSyncViewModel actual constructor(
 
         _syncProgress.value = SyncProgress(SyncState.SUCCESS, 0, 0,
             Clock.System.now().YYMMDDHHMMSS())
+        Logging.logAnalyticsEvent(
+            Logging.ANALYTICS_EVENTS.ANKI_SYNC_SUCCESS
+        )
     }
 
     override fun onAnkiOperationCancelled() {
         Logger.i(tag = TAG, messageString = "onAnkiOperationCancelled: full Anki import cancelled by user")
 
         _syncProgress.value = SyncProgress(SyncState.CANCELLED, 0, 0, "")
+        Logging.logAnalyticsEvent(
+            Logging.ANALYTICS_EVENTS.ANKI_SYNC_CANCEL
+        )
     }
 
     override fun onAnkiOperationFailed(e: Throwable) {
@@ -109,6 +115,9 @@ actual class AnkiSyncViewModel actual constructor(
         if (enabled) {
             importsAllNotesToAnkiDroid()
             Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.CONFIG_ANKI_SYNC_ON)
+            Logging.logAnalyticsEvent(
+                Logging.ANALYTICS_EVENTS.ANKI_SYNC_START
+            )
         } else {
             cancelSync()
             Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.CONFIG_ANKI_SYNC_OFF)
