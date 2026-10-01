@@ -124,6 +124,119 @@ object Logging {
     fun logAnalyticsWidgetAction(event: ANALYTICS_EVENTS, widgetId: Int) =
         ExpectedLogging.logAnalyticsWidgetAction(event, widgetId)
 
+    /**
+     * Resolved dictionary language code for analytics.
+     *
+     * When the user preference is null (= "App language"), resolves to the
+     * app language itself via [Locale.resolve], so analytics never sees
+     * null/"app" but the concrete language in use (e.g. "en", "fr", "zh-CN-HSK03").
+     */
+    internal fun getDictionaryLanguageCode(): String {
+        return try {
+            val pref: Locale? = try {
+                HSKAppServices.appPreferences.dictionaryLocale.value
+            } catch (_: Exception) {
+                null
+            }
+            Locale.resolve(pref).code
+        } catch (_: Exception) {
+            try {
+                LocaleManager.getCurrentLocale()
+            } catch (_: Exception) {
+                "unknown"
+            }
+        }
+    }
+
+    /**
+     * Enriches [params] with every common analytics param. All widget list
+     * access happens in here (via [ExpectedLogging.getAnalyticsWidgetIds]), so
+     * call sites never touch widget logic.
+     * - `DICT_LANGUAGE`: resolved dictionary language ([getDictionaryLanguageCode]).
+     *   When the preference is null (= "App language"), resolves to the app
+     *   language itself, so analytics never sees null/"app" but the concrete
+     *   language in use (e.g. "en", "fr", "zh-CN-HSK03").
+     * - `UI_LANGUAGE`: current app/UI locale (e.g. "en", "fr", "zh-Hans").
+     * - `WIDGET_TOTAL_NUMBER` / `MAX_WIDGET_ID`: derived from the current widget list.
+     *
+     * Caller-provided values win. Never throws.
+     */
+    internal suspend fun withCommonParams(params: Map<String, String>): Map<String, String> {
+        val out = params.toMutableMap()
+        addDictionaryLanguage(out)
+        addUiLanguage(out)
+        addWidgetCollection(out, safeFetchWidgetIds())
+        return out
+    }
+
+    /**
+     * Full param map for a per-widget action: `WIDGET_NUMBER` / `WIDGET_SIZE`
+     * plus everything [withCommonParams] adds. Single widget-list fetch shared
+     * by all keys, so call sites pass only the [widgetId].
+     */
+    internal suspend fun withWidgetActionParams(widgetId: Int): Map<String, String> {
+        val widgets = safeFetchWidgetIds()
+        val out = mutableMapOf(
+            "WIDGET_NUMBER" to widgets.indexOf(widgetId).toString(),
+            "WIDGET_SIZE" to safeFetchWidgetSize(widgetId)
+        )
+        addDictionaryLanguage(out)
+        addUiLanguage(out)
+        addWidgetCollection(out, widgets)
+        return out
+    }
+
+    internal fun getUiLanguageCode(): String {
+        return try {
+            LocaleManager.getCurrentLocale()
+        } catch (_: Exception) {
+            "unknown"
+        }
+    }
+
+    private fun addUiLanguage(out: MutableMap<String, String>) {
+        if (out.containsKey("UI_LANGUAGE")) return
+        try {
+            out["UI_LANGUAGE"] = getUiLanguageCode()
+        } catch (_: Exception) {
+            // Keep other params even if language resolution fails.
+        }
+    }
+
+    private fun addDictionaryLanguage(out: MutableMap<String, String>) {
+        if (out.containsKey("DICT_LANGUAGE")) return
+        try {
+            out["DICT_LANGUAGE"] = getDictionaryLanguageCode()
+        } catch (_: Exception) {
+            // Keep other params even if language resolution fails.
+        }
+    }
+
+    private fun addWidgetCollection(out: MutableMap<String, String>, widgets: List<Int>) {
+        if (!out.containsKey("WIDGET_TOTAL_NUMBER")) {
+            out["WIDGET_TOTAL_NUMBER"] = widgets.size.toString()
+        }
+        if (!out.containsKey("MAX_WIDGET_ID")) {
+            out["MAX_WIDGET_ID"] = widgets.lastOrNull()?.toString() ?: "0"
+        }
+    }
+
+    private suspend fun safeFetchWidgetIds(): List<Int> {
+        return try {
+            ExpectedLogging.getAnalyticsWidgetIds()
+        } catch (_: Exception) {
+            emptyList()
+        }
+    }
+
+    private suspend fun safeFetchWidgetSize(widgetId: Int): String {
+        return try {
+            ExpectedLogging.getAnalyticsWidgetSize(widgetId)
+        } catch (_: Exception) {
+            "UNKNOWN"
+        }
+    }
+
     enum class ANALYTICS_EVENTS {
         SCREEN_VIEW,
         AUTO_WORD_CHANGE,
@@ -174,4 +287,8 @@ expect object ExpectedLogging {
     internal fun logAnalyticsEvent(event: Logging.ANALYTICS_EVENTS,
                           params: Map<String, String> = mapOf())
     internal fun logAnalyticsWidgetAction(event: Logging.ANALYTICS_EVENTS, widgetId: Int)
+
+    internal suspend fun getAnalyticsWidgetIds(): List<Int>
+    /** Platform widget size string for analytics ("WxH" or "UNKNOWN"). */
+    internal suspend fun getAnalyticsWidgetSize(widgetId: Int): String
 }

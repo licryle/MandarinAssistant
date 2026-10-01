@@ -28,32 +28,35 @@ actual object ExpectedLogging {
     internal actual fun logAnalyticsEvent(event: Logging.ANALYTICS_EVENTS,
                                           params: Map<String, String>) {
         HSKAppServices.appScope.launch(AppDispatchers.IO) {
-            val widgets = FlashcardWidgetProvider().getWidgetIds()
-            
-            val finalParams = params.toMutableMap<Any?, Any?>()
-            finalParams["WIDGET_TOTAL_NUMBER"] = widgets.size.toString()
+            val enriched = Logging.withCommonParams(params)
+                .toMutableMap<Any?, Any?>()
 
-            if (widgets.isEmpty()) {
-                finalParams["MAX_WIDGET_ID"] = "0"
-            } else {
-                finalParams["MAX_WIDGET_ID"] = widgets.last().toString()
-            }
-
-            FIRAnalytics.logEventWithName(event.name, finalParams)
+            FIRAnalytics.logEventWithName(event.name, enriched)
         }
     }
 
     internal actual fun logAnalyticsWidgetAction(event: Logging.ANALYTICS_EVENTS, widgetId: Int) {
         HSKAppServices.appScope.launch(AppDispatchers.IO) {
-            val widgets = FlashcardWidgetProvider().getWidgetIds()
-            val size = WidgetProvider.delegate?.awaitWidgetSize(widgetId) ?: "UNKNOWN"
-            
-            val params: Map<String, String> = mapOf(
-                "WIDGET_NUMBER" to widgets.indexOf(widgetId).toString(),
-                "WIDGET_SIZE" to size
-            )
+            val enriched = Logging.withWidgetActionParams(widgetId)
+                .toMutableMap<Any?, Any?>()
 
-            logAnalyticsEvent(event, params)
+            FIRAnalytics.logEventWithName(event.name, enriched)
+        }
+    }
+
+    internal actual suspend fun getAnalyticsWidgetIds(): List<Int> {
+        return try {
+            FlashcardWidgetProvider().getWidgetIds()
+        } catch (_: Exception) {
+            emptyList()
+        }
+    }
+
+    internal actual suspend fun getAnalyticsWidgetSize(widgetId: Int): String {
+        return try {
+            WidgetProvider.delegate?.awaitWidgetSize(widgetId) ?: "UNKNOWN"
+        } catch (_: Exception) {
+            "UNKNOWN"
         }
     }
 }

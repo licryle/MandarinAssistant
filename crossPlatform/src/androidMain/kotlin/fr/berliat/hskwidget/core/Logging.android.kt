@@ -19,39 +19,42 @@ actual object ExpectedLogging {
 
     internal actual fun logAnalyticsEvent(event: Logging.ANALYTICS_EVENTS,
                                           params: Map<String, String>) {
-        val bundle = Bundle()
-        params.forEach {
-            bundle.putString(it.key, it.value)
-        }
-
-        try {
-            val widgets = FlashcardWidgetProvider.getWidgetIds()
-            bundle.putString("WIDGET_TOTAL_NUMBER", widgets.size.toString())
-
-            if (widgets.isEmpty()) {
-                bundle.putString("MAX_WIDGET_ID", "0")
-            } else {
-                bundle.putString("MAX_WIDGET_ID", widgets.last().toString())
-            }
-        } catch (e: Exception) {
-            Logger.e(tag = "ExpectedLogging", messageString = "Cannot get widgets list", throwable = e)
-        }
-
         HSKAppServices.appScope.launch(Dispatchers.IO) {
-            Firebase.analytics.logEvent(event.name, bundle)
+            emit(event, Logging.withCommonParams(params))
         }
     }
 
     internal actual fun logAnalyticsWidgetAction(event: Logging.ANALYTICS_EVENTS, widgetId: Int) {
-        val widgets = FlashcardWidgetProvider.getWidgetIds()
-        val size = FlashcardWidgetProvider.WidgetSizeProvider(ExpectedUtils.context).getWidgetsSize(widgetId)
+        HSKAppServices.appScope.launch(Dispatchers.IO) {
+            emit(event, Logging.withWidgetActionParams(widgetId))
+        }
+    }
 
-        logAnalyticsEvent(
-            event,
-            mapOf(
-                "WIDGET_NUMBER" to widgets.indexOf(widgetId).toString(),
-                "WIDGET_SIZE" to "${size.first}x${size.second}"
-            )
-        )
+    private fun emit(event: Logging.ANALYTICS_EVENTS, enriched: Map<String, String>) {
+        val bundle = Bundle()
+        enriched.forEach {
+            bundle.putString(it.key, it.value)
+        }
+
+        Firebase.analytics.logEvent(event.name, bundle)
+    }
+
+    internal actual suspend fun getAnalyticsWidgetIds(): List<Int> {
+        return try {
+            FlashcardWidgetProvider.getWidgetIds().asList()
+        } catch (e: Exception) {
+            Logger.e(tag = "ExpectedLogging", messageString = "Cannot get widgets list", throwable = e)
+            emptyList()
+        }
+    }
+
+    internal actual suspend fun getAnalyticsWidgetSize(widgetId: Int): String {
+        return try {
+            val size = FlashcardWidgetProvider.WidgetSizeProvider(ExpectedUtils.context).getWidgetsSize(widgetId)
+            "${size.first}x${size.second}"
+        } catch (e: Exception) {
+            Logger.e(tag = "ExpectedLogging", messageString = "Cannot get widget size", throwable = e)
+            "UNKNOWN"
+        }
     }
 }
