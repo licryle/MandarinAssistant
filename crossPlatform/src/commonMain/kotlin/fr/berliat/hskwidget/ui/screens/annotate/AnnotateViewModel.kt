@@ -30,7 +30,6 @@ class AnnotateViewModel(
     private val wordListRepo: WordListRepository = HSKAppServices.wordListRepo,
     private val ankiCaller : KAnkiDelegator
 ) : ViewModel() {
-    val showHSK3Definition: StateFlow<Boolean> = prefsStore.dictionaryShowHSK3Definition.asStateFlow()
     val lastAnnotatedClassType: StateFlow<ClassType> = prefsStore.lastAnnotatedClassType.asStateFlow()
     val lastAnnotatedClassLevel: StateFlow<ClassLevel> = prefsStore.lastAnnotatedClassLevel.asStateFlow()
 
@@ -44,6 +43,15 @@ class AnnotateViewModel(
     suspend fun getAnnotatedChineseWord(simplifiedWord: String): AnnotatedChineseWord
             = withContext(AppDispatchers.IO) {
         val annot = HSKAppServices.database.annotatedChineseWordDAO().getFromSimplified(simplifiedWord)
+        if (simplifiedWord.isNotBlank()) {
+            Logging.logAnalyticsEvent(
+                Logging.ANALYTICS_EVENTS.ANNOTATION_VIEW,
+                mapOf(
+                    "HAS_ANNOTATION" to ((annot != null && annot.hasAnnotation()).toString()),
+                    "HAS_BASE_WORD" to ((annot != null && annot.hasWord()).toString())
+                )
+            )
+        }
         return@withContext if (annot == null || !annot.hasAnnotation()) {
             AnnotatedChineseWord(
                 annot?.word ?: ChineseWord.getBlank(simplifiedWord),

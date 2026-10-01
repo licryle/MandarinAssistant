@@ -81,17 +81,6 @@ class AppPreferencesStore(context: Context):
         return putBoolean("search_filter_hasAnnotation", hasAnnotation, callback)
     }
 
-    var dictionaryShowHSK3Definition: Boolean
-        get() {
-            return getBoolean("dictionary_show_hsk3_definition", false)
-        }
-        set(showHSK3) {
-            setDictionaryShowHSK3Definition(showHSK3, null)
-        }
-    fun setDictionaryShowHSK3Definition(showHSK3: Boolean, callback: Callback?) : Deferred<Preferences> {
-        return putBoolean("dictionary_show_hsk3_definition", showHSK3, callback)
-    }
-
     var lastAnnotatedClassLevel : ClassLevel
         get() {
             val lvl = getString("class_level", "NotFromClass") ?: return ClassLevel.NotFromClass

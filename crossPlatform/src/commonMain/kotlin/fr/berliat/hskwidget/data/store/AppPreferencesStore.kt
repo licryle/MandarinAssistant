@@ -40,7 +40,7 @@ import kotlinx.coroutines.CoroutineScope
  * prefs.dbBackUpActive.value = true
  *
  * // Observe changes in Compose
- * val showHSK3 by prefs.dictionaryShowHSK3Definition.asStateFlow().collectAsState()
+ * val searchQuery by prefs.searchQuery.asStateFlow().collectAsState()
  * ```
  */
 
@@ -71,7 +71,6 @@ class AppPreferencesStore private constructor(
     val dbBackUpDiskActive = registerBooleanPref("database_backup_disk_active", false)
     val ankiSaveNotes = registerBooleanPref("anki_save_notes", false)
     val searchFilterHasAnnotation = registerBooleanPref("search_filter_hasAnnotation", false)
-    val dictionaryShowHSK3Definition = registerBooleanPref("dictionary_show_hsk3_definition", false)
     val readerSeparateWords = registerBooleanPref("reader_separate_word", false)
     val readerShowAllPinyins = registerBooleanPref("reader_show_pinyins", false)
 

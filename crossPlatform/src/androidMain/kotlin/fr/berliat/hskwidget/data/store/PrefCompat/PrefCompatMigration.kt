@@ -96,7 +96,6 @@ object PrefCompatMigration {
         newAppPrefs.lastAnnotatedClassLevel.value = oldAppPrefs.lastAnnotatedClassLevel
         newAppPrefs.lastAnnotatedClassType.value = oldAppPrefs.lastAnnotatedClassType
 
-        newAppPrefs.dictionaryShowHSK3Definition.value = oldAppPrefs.dictionaryShowHSK3Definition
         newAppPrefs.searchFilterHasAnnotation.value = oldAppPrefs.searchFilterHasAnnotation
 
         oldAppPrefs.clear()
