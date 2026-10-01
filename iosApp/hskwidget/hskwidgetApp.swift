@@ -93,14 +93,14 @@ struct hskwidgetApp: App {
         
         if url.scheme == "hskwidget" {
             let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
-            let source: crossPlatform.AnalyticsSources
+            let source: crossPlatform.IntentSources
             switch components?.queryItems?.first(where: { $0.name == "src" })?.value {
             case "share":
-                source = crossPlatform.AnalyticsSources.share
+                source = crossPlatform.IntentSources.share
             case "widget":
-                source = crossPlatform.AnalyticsSources.widget
+                source = crossPlatform.IntentSources.widget
             default:
-                source = crossPlatform.AnalyticsSources.inApp
+                source = crossPlatform.IntentSources.inApp
             }
             
             if url.host == "search" {

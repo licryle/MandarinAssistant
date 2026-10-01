@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 
 import fr.berliat.hskwidget.domain.SearchQuery
+import fr.berliat.hskwidget.core.IntentSources
 import fr.berliat.hskwidget.ui.application.AppViewModel
 import fr.berliat.hskwidget.ui.screens.OCR.CaptureImageScreen
 import fr.berliat.hskwidget.ui.screens.OCR.DisplayOCRScreen
@@ -24,6 +25,8 @@ import fr.berliat.hskwidget.ui.screens.wordlist.WordListScreen
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.exists
 import io.github.vinceglb.filekit.absolutePath
+
+import kotlin.reflect.typeOf
 
 @Composable
 fun AppNavHost(viewModel : AppViewModel) {
@@ -44,7 +47,9 @@ fun AppNavHost(viewModel : AppViewModel) {
     }
 
     NavHost(navController = navController, startDestination = Screen.Dictionary()) {
-        composable<Screen.Dictionary> { backStackEntry ->
+        composable<Screen.Dictionary>(
+            typeMap = mapOf(typeOf<IntentSources>() to IntentSourcesNavType)
+        ) { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.Dictionary>()
 
             // Queue the search update until the viewModel is ready
