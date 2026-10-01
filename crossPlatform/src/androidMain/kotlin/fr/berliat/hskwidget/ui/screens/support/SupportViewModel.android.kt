@@ -70,6 +70,10 @@ actual class SupportViewModel(
 
     override fun onQueryFailure(result: BillingResult) {
         HSKAppServices.snackbar.show(SnackbarType.ERROR, Res.string.support_total_error)
+        Logging.logAnalyticsEvent(
+            Logging.ANALYTICS_EVENTS.SUPPORT_FETCH_FAIL,
+            mapOf("CODE" to result.responseCode.toString())
+        )
     }
 
     override fun onPurchaseSuccess(purchase: Purchase) {
