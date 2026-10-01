@@ -11,6 +11,7 @@ import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.Purchase
 
 import fr.berliat.hskwidget.core.ExpectedUtils
+import fr.berliat.hskwidget.core.IntentSources
 import fr.berliat.hskwidget.core.ExpectedUtils.INTENT_SEARCH_WORD
 import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.core.StrictModeManager
@@ -100,26 +101,26 @@ actual class AppViewModel(navigationManager: NavigationManager)
                 }
             }
 
-            // Handle Search Intent (Internal)
+            // Handle Search Intent (Internal, e.g. widget tap)
             if (intent.hasExtra(INTENT_SEARCH_WORD)) {
                 val searchWord = intent.getStringExtra(INTENT_SEARCH_WORD)
                 if (!searchWord.isNullOrEmpty()) {
-                    return AppIntent.Search(SearchQuery.fromString(searchWord))
+                    return AppIntent.Search(SearchQuery.fromString(searchWord), IntentSources.WIDGET)
                 }
             }
 
-            // Handle Text Search Intent (Action Process Text)
+            // Handle Text Search Intent (Action Process Text = word share from another app)
             if (intent.action == Intent.ACTION_PROCESS_TEXT && intent.type == "text/plain") {
                 val sharedText = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT)
                 if (!sharedText.isNullOrEmpty()) {
-                    return AppIntent.Search(SearchQuery.fromString(sharedText))
+                    return AppIntent.Search(SearchQuery.fromString(sharedText), IntentSources.SHARE)
                 }
             }
 
-            // Handle Image OCR Intent (Action Send)
+            // Handle Image OCR Intent (Action Send = photo share from another app)
             if (intent.action == Intent.ACTION_SEND && intent.type?.startsWith("image/") == true) {
                 intent.getParcelableExtraCompat(Intent.EXTRA_STREAM, Uri::class.java)?.let { imageUri ->
-                    return AppIntent.ImageOCR(PlatformFile(imageUri))
+                    return AppIntent.ImageOCR(PlatformFile(imageUri), IntentSources.SHARE)
                 }
             }
 

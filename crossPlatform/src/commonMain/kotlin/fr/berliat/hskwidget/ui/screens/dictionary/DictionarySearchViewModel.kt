@@ -1,5 +1,6 @@
 package fr.berliat.hskwidget.ui.screens.dictionary
 
+import fr.berliat.hskwidget.core.IntentSources
 import fr.berliat.hskwidget.core.Locale
 import fr.berliat.hskwidget.core.AppDispatchers
 import fr.berliat.hskwidget.core.Utils
@@ -81,7 +82,7 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
     fun updateDictionaryLocale(locale: Locale?) {
         val from = prefsStore.dictionaryLocale.value?.code ?: "app"
         prefsStore.dictionaryLocale.value = locale
-        performSearch()
+        performSearch(IntentSources.IN_APP)
         widgetProvider.redrawAllFlashCardWidgets()
 
         Logging.logAnalyticsEvent(
@@ -90,7 +91,7 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
         )
     }
 
-    fun performSearch() {
+    fun performSearch(source: IntentSources) {
         val querySnapshot = searchQuery.value.query.trim()
         val inList = searchQuery.value.inListName != null
         val annotatedOnly = prefsStore.searchFilterHasAnnotation.value
@@ -99,7 +100,8 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
             "QUERY_LEN" to querySnapshot.length.toString(),
             "HAS_ANNOTATION_FILTER" to annotatedOnly.toString(),
             "IN_LIST" to inList.toString(),
-            "LOCALE" to localeCode
+            "LOCALE" to localeCode,
+            "SOURCE" to source.toString()
         )
         currentSearchJob?.cancel()
         currentWordCheckJob?.cancel()
@@ -197,6 +199,6 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
     }
 
     fun listsAssociationChanged() {
-        if (searchQuery.value.inListName != null) performSearch()
+        if (searchQuery.value.inListName != null) performSearch(IntentSources.IN_APP)
     }
 }

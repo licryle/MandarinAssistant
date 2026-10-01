@@ -3,6 +3,7 @@ package fr.berliat.hskwidget.ui.navigation
 import androidx.compose.runtime.Composable
 import kotlinx.serialization.Serializable
 
+import fr.berliat.hskwidget.core.IntentSources
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.bakery_dining_24px
 import fr.berliat.hskwidget.format_list_bulleted_add_24px
@@ -24,7 +25,10 @@ import org.jetbrains.compose.resources.stringResource
 @Serializable
 sealed class Screen() {
     @Serializable
-    data class Dictionary(val search: String? = null): Screen()
+    data class Dictionary(
+        val search: String? = null,
+        val source: IntentSources = IntentSources.IN_APP
+    ): Screen()
 
     @Serializable
     data object Lists : Screen()

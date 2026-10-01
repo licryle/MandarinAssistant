@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+import fr.berliat.hskwidget.core.IntentSources
 import fr.berliat.hskwidget.core.Locale
 import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.data.model.ChineseWord
@@ -67,6 +68,7 @@ import org.jetbrains.compose.resources.stringResource
 fun DictionarySearchScreen(
     onAnnotate: (String) -> Unit,
     modifier: Modifier = Modifier,
+    initialIntentSource: IntentSources,
     viewModel: DictionarySearchViewModel = remember { DictionarySearchViewModel(
         prefsStore = HSKAppServices.appPreferences,
         annotatedChineseWordDAO = HSKAppServices.database.annotatedChineseWordDAO(),
@@ -102,9 +104,13 @@ fun DictionarySearchScreen(
     }
     val couldAnnotate = wordExists == false && queryHasHanzi
 
-    // Whenever searchQuery changes, scroll to top
+    // Whenever searchQuery changes, scroll to top.
+    // The first search after an external navigation (widget/share) is attributed
+    // to that intent; later searches (typing) are in-app. Re-armed per navigation.
+    var pendingSource by remember(initialIntentSource) { mutableStateOf(initialIntentSource) }
     LaunchedEffect(searchQuery.toString(), hasAnnotationFilter.toString()) {
-        viewModel.performSearch()
+        viewModel.performSearch(pendingSource)
+        pendingSource = IntentSources.IN_APP
         listState.scrollToItem(0)
     }
 

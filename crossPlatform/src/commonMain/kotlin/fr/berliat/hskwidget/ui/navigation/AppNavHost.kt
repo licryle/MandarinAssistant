@@ -63,6 +63,7 @@ fun AppNavHost(viewModel : AppViewModel) {
             }
 
             DictionarySearchScreen(
+                initialIntentSource = args.source,
                 onAnnotate = { word ->
                     navController.navigate(Screen.Annotate(word))
                 }

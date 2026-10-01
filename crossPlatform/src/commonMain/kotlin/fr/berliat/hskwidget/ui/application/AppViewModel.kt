@@ -12,6 +12,7 @@ import fr.berliat.hskwidget.domain.DatabaseDiskBackup
 import fr.berliat.hskwidget.domain.DatabaseHelper
 import fr.berliat.hskwidget.ui.navigation.Screen
 import fr.berliat.hskwidget.Res
+import fr.berliat.hskwidget.core.IntentSources
 import fr.berliat.hskwidget.core.AppDispatchers
 import fr.berliat.hskwidget.core.HSKAppServicesPriority
 import fr.berliat.hskwidget.core.Logging
@@ -261,21 +262,21 @@ open class CommonAppViewModel(val navigationManager: NavigationManager): ViewMod
     fun handleAppIntent(intent: AppIntent) {
         executeWhenReady {
             when (intent) {
-                is AppIntent.Search -> search(intent.query)
-                is AppIntent.SearchTTS -> searchTTS(intent.query)
+                is AppIntent.Search -> search(intent.query, intent.source)
+                is AppIntent.SearchTTS -> searchTTS(intent.query, intent.source)
                 is AppIntent.WidgetConfiguration -> configureWidget(intent.widgetId)
-                is AppIntent.ImageOCR -> ocrImage(intent.file)
+                is AppIntent.ImageOCR -> ocrImage(intent.file, intent.source)
                 is AppIntent.OCRCapture -> ocrCapture()
             }
         }
     }
 
-    fun search(query: SearchQuery) {
-        navigationManager.navigate(Screen.Dictionary(query.toString()))
+    fun search(query: SearchQuery, source: IntentSources) {
+        navigationManager.navigate(Screen.Dictionary(query.toString(), source))
     }
 
-    fun searchTTS(query: SearchQuery) {
-        search(query)
+    fun searchTTS(query: SearchQuery, source: IntentSources) {
+        search(query, source)
         Utils.playWordInBackground(query.query)
     }
 
@@ -283,7 +284,11 @@ open class CommonAppViewModel(val navigationManager: NavigationManager): ViewMod
         navigationManager.navigate(Screen.Widgets(widgetId, true))
     }
 
-    fun ocrImage(imageFile: PlatformFile) {
+    fun ocrImage(imageFile: PlatformFile, source: IntentSources) {
+        Logging.logAnalyticsEvent(
+            Logging.ANALYTICS_EVENTS.OCR_CAPTURE,
+            mapOf("SOURCE" to source.toString())
+        )
         navigationManager.navigate(Screen.OCRDisplay("", imageFile.path))
     }
 

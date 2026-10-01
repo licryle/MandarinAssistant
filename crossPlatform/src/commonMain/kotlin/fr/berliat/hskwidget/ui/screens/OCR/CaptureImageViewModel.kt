@@ -9,6 +9,7 @@ import com.kashif.cameraK.result.ImageCaptureResult
 import kotlinx.coroutines.launch
 
 import fr.berliat.hskwidget.Res
+import fr.berliat.hskwidget.core.IntentSources
 import fr.berliat.hskwidget.core.AppDispatchers
 import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.core.Logging
@@ -46,7 +47,7 @@ class CaptureImageViewModel(
 
         Logging.logAnalyticsEvent(
             Logging.ANALYTICS_EVENTS.OCR_CAPTURE,
-            mapOf("SOURCE" to "camera")
+            mapOf("SOURCE" to IntentSources.IN_APP.toString())
         )
     }
 
