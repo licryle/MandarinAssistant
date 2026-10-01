@@ -148,9 +148,15 @@ class BackupDiskViewModel(
                     viewModelScope.launch {
                         DatabaseDiskBackup.persistSelectedFolder(appConfig, folder)
                     }
+                    Logging.logAnalyticsEvent(
+                        Logging.ANALYTICS_EVENTS.BACKUPDISK_FOLDER_SELECT_SUCCESS
+                    )
                 },
                 onFail = {
                     HSKAppServices.snackbar.show(SnackbarType.WARNING, Res.string.config_backup_directory_failed_selection)
+                    Logging.logAnalyticsEvent(
+                        Logging.ANALYTICS_EVENTS.BACKUPDISK_FOLDER_SELECT_FAIL
+                    )
                 }
             )
         }

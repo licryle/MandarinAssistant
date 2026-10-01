@@ -69,6 +69,26 @@ class BackupCloudViewModel (
         viewModelScope.launch {
             GoogleBackupFlowState.globalTransferState.collect { event ->
                 _transferState.value = event
+                when (event) {
+                    is BackupCloudTransferEvent.BackupSuccess ->
+                        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.BACKUPCLOUD_BACKUP_SUCCESS)
+                    is BackupCloudTransferEvent.BackupFailed ->
+                        Logging.logAnalyticsEvent(
+                            Logging.ANALYTICS_EVENTS.BACKUPCLOUD_BACKUP_FAIL,
+                            mapOf("REASON" to (event.exception.message?.take(100) ?: "unknown"))
+                        )
+                    is BackupCloudTransferEvent.BackupCancelled,
+                    is BackupCloudTransferEvent.RestorationCancelled ->
+                        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.BACKUPCLOUD_CANCEL)
+                    is BackupCloudTransferEvent.RestorationSuccess ->
+                        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.BACKUPCLOUD_RESTORE_SUCCESS)
+                    is BackupCloudTransferEvent.RestorationFailed ->
+                        Logging.logAnalyticsEvent(
+                            Logging.ANALYTICS_EVENTS.BACKUPCLOUD_RESTORE_FAIL,
+                            mapOf("REASON" to (event.exception.message?.take(100) ?: "unknown"))
+                        )
+                    else -> Unit
+                }
             }
         }
         viewModelScope.launch {
@@ -79,6 +99,7 @@ class BackupCloudViewModel (
     }
 
     fun backup() {
+        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.BACKUPCLOUD_LOGIN, mapOf("FLOW" to "backup"))
         gDriveBackup.login {
             _requestNotificationPermission.tryEmit(Unit)
             GoogleBackupService.startBackup()
@@ -88,6 +109,7 @@ class BackupCloudViewModel (
     }
 
     fun restore() {
+        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.BACKUPCLOUD_LOGIN, mapOf("FLOW" to "restore"))
         gDriveBackup.login {
             _requestNotificationPermission.tryEmit(Unit)
             GoogleBackupService.startRestore()
@@ -131,5 +153,8 @@ class BackupCloudViewModel (
         }
     }
 
-    fun cancel() = gDriveBackup.cancel()
+    fun cancel() {
+        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.BACKUPCLOUD_CANCEL)
+        gDriveBackup.cancel()
+    }
 }
