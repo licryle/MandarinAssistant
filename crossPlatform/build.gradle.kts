@@ -31,9 +31,29 @@ output.writeText(
 
 buildkonfig {
     packageName = "fr.berliat.hskwidget"
+
+    // Detect if the running task contains "release"
+    val isReleaseTask = gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true) }
+
+    // Default to the "debug" flavor unless a release variant is selected
+    val selectedFlavor = if (isReleaseTask) "release" else "debug"
+
+    // Allow gradle.properties to override it, otherwise use the auto-detected flavor
+    val finalFlavor = project.findProperty("buildkonfig.flavor") as? String ?: selectedFlavor
+
+    project.ext.set("buildkonfig.flavor", finalFlavor)
+
     defaultConfigs {
         buildConfigField(INT, "VERSION_CODE", appVersionCode)
         buildConfigField(STRING, "VERSION_NAME", appVersionName)
+        buildConfigField(BOOLEAN, "DEBUG_MODE", "false")
+    }
+
+    defaultConfigs("release") {
+        buildConfigField(BOOLEAN, "DEBUG_MODE", "false")
+    }
+
+    defaultConfigs("debug") {
         buildConfigField(BOOLEAN, "DEBUG_MODE", "true")
     }
 }
