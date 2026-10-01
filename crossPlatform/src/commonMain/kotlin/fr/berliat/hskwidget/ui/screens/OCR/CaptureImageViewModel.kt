@@ -44,7 +44,10 @@ class CaptureImageViewModel(
             }
         }
 
-        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.OCR_CAPTURE)
+        Logging.logAnalyticsEvent(
+            Logging.ANALYTICS_EVENTS.OCR_CAPTURE,
+            mapOf("SOURCE" to "camera")
+        )
     }
 
     private fun logError(message: String) {
