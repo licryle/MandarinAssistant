@@ -93,20 +93,29 @@ struct hskwidgetApp: App {
         
         if url.scheme == "hskwidget" {
             let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+            let source: crossPlatform.AnalyticsSources
+            switch components?.queryItems?.first(where: { $0.name == "src" })?.value {
+            case "share":
+                source = crossPlatform.AnalyticsSources.share
+            case "widget":
+                source = crossPlatform.AnalyticsSources.widget
+            default:
+                source = crossPlatform.AnalyticsSources.inApp
+            }
             
             if url.host == "search" {
                 if let word = components?.queryItems?.first(where: { $0.name == "q" })?.value {
                     let searchQuery = crossPlatform.SearchQuery.companion.fromString(query: word)
-                    appIntent = crossPlatform.AppIntent.Search(query: searchQuery)
+                    appIntent = crossPlatform.AppIntent.Search(query: searchQuery, source: source)
                 }
             } else if url.host == "searchTTS" {
                 if let word = components?.queryItems?.first(where: { $0.name == "q" })?.value {
                     let searchQuery = crossPlatform.SearchQuery.companion.fromString(query: word)
-                    appIntent = crossPlatform.AppIntent.SearchTTS(query: searchQuery)
+                    appIntent = crossPlatform.AppIntent.SearchTTS(query: searchQuery, source: source)
                 }
             } else if url.host == "ocr" {
                 if let path = components?.queryItems?.first(where: { $0.name == "path" })?.value {
-                    appIntent = crossPlatform.AppIntent.ImageOCR(path: path)
+                    appIntent = crossPlatform.AppIntent.ImageOCR(path: path, source: source)
                 } else {
                     appIntent = crossPlatform.AppIntent.OCRCapture()
                 }

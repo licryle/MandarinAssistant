@@ -51,7 +51,7 @@ struct HskFlashcardsWidgetView: View {
                     }
 
                     // Middle Content: Pinyin - Simplified - Definition
-                    Link(destination: URL(string: "hskwidget://search?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")")!) {
+                    Link(destination: URL(string: "hskwidget://search?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!) {
                         VStack(spacing: 2) {
                             Spacer(minLength: 0)
 
@@ -160,7 +160,7 @@ struct LockScreenRectangularView: View {
                 }
                 .padding(.horizontal, 4)
                 .padding(.vertical, 4)
-                .widgetURL(URL(string: "hskwidget://search?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")")!)
+                .widgetURL(URL(string: "hskwidget://search?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!)
             } else {
                 // Unconfigured state
                 VStack(alignment: .leading, spacing: 0) {
@@ -201,6 +201,6 @@ struct LockScreenCircularOCRView: View {
             }
             .padding(4)
         }
-        .widgetURL(URL(string: "hskwidget://ocr")!)
+        .widgetURL(URL(string: "hskwidget://ocr?src=widget")!)
     }
 }

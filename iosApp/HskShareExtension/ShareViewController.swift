@@ -68,7 +68,7 @@ class ShareViewController: UIViewController {
         attachment.loadItem(forTypeIdentifier: UTType.plainText.identifier, options: nil) { [weak self] (data, error) in
             if let text = data as? String {
                 let encodedText = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-                self?.openMainApp(url: "hskwidget://search?q=\(encodedText)")
+                self?.openMainApp(url: "hskwidget://search?q=\(encodedText)&src=share")
             } else {
                 self?.extensionContext?.completeRequest(returningItems: nil)
             }
@@ -97,7 +97,7 @@ class ShareViewController: UIViewController {
                 } else {
                     // Not an image, treat as a regular search for the URL
                     let encodedUrl = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-                    self?.openMainApp(url: "hskwidget://search?q=\(encodedUrl)")
+                    self?.openMainApp(url: "hskwidget://search?q=\(encodedUrl)&src=share")
                 }
             }
             task.resume()
@@ -112,7 +112,7 @@ class ShareViewController: UIViewController {
             try? data.write(to: targetURL)
             
             let encodedPath = targetURL.path.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            openMainApp(url: "hskwidget://ocr?path=\(encodedPath)")
+            openMainApp(url: "hskwidget://ocr?path=\(encodedPath)&src=share")
         } else {
             self.extensionContext?.completeRequest(returningItems: nil)
         }

@@ -83,7 +83,7 @@ struct SpeakWordIntent: AppIntents.AppIntent {
     func perform() async throws -> some AppIntents.IntentResult {
         let searchQuery = crossPlatform.SearchQuery(query: word, ignoreAnnotation: true, inListName: nil)
         let encodedQuery = (searchQuery.description()).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        if let url = URL(string: "hskwidget://searchTTS?q=\(encodedQuery)") {
+        if let url = URL(string: "hskwidget://searchTTS?q=\(encodedQuery)&src=widget") {
             await URLOpener.open(url: url)
         }
 
@@ -103,7 +103,7 @@ struct OpenOCRIntent: AppIntents.AppIntent {
 
     func perform() async throws -> some AppIntents.IntentResult {
         let encodedPath = imagePath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        if let url = URL(string: "hskwidget://ocr?path=\(encodedPath)") {
+        if let url = URL(string: "hskwidget://ocr?path=\(encodedPath)&src=widget") {
             await URLOpener.open(url: url)
         }
 
