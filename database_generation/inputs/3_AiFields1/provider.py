@@ -21,6 +21,9 @@ REQUIRED_COLUMNS = ("examples", "modality", "type")
 OPTIONAL_COLUMNS = ("synonyms", "antonym")
 ALL_COLUMNS = REQUIRED_COLUMNS + OPTIONAL_COLUMNS
 
+CJK_CHAR_PATTERN = re.compile(r"^[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]+$")
+PUNCT_AND_SPACE_PATTERN = re.compile(r"[\s,.\!?;\:\"'\(\)\-_/，。！？；：“”‘’（）《》【】「」『』、…—–·~～\u3000]+")
+
 
 def is_complete(value: Any) -> bool:
     """Completeness check for a cached field value.
@@ -73,15 +76,74 @@ def contains_foreign_latin(text: str, word: str) -> bool:
     return bool(re.search(r"[a-zA-Z]", probe))
 
 
-def normalize_record(raw: Dict[str, Any]) -> Dict[str, Any]:
+def validate_examples(text: Any, word: Optional[str] = None) -> Optional[str]:
+    """Validates examples text.
+
+    Requirements:
+    1. Example must contain the original headword (`word`).
+    2. Example must contain only Chinese characters (plus allowed punctuation & whitespace).
+
+    Returns filtered valid example lines joined by \n, or None if no line is valid.
+    """
+    if text is None:
+        return None
+    raw = str(text).strip()
+    if not raw:
+        return None
+
+    lines = [line.strip() for line in raw.split("\n") if line.strip()]
+    valid_lines = []
+
+    for line in lines:
+        if word and word not in line:
+            continue
+
+        probe = line.replace(word, "") if word else line
+        remaining = PUNCT_AND_SPACE_PATTERN.sub("", probe)
+        if remaining and not CJK_CHAR_PATTERN.fullmatch(remaining):
+            continue
+
+        valid_lines.append(line)
+
+    return "\n".join(valid_lines) if valid_lines else None
+
+
+def validate_synonyms_or_antonym(text: Any) -> Optional[str]:
+    """Validates synonyms or antonym text.
+
+    Requirements:
+    1. Cannot contain '反义' or '近义'.
+    2. Cannot contain '无'.
+    3. Must contain only Chinese characters (plus allowed delimiters like commas/pause marks/spaces).
+
+    Returns clean text or None if invalid.
+    """
+    if text is None:
+        return None
+    raw = str(text).strip()
+    if not raw:
+        return None
+
+    if "反义" in raw or "近义" in raw or "无" in raw:
+        return None
+
+    remaining = re.sub(r"[\s,，、;；]+", "", raw)
+    if not remaining or not CJK_CHAR_PATTERN.fullmatch(remaining):
+        return None
+
+    return raw
+
+
+def normalize_record(raw: Dict[str, Any], word: Optional[str] = None) -> Dict[str, Any]:
     """Normalizes one cached row so completeness checks, assembly output and
-    stored values all agree (no garbage enums counted as present)."""
+    stored values all agree (no garbage enums or invalid text counted as present)."""
+    target_word = word or raw.get("simplified") or raw.get("word")
     return {
-        "examples": normalize_text(raw.get("examples")),
+        "examples": validate_examples(raw.get("examples"), target_word),
         "modality": normalize_modality(raw.get("modality")),
         "type": normalize_pos_type(raw.get("type")),
-        "synonyms": normalize_text(raw.get("synonyms")),
-        "antonym": normalize_text(raw.get("antonym")),
+        "synonyms": validate_synonyms_or_antonym(raw.get("synonyms")),
+        "antonym": validate_synonyms_or_antonym(raw.get("antonym")),
     }
 
 
@@ -169,7 +231,7 @@ class AiFieldsProvider(Provider):
             if not word:
                 continue
             vals = normalize_record({"examples": examples, "modality": modality, "type": pos_type,
-                                     "synonyms": synonyms, "antonym": antonym})
+                                     "synonyms": synonyms, "antonym": antonym}, word=word)
             score = sum(1 for c in REQUIRED_COLUMNS if is_complete(vals[c]))
             prev = scored.get(word)
             if prev is None or (score, rowid) > (prev[0], prev[1]):
@@ -227,23 +289,10 @@ class AiFieldsProvider(Provider):
                         discarded_count += 1
                         continue
 
-                    # Normalize fields. Drop unknown keys: the model sometimes
-                    # emits garbled ones (e.g. "ant" instead of "antonym")
-                    # which would crash the INSERT.
-                    normalized = {
-                        "examples": normalize_text(res.get("examples")),
-                        "modality": normalize_modality(res.get("modality")),
-                        "type": normalize_pos_type(res.get("type")),
-                        "synonyms": normalize_text(res.get("synonyms")),
-                        "antonym": normalize_text(res.get("antonym")),
-                    }
-
-                    # Examples containing Latin outside the headword itself
-                    # are rejected, but only the examples field is dropped:
-                    # the remaining fields are still worth caching.
-                    if normalized["examples"] and contains_foreign_latin(normalized["examples"], word):
-                        self.logger.warning(f"AiFieldsProvider: Dropping examples for '{word}' - contain non-Chinese characters.")
-                        normalized["examples"] = None
+                    # Normalize fields using normalize_record to perform validation
+                    # (examples must contain word and only Chinese chars; synonyms/antonyms
+                    # cannot contain '无', '反义', '近义', or non-Chinese chars).
+                    normalized = normalize_record(res, word=word)
 
                     # Merge with any previously cached row: never overwrite a
                     # complete value with an incomplete one, so retries can
@@ -309,8 +358,9 @@ class AiFieldsProvider(Provider):
             if not word:
                 continue
             record["simplified"] = word
+            normalized = normalize_record(record, word=word)
             for col in ALL_COLUMNS:
-                record[col] = normalize_record(record)[col]
+                record[col] = normalized[col]
             score = sum(1 for c in REQUIRED_COLUMNS if is_complete(record.get(c)))
             prev = scored.get(word)
             if prev is None or (score, rowid) > (prev[0], prev[1]):

@@ -590,7 +590,7 @@ class DatabaseHelper private constructor() {
         fun shouldUpdateDatabaseFromAsset(appVersion: Int): Boolean {
             if (appVersion == 0) return false // first launch, nothing to update
 
-            val updateDbVersions = listOf(32, 37, 48, 64)
+            val updateDbVersions = listOf(32, 37, 48, 64, 65)
 
             return updateDbVersions.any { updateVersion ->
                 appVersion < updateVersion && Utils.getAppVersion() >= updateVersion
