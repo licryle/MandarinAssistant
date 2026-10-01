@@ -37,9 +37,9 @@ fun ConfigScreen(
         key(refreshKey) {
             LocaleSelectionView(
                 localeManager = LocaleManager,
-                onLocaleChange = { _ -> run {
+                onLocaleChange = { code -> run {
                         refreshKey++
-                        viewModel.onLanguageChange()
+                        viewModel.onLanguageChange(code)
                     }
                 }
             )
