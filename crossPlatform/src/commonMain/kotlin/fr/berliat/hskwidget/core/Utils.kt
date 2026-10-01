@@ -55,7 +55,11 @@ object Utils {
             HSKAppServices.snackbar.show(SnackbarType.WARNING, Res.string.speech_failure_toast_muted)
 
             CoroutineScope(AppDispatchers.IO).launch {
-                logAnalyticsError("SPEECH", getString(Res.string.speech_failure_toast_muted), "")
+                logAnalyticsError(
+                    "SPEECH",
+                    getString(Res.string.speech_failure_toast_muted),
+                    "muted WORD_LEN=${word.length}"
+                )
             }
         } else {
             ExpectedUtils.playWordInBackground(word)

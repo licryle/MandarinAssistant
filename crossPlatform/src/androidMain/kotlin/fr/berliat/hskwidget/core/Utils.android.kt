@@ -199,7 +199,11 @@ actual object ExpectedUtils {
                     }
                 }
 
-                logAnalyticsError("SPEECH", getString(err.errStringId), "")
+                logAnalyticsError(
+                    "SPEECH",
+                    getString(err.errStringId),
+                    "hasRemedy=${err.errRemedyIntent != null} WORD_LEN=${word.length}"
+                )
             }
         }
     }
@@ -213,7 +217,6 @@ actual object ExpectedUtils {
         }
 
         if (launchIntent != null) {
-            Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.WIDGET_OPEN_DICTIONARY)
             context.startActivity(launchIntent)
         } else {
             // fallback: app has no launch intent?
