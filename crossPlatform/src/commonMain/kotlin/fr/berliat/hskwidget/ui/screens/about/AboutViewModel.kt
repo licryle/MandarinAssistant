@@ -45,11 +45,11 @@ class AboutViewModel {
     // Actions
     fun onClickWebsite() {
         Utils.openLink("https://github.com/licryle/Android-HSKFlashcardsWidget")
-        Logging.logAnalyticsScreenView("Github")
+        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.ABOUT_GITHUB)
     }
 
     fun openEmail() {
-        Logging.logAnalyticsScreenView("Email")
+        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.ABOUT_EMAIL)
 
         if (!Utils.sendEmail("cyrille.berliat+hsk@gmail.com", "About Mandarin Assistant App", "")) {
             HSKAppServices.snackbar.show(SnackbarType.ERROR, Res.string.about_email_noapp)
@@ -57,7 +57,7 @@ class AboutViewModel {
     }
 
     fun reportBug() {
-        Logging.logAnalyticsScreenView("ReportBug")
+        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.ABOUT_BUG_REPORT)
 
         viewModelScope.launch(AppDispatchers.Main) {
             val logs = Logging.getLogFileContent()
