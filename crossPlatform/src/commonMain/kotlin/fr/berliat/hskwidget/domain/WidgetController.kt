@@ -3,6 +3,7 @@ package fr.berliat.hskwidget.domain
 import co.touchlab.kermit.Logger
 
 import fr.berliat.hskwidget.core.AppDispatchers
+import fr.berliat.hskwidget.core.Logging
 import fr.berliat.hskwidget.core.Utils
 import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.data.model.AnnotatedChineseWord
@@ -67,6 +68,14 @@ open class CommonWidgetController(
             ignoreAnnotation = true
         )
 
+        Logging.logAnalyticsEvent(
+            Logging.ANALYTICS_EVENTS.WIDGET_OPEN_DICTIONARY,
+            mapOf(
+                "SOURCE" to "widget",
+                "WIDGET_ID" to widgetId.toString(),
+                "QUERY_LEN" to simplified.value.length.toString()
+            )
+        )
         Utils.openAppForSearchQuery(query)
     }
 
