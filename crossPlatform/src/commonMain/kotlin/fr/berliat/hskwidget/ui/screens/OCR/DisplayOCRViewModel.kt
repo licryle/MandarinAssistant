@@ -199,10 +199,18 @@ class DisplayOCRViewModel(
 
     fun toggleShowPinyins(showPinyins: Boolean) {
         appPreferences.readerShowAllPinyins.value = showPinyins
+        Logging.logAnalyticsEvent(
+            Logging.ANALYTICS_EVENTS.OCR_TOGGLE_PINYIN,
+            mapOf("ENABLED" to showPinyins.toString())
+        )
     }
 
     fun toggleSeparator(showSeparator: Boolean) {
         appPreferences.readerSeparateWords.value = showSeparator
+        Logging.logAnalyticsEvent(
+            Logging.ANALYTICS_EVENTS.OCR_TOGGLE_SEPARATOR,
+            mapOf("ENABLED" to showSeparator.toString())
+        )
     }
 
     fun copyToClipboard(word: AnnotatedChineseWord) {
@@ -223,6 +231,10 @@ class DisplayOCRViewModel(
                 if (text == null) {
                     Logger.w(tag = TAG, messageString = "No text found in image")
                     _error.value = Res.string.ocr_display_no_text_found
+                    Logging.logAnalyticsEvent(
+                        Logging.ANALYTICS_EVENTS.OCR_RECOGNIZE_FAIL,
+                        mapOf("REASON" to "no_text")
+                    )
                 } else {
                     Logger.i(tag = TAG, messageString = "Text recognition success. Appending text.")
                     var newText = text
@@ -230,6 +242,10 @@ class DisplayOCRViewModel(
 
 
                     _uiState.update { it.copy(text = it.text + newText) }
+                    Logging.logAnalyticsEvent(
+                        Logging.ANALYTICS_EVENTS.OCR_RECOGNIZE_SUCCESS,
+                        mapOf("TEXT_LEN" to text.length.toString())
+                    )
                 }
                 _uiState.update { it.copy(isProcessing = false) }
             }, { e ->
@@ -237,6 +253,10 @@ class DisplayOCRViewModel(
                 _error.value = Res.string.ocr_display_ocr_failed
                 _uiState.update { it.copy(isProcessing = false) }
 
+                Logging.logAnalyticsEvent(
+                    Logging.ANALYTICS_EVENTS.OCR_RECOGNIZE_FAIL,
+                    mapOf("REASON" to "error")
+                )
                 Logging.logAnalyticsError(
                     "OCR_DISPLAY",
                     "TextRecognitionFailed",
