@@ -79,14 +79,28 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
     }
 
     fun updateDictionaryLocale(locale: Locale?) {
+        val from = prefsStore.dictionaryLocale.value?.code ?: "app"
         prefsStore.dictionaryLocale.value = locale
         performSearch()
         widgetProvider.redrawAllFlashCardWidgets()
 
-        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.DICT_CHANGE_LANG)
+        Logging.logAnalyticsEvent(
+            Logging.ANALYTICS_EVENTS.DICT_CHANGE_LANG,
+            mapOf("FROM" to from, "TO" to (locale?.code ?: "app"))
+        )
     }
 
     fun performSearch() {
+        val querySnapshot = searchQuery.value.query.trim()
+        val inList = searchQuery.value.inListName != null
+        val annotatedOnly = prefsStore.searchFilterHasAnnotation.value
+        val localeCode = Locale.resolve(prefsStore.dictionaryLocale.value).code
+        val baseParams = mapOf(
+            "QUERY_LEN" to querySnapshot.length.toString(),
+            "HAS_ANNOTATION_FILTER" to annotatedOnly.toString(),
+            "IN_LIST" to inList.toString(),
+            "LOCALE" to localeCode
+        )
         currentSearchJob?.cancel()
         currentWordCheckJob?.cancel()
         currentSearchJob = CoroutineScope(AppDispatchers.IO).launch {
@@ -99,12 +113,21 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
                 _hasMoreResults.value = results.size == itemsPerPage
                 _searchResults.value = results
                 _isLoading.value = false
+
+                Logging.logAnalyticsEvent(
+                    Logging.ANALYTICS_EVENTS.DICT_SEARCH,
+                    baseParams + mapOf("RESULT_COUNT" to results.size.toString())
+                )
+                if (results.isEmpty()) {
+                    Logging.logAnalyticsEvent(
+                        Logging.ANALYTICS_EVENTS.DICT_EMPTY_RESULT,
+                        baseParams
+                    )
+                }
             }
         }
 
         checkIfWordExists()
-
-        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.DICT_SEARCH)
     }
 
     private fun checkIfWordExists() {
@@ -127,6 +150,7 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
     fun loadMore() {
         if (_isLoadingMore.value) return
         _isLoadingMore.value = true
+        val page = currentPage
         CoroutineScope(AppDispatchers.IO).launch {
             val newResults = fetchResultsForPage()
 
@@ -134,6 +158,15 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
                 _hasMoreResults.value = newResults.size == itemsPerPage
                 _searchResults.value += newResults
                 _isLoadingMore.value = false
+
+                Logging.logAnalyticsEvent(
+                    Logging.ANALYTICS_EVENTS.DICT_LOAD_MORE,
+                    mapOf(
+                        "PAGE" to page.toString(),
+                        "ADDED_COUNT" to newResults.size.toString(),
+                        "TOTAL_COUNT" to _searchResults.value.size.toString()
+                    )
+                )
             }
         }
     }
