@@ -112,13 +112,29 @@ class WordListViewModel(
         viewModelScope.launch(Dispatchers.Main) {
             _status.emit(Status.SAVING)
             try {
+                val beforeIds = withContext(AppDispatchers.IO) {
+                    repo.getWordListsForWord(word.simplified).map { it.id }.toSet()
+                }
                 withContext(AppDispatchers.IO) {
                     ankiCaller(
                         repo.updateWordListAssociations(word.simplified, selectedWordListIds)
                     )
                 }
 
-                Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.LIST_MODIFY_WORD)
+                val added = selectedWordListIds - beforeIds
+                val removed = beforeIds - selectedWordListIds
+                if (added.isNotEmpty()) {
+                    Logging.logAnalyticsEvent(
+                        Logging.ANALYTICS_EVENTS.LIST_WORD_ADD,
+                        mapOf("COUNT" to added.size.toString())
+                    )
+                }
+                if (removed.isNotEmpty()) {
+                    Logging.logAnalyticsEvent(
+                        Logging.ANALYTICS_EVENTS.LIST_WORD_REMOVE,
+                        mapOf("COUNT" to removed.size.toString())
+                    )
+                }
 
                 _dismiss.value = true
                 _status.emit(Status.SUCCESS)
