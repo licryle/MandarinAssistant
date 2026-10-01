@@ -3,6 +3,7 @@ package fr.berliat.hskwidget.ui.screens.widget
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
+import fr.berliat.hskwidget.core.Logging
 import fr.berliat.hskwidget.core.Utils
 import fr.berliat.hskwidget.core.Utils.BackgroundRestrictionType
 import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
@@ -40,7 +41,12 @@ open class WidgetsListViewModel: ViewModel() {
     fun speakWord(word: String) = Utils.playWordInBackground(word)
 
     fun addNewWidget() {
-        if (!Utils.attemptAddDesktopWidget()) {
+        val supported = Utils.attemptAddDesktopWidget()
+        Logging.logAnalyticsEvent(
+            Logging.ANALYTICS_EVENTS.WIDGET_ADD_ATTEMPT,
+            mapOf("SUPPORTED" to supported.toString())
+        )
+        if (!supported) {
             _showAddWidgetInstructions.value = true
         }
     }
@@ -54,6 +60,10 @@ open class WidgetsListViewModel: ViewModel() {
     }
 
     fun fixBatteryOptimization() {
+        Logging.logAnalyticsEvent(
+            Logging.ANALYTICS_EVENTS.WIDGET_BATTERY_FIX_CLICK,
+            mapOf("RESTRICTION" to _backgroundRestriction.value.name)
+        )
         Utils.openBatteryOptimizationSettings()
     }
 }
