@@ -139,42 +139,42 @@ actual object ExpectedUtils {
         var err : SpeechError? = null
         var tts: TextToSpeech? = null
 
-        try {
-            tts = TextToSpeech(context) { status ->
-                if (status != TextToSpeech.SUCCESS) {
-                    err = SpeechError(
-                        Res.string.speech_failure_toast_init,
-                        Settings.ACTION_ACCESSIBILITY_SETTINGS
-                    )
-                } else {
-                    val result = tts?.setLanguage(Locale.SIMPLIFIED_CHINESE)
-
-                    Log.i(TAG, "Setting language to play $word out loud.")
-                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        err = SpeechError(Res.string.speech_failure_toast_chinese_unsupported)
-                        Log.e(TAG, "Simplified_chinese not supported on this phone.")
-
-                        val installIntent = Intent()
-                        installIntent.action = TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA
-                        installIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        context.startActivity(installIntent)
-                    } else {
-                        Log.i(TAG, "Playing $word out loud.")
-                        tts?.speak(
-                            word,
-                            TextToSpeech.QUEUE_FLUSH,
-                            null,
-                            "tts-${word.hashCode()}"
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                tts = TextToSpeech(context) { status ->
+                    if (status != TextToSpeech.SUCCESS) {
+                        err = SpeechError(
+                            Res.string.speech_failure_toast_init,
+                            Settings.ACTION_ACCESSIBILITY_SETTINGS
                         )
+                    } else {
+                        val result = tts?.setLanguage(Locale.SIMPLIFIED_CHINESE)
+
+                        Log.i(TAG, "Setting language to play $word out loud.")
+                        if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                            err = SpeechError(Res.string.speech_failure_toast_chinese_unsupported)
+                            Log.e(TAG, "Simplified_chinese not supported on this phone.")
+
+                            val installIntent = Intent()
+                            installIntent.action = TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA
+                            installIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            context.startActivity(installIntent)
+                        } else {
+                            Log.i(TAG, "Playing $word out loud.")
+                            tts?.speak(
+                                word,
+                                TextToSpeech.QUEUE_FLUSH,
+                                null,
+                                "tts-${word.hashCode()}"
+                            )
+                        }
                     }
                 }
+            } catch (_: Exception) {
+                err = SpeechError(Res.string.speech_failure_toast_unknown)
             }
-        } catch (_: Exception) {
-            err = SpeechError(Res.string.speech_failure_toast_unknown)
-        }
 
-        err?.let {
-            CoroutineScope(Dispatchers.IO).launch {
+            err?.let {
                 val errString = getString(err.errStringId)
                 val titleString = getString(Res.string.dialog_tts_error)
                 val yesButton = getString(Res.string.fix_it)
