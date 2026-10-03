@@ -76,7 +76,9 @@ actual object ExpectedUtils {
     }
 
     internal actual fun getAppDataPath(): PlatformFile = FileKit.filesDir
-    internal actual suspend fun getAppDatabasePath(): PlatformFile = FileKit.databasesDir
+    internal actual suspend fun getAppDatabasePath(): PlatformFile = withContext(AppDispatchers.IO) {
+        return@withContext FileKit.databasesDir
+    }
 
     internal actual fun openLink(url: String) {
         val intent = Intent(
