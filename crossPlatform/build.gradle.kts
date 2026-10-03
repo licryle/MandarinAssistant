@@ -46,6 +46,7 @@ buildkonfig {
     defaultConfigs {
         buildConfigField(INT, "VERSION_CODE", appVersionCode)
         buildConfigField(STRING, "VERSION_NAME", appVersionName)
+        buildConfigField(STRING, "APP_ID", "fr.berliat.hskwidget")
         buildConfigField(BOOLEAN, "DEBUG_MODE", "false")
     }
 

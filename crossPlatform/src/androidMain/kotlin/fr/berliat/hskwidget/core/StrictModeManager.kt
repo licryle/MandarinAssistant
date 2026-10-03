@@ -21,10 +21,7 @@ class StrictModeManager {
          * Array of whitelisted stacktraces. If the violation stack trace contains any of these lines, the violations
          * are ignored.
          */
-        private val STACKTRACE_WHITELIST = listOf(
-            "android.graphics.AwareBitmapCacher\$MyHandler.handleMessage",
-            "android.provider.DocumentsProvider.query"
-        )
+        private val STACKTRACE_WHITELIST = emptyList<String>()
 
         /**
          * Enables strict mode if necessary based on the build config.
@@ -65,14 +62,24 @@ class StrictModeManager {
         private fun onVmViolation(violation: Violation?) {
             if (violation == null) return
 
-            violation.stackTrace.forEach {
-                val method = "${it.className}.${it.methodName}"
-                if (STACKTRACE_WHITELIST.contains(method)) {
-                    Log.d(
-                        TAG,
-                        "Skipping whitelisted StrictMode violation: $method"
-                    )
-                    return
+            val stack = violation.stackTrace
+            val hasAppFrame = stack.any { it.className.startsWith(BuildKonfig.APP_ID) }
+            if (!hasAppFrame) {
+                Log.e(
+                    TAG,
+                    "StrictMode violation skipped: not due to this app's code."
+                )
+                return
+            } else {
+                stack.forEach {
+                    val method = "${it.className}.${it.methodName}"
+                    if (STACKTRACE_WHITELIST.any { method.startsWith(it) }) {
+                        Log.e(
+                            TAG,
+                            "StrictMode violation skipped: whitelisted $method"
+                        )
+                        return
+                    }
                 }
             }
 
