@@ -42,7 +42,7 @@ actual object ExpectedUtils {
         return path?.let { PlatformFile(it) } ?: FileKit.filesDir
     }
 
-    internal actual fun getAppDatabasePath(): PlatformFile {
+    internal actual suspend fun getAppDatabasePath(): PlatformFile {
         val path = NSFileManager.defaultManager
             .containerURLForSecurityApplicationGroupIdentifier("group.net.vertex8.hskwidgetassist2")?.path
 

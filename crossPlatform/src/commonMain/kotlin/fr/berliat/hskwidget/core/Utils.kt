@@ -92,7 +92,7 @@ object Utils {
     }
 
     fun getAppDataPath(): PlatformFile = ExpectedUtils.getAppDataPath()
-    fun getAppDatabasePath(): PlatformFile = ExpectedUtils.getAppDatabasePath()
+    suspend fun getAppDatabasePath(): PlatformFile = ExpectedUtils.getAppDatabasePath()
     fun attemptAddDesktopWidget(): Boolean = ExpectedUtils.attemptAddDesktopWidget()
 
     enum class BackgroundRestrictionType {
@@ -112,7 +112,7 @@ object Utils {
 
 expect object ExpectedUtils {
     internal fun getAppDataPath(): PlatformFile
-    internal fun getAppDatabasePath(): PlatformFile
+    internal suspend fun getAppDatabasePath(): PlatformFile
 
     internal fun openLink(url: String)
     internal fun sendEmail(email: String, subject: String = "", body: String = "") : Boolean

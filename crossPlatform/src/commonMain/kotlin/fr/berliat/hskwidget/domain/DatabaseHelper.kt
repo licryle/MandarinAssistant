@@ -84,11 +84,11 @@ class DatabaseHelper private constructor() {
         const val BACKUP_SUFFIX = ".bak"
         const val JOURNAL_FILENAME = "Mandarin_Assistant.db.update.json"
 
-        fun getDatabaseLiveDir() = Utils.getAppDatabasePath()
-        fun getDatabaseLiveFile() = getDatabaseLiveDir() / DATABASE_FILENAME
-        fun getStagingFile() = getDatabaseLiveDir() / (DATABASE_FILENAME + STAGING_SUFFIX)
-        fun getBackupFile() = getDatabaseLiveDir() / (DATABASE_FILENAME + BACKUP_SUFFIX)
-        fun getJournalFile() = getDatabaseLiveDir() / JOURNAL_FILENAME
+        suspend fun getDatabaseLiveDir() = Utils.getAppDatabasePath()
+        suspend fun getDatabaseLiveFile() = getDatabaseLiveDir() / DATABASE_FILENAME
+        suspend fun getStagingFile() = getDatabaseLiveDir() / (DATABASE_FILENAME + STAGING_SUFFIX)
+        suspend fun getBackupFile() = getDatabaseLiveDir() / (DATABASE_FILENAME + BACKUP_SUFFIX)
+        suspend fun getJournalFile() = getDatabaseLiveDir() / JOURNAL_FILENAME
 
         @Serializable
         data class UserDataCounts(
@@ -384,9 +384,9 @@ class DatabaseHelper private constructor() {
          */
         private suspend fun performStagedUpdate(
             liveFile: PlatformFile,
-            stagingFile: PlatformFile = getStagingFile(),
-            backupFile: PlatformFile = getBackupFile(),
-            journalFile: PlatformFile = getJournalFile()
+            stagingFile: PlatformFile,
+            backupFile: PlatformFile,
+            journalFile: PlatformFile
         ) = withContext(AppDispatchers.IO) {
             _updateProgress.value = 0f
             var original: ChineseWordsDatabase? = null
@@ -473,9 +473,9 @@ class DatabaseHelper private constructor() {
          *  cache cleanup touches anything. Never deletes the backup on failure. */
         private suspend fun recoverPendingUpdate(
             liveFile: PlatformFile,
-            stagingFile: PlatformFile = getStagingFile(),
-            backupFile: PlatformFile = getBackupFile(),
-            journalFile: PlatformFile = getJournalFile()
+            stagingFile: PlatformFile,
+            backupFile: PlatformFile,
+            journalFile: PlatformFile
         ) = withContext(AppDispatchers.IO) {
             val journal = readJournal(journalFile)
             if (journal == null) {
