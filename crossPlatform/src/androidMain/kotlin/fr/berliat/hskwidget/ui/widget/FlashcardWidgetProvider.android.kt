@@ -117,6 +117,29 @@ actual class FlashcardWidgetProvider actual constructor()
 
             return widgetIds
         }
+
+        /**
+         * This is a workaround for a Bug in handling systemwide events.
+         * An empty WorkManager queue will trigger an APPWIGET_UPDATE event, which is undesired.
+         * Read more at: https://www.reddit.com/r/android_devs/comments/llq2mw/question_why_should_it_be_expected_that/
+         */
+        fun preventUnnecessaryAppWidgetUpdates(context: Context) {
+            val workInfos = WorkManager.getInstance(context).getWorkInfosByTag("always_pending_work")
+            if (workInfos.get().isNotEmpty()) return
+
+            val alwaysPendingWork = OneTimeWorkRequestBuilder<DummyWorker>()
+                .setInitialDelay(5000L, TimeUnit.DAYS)
+                .addTag("always_pending_work")
+                .build()
+
+            WorkManager.getInstance(context).enqueueUniqueWork(
+                "always_pending_work",
+                ExistingWorkPolicy.KEEP,
+                alwaysPendingWork
+            )
+
+            return
+        }
     }
 
     actual suspend fun getWidgetIds(): List<Int> = Companion.getWidgetIds().asList()
@@ -190,8 +213,6 @@ actual class FlashcardWidgetProvider actual constructor()
     }
 
     internal suspend fun updateWidgets(context: Context, intent: Intent, widgetId: Int) = withContext(Dispatchers.IO) {
-        if (preventUnnecessaryAppWidgetUpdates(context)) return@withContext
-
         var widgetIds = IntArray(1)
         if (widgetId == -1) {
             widgetIds = Companion.getWidgetIds()
@@ -326,29 +347,6 @@ actual class FlashcardWidgetProvider actual constructor()
         override fun doWork(): Result {
             return Result.success()
         }
-    }
-
-    /**
-     * This is a workaround for a Bug in handling system wide events.
-     * An empty WorkManager queue will trigger an APPWIGET_UPDATE event, which is undesired.
-     * Read more at: https://www.reddit.com/r/android_devs/comments/llq2mw/question_why_should_it_be_expected_that/
-     */
-    private fun preventUnnecessaryAppWidgetUpdates(context: Context): Boolean {
-        val workInfos = WorkManager.getInstance(context).getWorkInfosByTag("always_pending_work")
-        if (workInfos.get().size > 0) return false
-
-        val alwaysPendingWork = OneTimeWorkRequestBuilder<DummyWorker>()
-            .setInitialDelay(5000L, TimeUnit.DAYS)
-            .addTag("always_pending_work")
-            .build()
-
-        WorkManager.getInstance(context).enqueueUniqueWork(
-            "always_pending_work",
-            ExistingWorkPolicy.KEEP,
-            alwaysPendingWork
-        )
-
-        return true
     }
 
     /* Thank to https://stackoverflow.com/questions/25153604/get-the-size-of-my-homescreen-widget */

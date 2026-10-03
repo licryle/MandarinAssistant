@@ -22,6 +22,7 @@ import fr.berliat.hskwidget.ui.application.AppIntentBus
 import fr.berliat.hskwidget.ui.application.AppView
 import fr.berliat.hskwidget.ui.application.AppViewModel
 import fr.berliat.hskwidget.ui.navigation.NavigationManager
+import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
 
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.dialogs.init
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        FlashcardWidgetProvider.preventUnnecessaryAppWidgetUpdates(applicationContext)
 
         // App context first: everything downstream takes applicationContext,
         // never the Activity (no static Activity reference).
