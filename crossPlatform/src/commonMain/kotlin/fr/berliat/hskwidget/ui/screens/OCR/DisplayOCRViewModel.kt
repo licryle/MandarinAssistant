@@ -31,6 +31,7 @@ import fr.berliat.hskwidget.ocr_display_word_not_found
 import fr.berliat.hskwidget.ui.theme.AppTypographies
 
 import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.exists
 import io.github.vinceglb.filekit.path
 
 import kotlinx.coroutines.Dispatchers
@@ -225,6 +226,16 @@ class DisplayOCRViewModel(
         Logger.d(tag = TAG, messageString = "recognizeText starting for ${imagePath.path}")
         viewModelScope.launch(AppDispatchers.IO) {
             _uiState.update { it.copy(isProcessing = true) }
+            if (!imagePath.exists()) {
+                Logger.w(tag = TAG, messageString = "Image file missing: ${imagePath.path}")
+                _error.value = Res.string.ocr_display_ocr_failed
+                _uiState.update { it.copy(isProcessing = false) }
+                Logging.logAnalyticsEvent(
+                    Logging.ANALYTICS_EVENTS.OCR_RECOGNIZE_FAIL,
+                    mapOf("REASON" to "missing_file")
+                )
+                return@launch
+            }
             HSKOCR().process(imagePath, { text ->
                 Logger.d(tag = TAG, messageString = "Recognized text length: ${text?.length ?: 0}")
 

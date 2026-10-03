@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -23,7 +24,6 @@ import fr.berliat.hskwidget.ui.screens.widget.WidgetsListScreen
 import fr.berliat.hskwidget.ui.screens.wordlist.WordListScreen
 
 import io.github.vinceglb.filekit.PlatformFile
-import io.github.vinceglb.filekit.exists
 import io.github.vinceglb.filekit.absolutePath
 
 import kotlin.reflect.typeOf
@@ -167,13 +167,10 @@ fun AppNavHost(viewModel : AppViewModel) {
                 viewModel.navigationManager.registerScreenVisit(args)
             }
 
-            val imageFile = args.imageFilePath?.let {
-                val f = PlatformFile(it)
-                if (f.exists()) {
-                    f
-                } else {
-                    null
-                }
+            // No I/O here: PlatformFile(path) is just a wrapper.
+            // Existence is validated in DisplayOCRViewModel.recognizeText on IO.
+            val imageFile = remember(args.imageFilePath) {
+                args.imageFilePath?.let { PlatformFile(it) }
             }
 
             DisplayOCRScreen(
