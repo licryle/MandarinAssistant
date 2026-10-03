@@ -1,8 +1,7 @@
 package fr.berliat.hskwidget.data.store
 
 import io.github.vinceglb.filekit.BookmarkData
-import io.github.vinceglb.filekit.PlatformFile
-import io.github.vinceglb.filekit.fromBookmarkData
+import fr.berliat.hskwidget.domain.BackupFolderAccess
 
 import kotlin.io.encoding.Base64
 
@@ -19,7 +18,7 @@ class FileKitBookmarkPreferenceConverter : PreferenceConverter<String, BookmarkD
             } else {
                 // Let's try to decode, if it fails, goes into the catch. We don't need to keep invalid data
                 val bookMark = BookmarkData(Base64.decode(stored))
-                PlatformFile.fromBookmarkData(bookMark)
+                BackupFolderAccess.fromBookmarkData(bookMark)
 
                 bookMark
             }

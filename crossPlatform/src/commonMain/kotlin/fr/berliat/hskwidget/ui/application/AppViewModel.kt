@@ -25,6 +25,7 @@ import fr.berliat.hskwidget.dbbackup_failure_folderpermission
 import fr.berliat.hskwidget.dbbackup_failure_write
 import fr.berliat.hskwidget.dbbackup_success
 import fr.berliat.hskwidget.domain.SearchQuery
+import fr.berliat.hskwidget.domain.BackupFolderAccess
 import fr.berliat.hskwidget.ui.navigation.NavigationManager
 import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
 import io.github.vinceglb.filekit.FileKit
@@ -35,7 +36,6 @@ import io.github.vinceglb.filekit.delete
 import io.github.vinceglb.filekit.div
 import io.github.vinceglb.filekit.exists
 import io.github.vinceglb.filekit.filesDir
-import io.github.vinceglb.filekit.fromBookmarkData
 import io.github.vinceglb.filekit.path
 import io.github.vinceglb.filekit.resolve
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -186,7 +186,7 @@ open class CommonAppViewModel(val navigationManager: NavigationManager): ViewMod
             return
         }
         try {
-            PlatformFile.fromBookmarkData(bookMark)
+            BackupFolderAccess.fromBookmarkData(bookMark)
         } catch (_: Exception) {
             Logging.logAnalyticsError(TAG, "BackupDiskStaleBookmark", "Stored bookmark unresolvable")
             showBackupPermissionFixSnackbar()
