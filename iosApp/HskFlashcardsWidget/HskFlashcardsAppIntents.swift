@@ -65,28 +65,7 @@ struct NextWordIntent: AppIntents.AppIntent {
     init() {}
 
     func perform() async throws -> some AppIntents.IntentResult {
-        // Note: iOS 17+ automatically reloads the widget that triggered the intent.
-        return .result()
-    }
-}
-
-struct SpeakWordIntent: AppIntents.AppIntent {
-    static var title: LocalizedStringResource = "Speak Word"
-    static var openAppWhenRun: Bool = true
-    
-    @Parameter(title: "Word")
-    var word: String
-
-    init() { self.word = "" }
-    init(word: String) { self.word = word }
-
-    func perform() async throws -> some AppIntents.IntentResult {
-        let searchQuery = crossPlatform.SearchQuery(query: word, ignoreAnnotation: true, inListName: nil)
-        let encodedQuery = (searchQuery.description()).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        if let url = URL(string: "hskwidget://searchTTS?q=\(encodedQuery)&src=widget") {
-            await URLOpener.open(url: url)
-        }
-
+        WidgetCenter.shared.reloadAllTimelines()
         return .result()
     }
 }

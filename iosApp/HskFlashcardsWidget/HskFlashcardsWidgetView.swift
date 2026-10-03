@@ -40,7 +40,7 @@ struct HskFlashcardsWidgetView: View {
 
                         Spacer()
 
-                        Button(intent: SpeakWordIntent(word: entry.word)) {
+                        Link(destination:  URL(string: "hskwidget://searchTTS?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!) {
                             Image(systemName: "speaker.wave.2")
                                 .font(.system(size: 12))
                                 .frame(width: 24, height: 24)
@@ -116,25 +116,27 @@ struct LockScreenRectangularView: View {
             
             if !entry.isEmpty {
                 HStack(spacing: 4) {
-                    VStack(alignment: .leading, spacing: 0) {
-                        HStack(alignment: .firstTextBaseline) {
-                            Text(entry.word)
-                                .font(.headline)
-                                .widgetAccentable()
-                            Text(entry.pinyin)
-                                .font(.caption)
-                                .lineLimit(1)
+                    Link(destination: URL(string: "hskwidget://search?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!) {
+                        VStack(alignment: .leading, spacing: 0) {
+                            HStack(alignment: .firstTextBaseline) {
+                                Text(entry.word)
+                                    .font(.headline)
+                                    .widgetAccentable()
+                                Text(entry.pinyin)
+                                    .font(.caption)
+                                    .lineLimit(1)
+                                    .widgetAccentable()
+                            }
+                            Text(entry.definition)
+                                .font(.caption2)
+                                .lineLimit(2)
                                 .widgetAccentable()
                         }
-                        Text(entry.definition)
-                            .font(.caption2)
-                            .lineLimit(2)
-                            .widgetAccentable()
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
 
                     VStack(spacing: 0) {
-                        Button(intent: SpeakWordIntent(word: entry.word)) {
+                        Link(destination:  URL(string: "hskwidget://searchTTS?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!) {
                             Image(systemName: "speaker.wave.2")
                                 .font(.system(size: 13))
                                 .frame(width: 23, height: 23)
@@ -160,7 +162,6 @@ struct LockScreenRectangularView: View {
                 }
                 .padding(.horizontal, 4)
                 .padding(.vertical, 4)
-                .widgetURL(URL(string: "hskwidget://search?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!)
             } else {
                 // Unconfigured state
                 VStack(alignment: .leading, spacing: 0) {
