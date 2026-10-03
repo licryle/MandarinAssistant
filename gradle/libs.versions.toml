@@ -1,6 +1,6 @@
 [versions]
-app-versionCode = "66"
-app-versionName = "5.0.1"
+app-versionCode = "67"
+app-versionName = "5.0.2"
 ankiAndroid = "api-v1.1.0"
 appcompat = "1.8.0"
 camerak = "1.2"
@@ -43,7 +43,6 @@ composePlugin = "1.12.1"
 buildKonfig = "0.22.0"
 turbine = "1.2.1"
 kotlinxCoroutinesTest = "1.11.0"
-skie = "0.10.15"
 activityCompose = "1.13.0"
 
 [libraries]
