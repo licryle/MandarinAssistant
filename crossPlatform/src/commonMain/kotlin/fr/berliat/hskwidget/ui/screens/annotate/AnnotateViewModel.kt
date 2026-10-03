@@ -44,7 +44,7 @@ class AnnotateViewModel(
             = withContext(AppDispatchers.IO) {
         val annot = HSKAppServices.database.annotatedChineseWordDAO().getFromSimplified(simplifiedWord)
         if (simplifiedWord.isNotBlank()) {
-            Logging.logAnalyticsEvent(
+                Logging.logAnalyticsEvent(
                 Logging.ANALYTICS_EVENTS.ANNOTATION_VIEW,
                 mapOf(
                     "HAS_ANNOTATION" to ((annot != null && annot.hasAnnotation()).toString()),
