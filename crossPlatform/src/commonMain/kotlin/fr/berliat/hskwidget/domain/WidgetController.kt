@@ -3,6 +3,7 @@ package fr.berliat.hskwidget.domain
 import co.touchlab.kermit.Logger
 
 import fr.berliat.hskwidget.core.AppDispatchers
+import fr.berliat.hskwidget.core.ExpectedLogging
 import fr.berliat.hskwidget.core.Logging
 import fr.berliat.hskwidget.core.Utils
 import fr.berliat.hskwidget.core.HSKAppServices
@@ -46,19 +47,33 @@ open class CommonWidgetController(
     suspend fun redraw() = redrawWidget(currentWord)
 
     suspend fun updateWord() = withContext(AppDispatchers.IO) {
-        val allowedListIds = getAllowedLists().map { it.wordList.id }
-        val newWord =
-            annotatedWordDAO.getRandomWordFromLists(
-                allowedListIds,
-                arrayOf(simplified.value)
-            )
+        try {
+            val allowedListIds = getAllowedLists().map { it.wordList.id }
+            if (allowedListIds.isEmpty()) {
+                Logger.w(tag = TAG, messageString = "updateWord: no allowed lists for widget $widgetId, keeping cached word")
+                return@withContext
+            }
+            val newWord =
+                annotatedWordDAO.getRandomWordFromLists(
+                    allowedListIds,
+                    arrayOf(simplified.value)
+                )
 
-        Logger.i(tag = TAG, messageString = "getNewWord: Got a new word, maybe: $newWord")
+            Logger.i(tag = TAG, messageString = "getNewWord: Got a new word, maybe: $newWord")
 
-        // Persist it in preferences for cross-App convenience
-        widgetStore.currentWord.value = newWord?.simplified ?: ""
-        currentWord = newWord
-        redrawWidget(newWord)
+            // Persist it in preferences for cross-App convenience
+            widgetStore.currentWord.value = newWord?.simplified ?: ""
+            currentWord = newWord
+            redrawWidget(newWord)
+        } catch (e: Exception) {
+            // Transient storage failures (e.g. SQLITE_IOERR_SHORT_READ 522 during
+            // a DB file swap or on dying flash) must skip one reload, not crash.
+            Logger.e(tag = TAG, messageString = "updateWord failed for widget $widgetId, keeping cached word", throwable = e)
+            try { ExpectedLogging.logCrashalytics(e) } catch (_: Exception) {}
+            try {
+                Logging.logAnalyticsError(TAG, "WidgetUpdateWordFailure", (e.message?.take(120) ?: e::class.simpleName.orEmpty()))
+            } catch (_: Exception) {}
+        }
     }
 
     protected open suspend fun redrawWidget(word: AnnotatedChineseWord?) {}

@@ -15,8 +15,10 @@ import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 
+import co.touchlab.kermit.Logger
 import fr.berliat.hskwidget.core.AppDispatchers
 import fr.berliat.hskwidget.core.AppServices
+import fr.berliat.hskwidget.core.ExpectedLogging
 import fr.berliat.hskwidget.core.ExpectedUtils
 import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.core.HSKAppServicesPriority
@@ -43,7 +45,7 @@ actual class FlashcardWidgetProvider actual constructor()
     : AppWidgetProvider() {
     companion object {
         private const val TAG = "WidgetProvider"
-        private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+        private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob() + Logging.GlobalCoroutineExceptionHandler)
         private val _widgetIds = MutableStateFlow(intArrayOf())
 
         private lateinit var contextProvider: () -> Context
@@ -59,6 +61,21 @@ actual class FlashcardWidgetProvider actual constructor()
             return getWidgetControllerInstance(
                 getWidgetPreferences(widgetId),
                 database)
+        }
+
+        /** One widget's reload must never abort the others nor crash the process.
+         *  Transient I/O failures (e.g. SQLITE_IOERR 522) are logged non-fatally
+         *  to Crashlytics and skip that widget until the next tick. */
+        private suspend fun safeUpdateWord(widgetId: Int) {
+            try {
+                getWidgetController(widgetId).updateWord()
+            } catch (e: Exception) {
+                Logger.e(tag = TAG, messageString = "safeUpdateWord failed for widget $widgetId, skipping reload", throwable = e)
+                try { ExpectedLogging.logCrashalytics(e) } catch (_: Exception) {}
+                try {
+                    Logging.logAnalyticsError(TAG, "WidgetReloadSkipped", "WIDGET_ID=$widgetId ${(e.message?.take(100) ?: e::class.simpleName).orEmpty()}")
+                } catch (_: Exception) {}
+            }
         }
 
         suspend fun init(
@@ -180,7 +197,7 @@ actual class FlashcardWidgetProvider actual constructor()
             for (appWidgetId in appWidgetIds) {
                 // Switch to the IO dispatcher to perform background work
                 withContext(Dispatchers.IO) {
-                    getWidgetController(appWidgetId).updateWord()
+                    safeUpdateWord(appWidgetId)
                 }
             }
         }
@@ -229,7 +246,7 @@ actual class FlashcardWidgetProvider actual constructor()
         }
 
         widgetIds.forEach {
-            getWidgetController(it).updateWord()
+            safeUpdateWord(it)
         }
     }
 
