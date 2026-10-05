@@ -6,8 +6,8 @@ import androidx.room3.RewriteQueriesToDropUnusedColumns
 import androidx.room3.Transaction
 import co.touchlab.kermit.Logger
 
-import fr.berliat.hskwidget.core.ExpectedLogging
 import fr.berliat.hskwidget.core.Locale
+import fr.berliat.hskwidget.core.Logging
 import fr.berliat.hskwidget.data.model.AnnotatedChineseWord
 import fr.berliat.hskwidget.data.model.WordDefinition
 
@@ -129,7 +129,7 @@ interface AnnotatedChineseWordDAO {
             searchFromStrLikeRows(query, ftsQuery, language.code, hasAnnotation, atExam, page, pageSize)
         } catch (e: Exception) {
             Logger.e(tag = TAG, messageString = "searchFromStrLike failed", throwable = e)
-            ExpectedLogging.logCrashalytics(e)
+            Logging.logCrashalytics(e)
             emptyList()
         }
         if (ftsResults.isNotEmpty()) return hydrate(ftsResults)
@@ -259,7 +259,7 @@ interface AnnotatedChineseWordDAO {
             searchFromWordListRows(listName, query, ftsQuery, language.code, hasAnnotation, page, pageSize)
         } catch (e: Exception) {
             Logger.e(tag = TAG, messageString = "searchFromWordList failed", throwable = e)
-            ExpectedLogging.logCrashalytics(e)
+            Logging.logCrashalytics(e)
             emptyList()
         }
         if (ftsResults.isNotEmpty()) return hydrate(ftsResults)

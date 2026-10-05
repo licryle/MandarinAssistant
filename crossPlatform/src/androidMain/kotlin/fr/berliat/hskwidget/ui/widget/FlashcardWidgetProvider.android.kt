@@ -18,7 +18,6 @@ import androidx.work.WorkerParameters
 import co.touchlab.kermit.Logger
 import fr.berliat.hskwidget.core.AppDispatchers
 import fr.berliat.hskwidget.core.AppServices
-import fr.berliat.hskwidget.core.ExpectedLogging
 import fr.berliat.hskwidget.core.ExpectedUtils
 import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.core.HSKAppServicesPriority
@@ -71,7 +70,7 @@ actual class FlashcardWidgetProvider actual constructor()
                 getWidgetController(widgetId).updateWord()
             } catch (e: Exception) {
                 Logger.e(tag = TAG, messageString = "safeUpdateWord failed for widget $widgetId, skipping reload", throwable = e)
-                try { ExpectedLogging.logCrashalytics(e) } catch (_: Exception) {}
+                try { Logging.logCrashalytics(e) } catch (_: Exception) {}
                 try {
                     Logging.logAnalyticsError(TAG, "WidgetReloadSkipped", "WIDGET_ID=$widgetId ${(e.message?.take(100) ?: e::class.simpleName).orEmpty()}")
                 } catch (_: Exception) {}

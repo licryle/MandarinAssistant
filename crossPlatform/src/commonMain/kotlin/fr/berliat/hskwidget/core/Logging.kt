@@ -94,7 +94,7 @@ object Logging {
             )
 
             try {
-                ExpectedLogging.logCrashalytics(exception)
+                logCrashalytics(exception)
             } catch (e: Throwable) {
                 Logger.w(tag = "Logging", messageString = "Failed to log exception to Crashlytics: ${e.message}")
             }
@@ -123,6 +123,9 @@ object Logging {
 
     fun logAnalyticsWidgetAction(event: ANALYTICS_EVENTS, widgetId: Int) =
         ExpectedLogging.logAnalyticsWidgetAction(event, widgetId)
+
+    fun logCrashalytics(e: Throwable) =
+        ExpectedLogging.logCrashalytics(e)
 
     /**
      * Resolved dictionary language code for analytics.

@@ -69,7 +69,7 @@ open class CommonWidgetController(
             // Transient storage failures (e.g. SQLITE_IOERR_SHORT_READ 522 during
             // a DB file swap or on dying flash) must skip one reload, not crash.
             Logger.e(tag = TAG, messageString = "updateWord failed for widget $widgetId, keeping cached word", throwable = e)
-            try { ExpectedLogging.logCrashalytics(e) } catch (_: Exception) {}
+            try { Logging.logCrashalytics(e) } catch (_: Exception) {}
             try {
                 Logging.logAnalyticsError(TAG, "WidgetUpdateWordFailure", (e.message?.take(120) ?: e::class.simpleName.orEmpty()))
             } catch (_: Exception) {}
