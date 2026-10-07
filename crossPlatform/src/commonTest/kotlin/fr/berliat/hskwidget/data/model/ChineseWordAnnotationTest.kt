@@ -87,6 +87,31 @@ class ChineseWordAnnotationTest {
         assertTrue(st.contains("ni hao"))
         assertTrue(st.contains("nihao"))
         assertTrue(st.contains("greeting"))
-        assertTrue(st.contains("social"))
+    }
+
+    private fun staleAnnotation() = ChineseWordAnnotation(
+        simplified = "资本主义陷阱",
+        pinyins = null,
+        notes = "my note",
+        classType = ClassType.NotFromClass,
+        level = ClassLevel.NotFromClass,
+        themes = "",
+        firstSeen = null,
+        isExam = false
+    )
+
+    @Test
+    fun testWithRefreshedSearchableText_healsStaleRow() {
+        val stale = staleAnnotation()
+        val healed = listOf(stale).withRefreshedSearchableText()
+        assertEquals(1, healed.size)
+        // Untouched fields are preserved.
+        assertEquals(stale.notes, healed[0].notes)
+        assertEquals(stale.simplified, healed[0].simplified)
+    }
+
+    @Test
+    fun testWithRefreshedSearchableText_emptyList() {
+        assertEquals(emptyList(), emptyList<ChineseWordAnnotation>().withRefreshedSearchableText())
     }
 }

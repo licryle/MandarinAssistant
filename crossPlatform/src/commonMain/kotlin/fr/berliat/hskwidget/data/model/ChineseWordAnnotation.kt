@@ -35,7 +35,7 @@ data class ChineseWordAnnotation (
         val toneless = pinyins?.toString()?.let { fr.berliat.pinyin4kot.Hanzi2Pinyin().pinyinToToneless(it) } ?: ""
         val concatenated = toneless.replace(" ", "")
         val hanziSplit = simplified.map { it.toString() }.joinToString(" ")
-        
+
         val text = listOfNotNull(simplified, hanziSplit, notes, toneless, concatenated)
             .joinToString(" ")
             .lowercase()
@@ -49,3 +49,15 @@ data class ChineseWordAnnotation (
         }
     }
 }
+
+// Recomputes the derived FTS index text for imported/stored annotations.
+// Rows whose index is empty or stale become searchable again without changing
+// anything else. Falls back to the row as-is on any failure.
+internal fun List<ChineseWordAnnotation>.withRefreshedSearchableText(): List<ChineseWordAnnotation> =
+    map { annotation ->
+        try {
+            annotation.withSearchableText()
+        } catch (_: Exception) {
+            annotation
+        }
+    }

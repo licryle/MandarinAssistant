@@ -18,6 +18,7 @@ import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.core.Logging
 import fr.berliat.hskwidget.core.SnackbarType
 import fr.berliat.hskwidget.data.store.ChineseWordsDatabase
+import fr.berliat.hskwidget.data.model.withRefreshedSearchableText
 import fr.berliat.hskwidget.database_update_failure
 import fr.berliat.hskwidget.database_update_start
 import fr.berliat.hskwidget.database_update_success
@@ -251,7 +252,7 @@ class DatabaseHelper private constructor() {
                 connection.execSQL("""
                     INSERT INTO `chinese_word_new`
                     (`simplified`, `traditional`, `hsk_level`, `pinyins`, `popularity`, `examples`, `collocations`, `modality`, `type`, `synonyms`, `antonym`, `searchable_text`)
-                    SELECT `simplified`, `traditional`, `hsk_level`, `pinyins`, `popularity`, `examples`, `collocations`, `modality`, `type`, `synonyms`, `antonym`, ''
+                    SELECT `simplified`, `traditional`, `hsk_level`, `pinyins`, `popularity`, `examples`, `collocations`, `modality`, `type`, `synonyms`, `antonym`, `searchable_text`
                     FROM `chinese_word`
                 """.trimIndent())
                 connection.execSQL("DROP TABLE `chinese_word`")
@@ -274,7 +275,7 @@ class DatabaseHelper private constructor() {
                 connection.execSQL("""
                     INSERT INTO `chinese_word_annotation_new`
                     (`a_simplified`, `a_pinyins`, `notes`, `class_type`, `class_level`, `themes`, `first_seen`, `is_exam`, `a_searchable_text`)
-                    SELECT `a_simplified`, `a_pinyins`, `notes`, `class_type`, `class_level`, `themes`, `first_seen`, `is_exam`, ''
+                    SELECT `a_simplified`, `a_pinyins`, `notes`, `class_type`, `class_level`, `themes`, `first_seen`, `is_exam`, `a_searchable_text`
                     FROM `chinese_word_annotation`
                 """.trimIndent())
                 connection.execSQL("DROP TABLE `chinese_word_annotation`")
@@ -662,7 +663,7 @@ class DatabaseHelper private constructor() {
                         // Impoooort
                         Logger.d(tag = TAG, messageString = "Starting to import Annotations to local DB")
                         dbToUpdate.chineseWordAnnotationDAO().deleteAll()
-                        dbToUpdate.chineseWordAnnotationDAO().insertAll(importedAnnotations)
+                        dbToUpdate.chineseWordAnnotationDAO().insertAll(importedAnnotations.withRefreshedSearchableText())
 
                         Logger.d(tag = TAG, messageString = "Starting to import Word_List to local DB")
                         dbToUpdate.wordListDAO().deleteAllUserEntries()
