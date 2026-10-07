@@ -1,5 +1,5 @@
 [versions]
-app-versionCode = "68"
+app-versionCode = "69"
 app-versionName = "5.0.3"
 ankiAndroid = "api-v1.1.0"
 appcompat = "1.8.0"
