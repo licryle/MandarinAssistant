@@ -259,14 +259,47 @@ actual class FlashcardWidgetProvider actual constructor()
         scope.launch(Dispatchers.IO) {
             if (!isInitialized) init { context }
 
-            when (intent!!.action) {
+            val action = intent?.action
+            if (intent == null || action == null) {
+                try {
+                    super.onReceive(context, intent)
+                } catch (e: Exception) {
+                    Logger.e(tag = TAG, messageString = "onReceive with null intent failed", throwable = e)
+                }
+                return@launch
+            }
+
+            when (action) {
                 WidgetController.ACTION_CONFIGURE_LATEST -> {
-                    getWidgetController(Companion.getWidgetIds().last()).startActivityToConfigure()
+                    // Pin callback carries the new ID in EXTRA_APPWIDGET_ID on success.
+                    // Fall back to latest known ID only when the extra is missing
+                    // (stale/cancelled pin or race where AppWidgetManager isn't updated yet).
+                    val targetId = if (widgetId != -1 && widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                        widgetId
+                    } else {
+                        Companion.getWidgetIds().lastOrNull()
+                    }
+                    if (targetId == null || targetId == -1 || targetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+                        Logger.w(tag = TAG, messageString = "ACTION_CONFIGURE_LATEST received with no widget id (extra=$widgetId, known=${Companion.getWidgetIds().contentToString()}), ignoring")
+                        return@launch
+                    }
+                    getWidgetController(targetId).startActivityToConfigure()
                     Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.WIGDET_ADD)
                 }
 
                 AppWidgetManager.ACTION_APPWIDGET_CONFIGURE -> {
-                    getWidgetController(Companion.getWidgetIds().last()).startActivityToConfigure()
+                    // Taps on the "not configured" widget always carry EXTRA_APPWIDGET_ID
+                    // (see getPendingSelfIntent). Prefer it over guessing latest.
+                    val targetId = if (widgetId != -1 && widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                        widgetId
+                    } else {
+                        Companion.getWidgetIds().lastOrNull()
+                    }
+                    if (targetId == null || targetId == -1 || targetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+                        Logger.w(tag = TAG, messageString = "ACTION_APPWIDGET_CONFIGURE received with no widget id (extra=$widgetId, known=${Companion.getWidgetIds().contentToString()}), ignoring")
+                        return@launch
+                    }
+                    getWidgetController(targetId).startActivityToConfigure()
                 }
 
                 WidgetController.ACTION_SPEAK -> {
