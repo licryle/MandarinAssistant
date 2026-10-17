@@ -10,7 +10,10 @@ appId: fr.berliat.hskwidget
     clearState: true
 
 # Wait for DB provisioning + first frame (search bar hint visible)
-- assertVisible: "Search pinyin, definition, hanzi"
+# Explicit long timeout: every clearState wipe re-copies the ~177MB asset.
+- extendedWaitUntil:
+    visible: "Search pinyin, definition, hanzi"
+    timeout: 300000
 
 # --- Annotate 你好 (e2e note / Speaking / Elementary 1) ---
 - tapOn: "Search pinyin, definition, hanzi"

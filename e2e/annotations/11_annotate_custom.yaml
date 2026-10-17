@@ -1,9 +1,9 @@
 appId: fr.berliat.hskwidget
 ---
 # CUJ: Annotations / P1 / Annotate a custom word not in dictionary.
-# No setup.
-- launchApp:
-    clearState: true
+# Setup: setup1 (needs a personal list: E2E-list) for the "add to a list" step.
+- runFlow:
+    file: ../setup/00_setup1.yaml
 
 - tapOn: "Menu"
 - tapOn: "Dictionary"
@@ -17,3 +17,18 @@ appId: fr.berliat.hskwidget
 - inputText: "e2e custom"
 - hideKeyboard
 - tapOn: "Save"
+
+# Saving pops back to the dictionary: the snackbar confirms the annotation, and
+# the saved word is now indexed, so the no-result state is replaced by its card.
+- assertVisible: "zzzz你 successfully saved"
+- assertVisible: "你"
+- assertVisible: "e2e custom"
+- assertNotVisible: "No result!"
+
+# The custom word can then be added to a personal list.
+- waitForAnimationToEnd
+- tapOn: "Manage lists for this word"
+- assertVisible: "Select personal list(s)"
+- tapOn: "E2E-List"
+- tapOn: "Save"
+- assertNotVisible: "Select personal list(s)"

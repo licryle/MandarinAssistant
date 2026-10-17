@@ -76,6 +76,11 @@ into the library module by the `copyGeneratedDatabase` task from
   right after a menu option was selected (focus is dropped with the popup). In
   these flows notes are always typed first, so: double-tap type, single-tap
   level.
+- Custom words (annotated, absent from `chinese_word`) come back from the DAO
+  with `word == null` — the `LEFT JOIN` yields all-NULL columns. Anything that
+  needs a `ChineseWord` must go through `AnnotatedChineseWord.toChineseWord()`,
+  not the `word` field, or it silently becomes a no-op (`11_annotate_custom`
+  caught this on the list button).
 
 ## Known gaps (fix in this order)
 
@@ -84,14 +89,12 @@ into the library module by the `copyGeneratedDatabase` task from
    content-desc, so Maestro cannot reach them. 1-line a11y fixes each
    (`contentDescription` on `LanguageFilterChip`'s chip and on the Exam
    container in `AnnotateScreen.kt`), then fill in the marked steps.
-2. `11_annotate_custom.yaml` is fragile: needs a query with zero exact hits;
-   confirm/replace the seed query in Studio.
-3. `16_list_rename.yaml` taps a row icon by `index: 0` (assumes newest-first
+2. `16_list_rename.yaml` taps a row icon by `index: 0` (assumes newest-first
    sort); confirm in Studio.
-4. `19/20_widget_*.yaml` are smoke-only: Maestro cannot place a home-screen
+3. `19/20_widget_*.yaml` are smoke-only: Maestro cannot place a home-screen
    widget, so in-app config-with-preview needs a manually placed widget.
-5. OCR-seeded CUJs need the debug hook first: handle
+4. OCR-seeded CUJs need the debug hook first: handle
    `hskwidget://ocr-test?text=...` (Android intent-filter + iOS `onOpenURL`)
    as `Screen.OCRDisplay(preText)`, then write the 3 flows.
-6. First-run system dialogs (notification permission) may need one manual
+5. First-run system dialogs (notification permission) may need one manual
    grant during the first Studio pass.

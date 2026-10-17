@@ -173,7 +173,7 @@ fun DisplayOCRScreen(
                 onFavoriteClick = onFavoriteClick,
                 onSpeakClick = viewModel::speakWord,
                 onCopyClick = viewModel::copyToClipboard,
-                onListsClick = { showWordListDialog = word.word },
+                onListsClick = { showWordListDialog = word.toChineseWord() },
                 shapeModifier = PrettyCardShapeModifier.First
             )
         }

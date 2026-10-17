@@ -164,7 +164,9 @@ fun DictionarySearchScreen(
                             onFavoriteClick = { onAnnotate(word.simplified) },
                             onSpeakClick = { viewModel.speakWord(word.simplified) },
                             onCopyClick = { viewModel.copyWord(word.simplified) },
-                            onListsClick = { showWordListDialog = word.word },
+                            // `word` is null for custom words (no chinese_word row, LEFT JOIN):
+                            // fall back to toChineseWord() so the dialog still opens.
+                            onListsClick = { showWordListDialog = word.toChineseWord() },
                             shapeModifier = when {
                                 results.size == 1 -> PrettyCardShapeModifier.Single
                                 index == 0 -> PrettyCardShapeModifier.First
