@@ -39,8 +39,11 @@ struct Provider: AppIntentTimelineProvider {
                     let definitionMap = word.word?.definition ?? [:]
                     let dictionaryLocale = crossPlatform.Locale.companion.resolve(preferred: services.appPreferences.dictionaryLocale.value)
                     let definition = (definitionMap[dictionaryLocale] as? String) ?? (word.annotation?.notes as? String) ?? ""
-                    let levelStr = word.hskLevel.name
-                    
+                    // HSK_Level.NOT_HSK is not a level: leave the label empty, so that the
+                    // widget simply doesn't show it, as the Android widget does.
+                    let hskLevel = word.hskLevel
+                    let levelStr = hskLevel == crossPlatform.HSK_Level.notHsk ? "" : hskLevel.name
+
                     return HskEntry(
                         date: Date(),
                         word: word.simplified,
