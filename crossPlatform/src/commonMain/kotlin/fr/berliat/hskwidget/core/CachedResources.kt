@@ -45,6 +45,9 @@ object CachedResources {
         private set
 
     suspend fun load(): CachedResources = CachedResources.apply {
+        // Ensure local process locale override is synced before loading Compose Resources
+        LocaleManager.getCurrentLocale()
+
         appName = getString(Res.string.app_name)
         appSlogan = getString(Res.string.app_slogan)
         widgetListName = getString(Res.string.widget_name)
