@@ -1,0 +1,23 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Dictionary / P2 / Tapping a word in the in-place reader opens its detail card.
+- launchApp:
+      clearState: true
+
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "外星人"
+- hideKeyboard
+- extendedWaitUntil:
+    visible: "外星人"
+    timeout: 6000
+
+- tapOn: "space alien; extraterrestrial"
+- extendedWaitUntil:
+    visible: "外星人存在"
+    timeout: 3000
+
+- tapOn: "外星人存在"
+- extendedWaitUntil:
+      visible: "外星人存在 not in dictionary, add annotation?"
+      timeout: 6000

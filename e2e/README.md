@@ -10,8 +10,9 @@ Covers every `docs/CUJs.md` row marked `Maestro`, except the OCR-seeded rows
 e2e/
   README.md
   setup/00_setup1.yaml        seed: clearState + annotate 你好 + E2E-list(你好)
-  dictionary/01..07           search, annotated filter, locale(TODO), add-to-list,
-                              paginate, text size, no-result
+  dictionary/01..07,25..28    search, annotated filter, locale(TODO), add-to-list,
+                              paginate, text size, no-result, clear-after-list,
+                               reader (short/long), click word
   annotations/08..12,24       create, edit, delete, custom(fragile), exam(TODO),
                               delete-keeps-personal-lists
   wordlists/13..18            create, view, remove, rename, delete, duplicate
