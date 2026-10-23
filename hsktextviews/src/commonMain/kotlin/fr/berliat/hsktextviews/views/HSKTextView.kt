@@ -17,6 +17,7 @@ import fr.berliat.hsktextviews.HSKTextSegmenter
 import fr.berliat.hsktextviews.PinyinUtils.getPinyins
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 enum class ShowPinyins(val value: Int) {
@@ -53,31 +54,39 @@ fun HSKTextView(
     var words by remember { mutableStateOf(listOf<Pair<String, String>>()) }
 
     var isLoading by remember { mutableStateOf(true) }
+    var isSegmented by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
     val trimText = text.trim()
     LaunchedEffect(trimText, segmenter) {
-        if (trimText.isNotBlank()) {
-            withContext(Dispatchers.Default) {
-                val parsedWords = mutableListOf<Pair<String, String>>()
+        if (trimText.isBlank()) return@LaunchedEffect
 
-                trimText.split("\n").forEach { paragraph ->
-                    segmenter?.segment(paragraph)?.forEach { word ->
-                        parsedWords.add(word to word.getPinyins().joinToString(" "))
-                    }
-                    parsedWords.add("\n" to "")
-                }
-
-                words = parsedWords
-            }
-
+        val seg = segmenter
+        // The segmenter preloads in the background (it can take a while on cold
+        // start). Rather than blocking the screen, show the raw glyphs right
+        // away and re-segment in place once the segmenter is ready.
+        if (seg == null) {
+            words = withContext(Dispatchers.Default) { glyphFallback(trimText) }
+            isSegmented = false
             isLoading = false
+            return@LaunchedEffect
+        }
+        if (!seg.isReady()) {
+            words = withContext(Dispatchers.Default) { glyphFallback(trimText) }
+            isSegmented = false
+            isLoading = false
+            while (!seg.isReady()) delay(100)
+        }
 
-            if (words.isEmpty()) {
-                onTextAnalysisFailure?.invoke(Exception("Segmenter returned no words"))
-            } else {
-                onTextAnalysisSuccess?.invoke(words)
-            }
+        val parsedWords = withContext(Dispatchers.Default) { segmentWords(trimText, seg) }
+        words = parsedWords
+        isSegmented = true
+        isLoading = false
+
+        if (parsedWords.isEmpty()) {
+            onTextAnalysisFailure?.invoke(Exception("Segmenter returned no words"))
+        } else {
+            onTextAnalysisSuccess?.invoke(parsedWords)
         }
     }
 
@@ -121,7 +130,7 @@ fun HSKTextView(
                         )
 
                         // optional end separator
-                        if (endSeparator.isNotEmpty()) {
+                        if (endSeparator.isNotEmpty() && isSegmented) {
                             Box(
                                 modifier = Modifier.fillMaxHeight().padding(horizontal = 2.dp)
                                     .align(Alignment.CenterVertically),
@@ -134,4 +143,29 @@ fun HSKTextView(
                 }
             }
     }
+}
+
+/** Segment every paragraph into words, keeping the blank line between paragraphs. */
+private fun segmentWords(text: String, segmenter: HSKTextSegmenter): List<Pair<String, String>> {
+    val parsedWords = mutableListOf<Pair<String, String>>()
+    text.split("\n").forEach { paragraph ->
+        segmenter.segment(paragraph)?.forEach { word ->
+            parsedWords.add(word to word.getPinyins().joinToString(" "))
+        }
+        parsedWords.add("\n" to "")
+    }
+    return parsedWords
+}
+
+/** One word per glyph: shown while the segmenter is still preloading. */
+private fun glyphFallback(text: String): List<Pair<String, String>> {
+    val parsedWords = mutableListOf<Pair<String, String>>()
+    text.split("\n").forEach { paragraph ->
+        paragraph.forEach { char ->
+            val glyph = char.toString()
+            parsedWords.add(glyph to glyph.getPinyins().joinToString(" "))
+        }
+        parsedWords.add("\n" to "")
+    }
+    return parsedWords
 }

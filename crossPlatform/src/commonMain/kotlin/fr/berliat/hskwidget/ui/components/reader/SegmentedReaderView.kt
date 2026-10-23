@@ -2,7 +2,9 @@ package fr.berliat.hskwidget.ui.components.reader
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import co.touchlab.kermit.Logger
@@ -11,9 +13,12 @@ import fr.berliat.hsktextviews.views.HSKTextView
 import fr.berliat.hsktextviews.views.ShowPinyins
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.core.HSKAppServices
+import fr.berliat.hskwidget.core.SnackbarType
 import fr.berliat.hskwidget.ocr_display_loading
 import fr.berliat.hskwidget.ocr_display_text_segmentation_failed
+import fr.berliat.hskwidget.reader_word_spacing_processing
 import fr.berliat.hskwidget.ui.components.LoadingView
+import fr.berliat.hskwidget.ui.dismissKeyboardOnClick
 import fr.berliat.hskwidget.ui.theme.AppTypographies
 import org.jetbrains.compose.resources.StringResource
 
@@ -42,10 +47,19 @@ fun SegmentedReaderView(
     wordSeparator: String = READER_WORD_SEPARATOR,
     modifier: Modifier = Modifier
 ) {
-    // NOTE: HSKTextView reuses its `modifier` for both the FlowRow container
-    // AND each HSKWordView item, so passing fillMaxWidth/fillMaxSize here
-    // forces every character onto its own line. Keep the inner call bare and
-    // apply layout at the Box level instead.
+    // Word spacing needs the segmenter: warn while it is still preloading, so the
+    // user knows the "Space words" toggle isn't applied yet. Uses the helper that
+    // already exists in the app instead of any new focus/keyboard logic.
+    LaunchedEffect(segmenter, separatorEnabled) {
+        if (separatorEnabled && !segmenter.isReady()) {
+            HSKAppServices.snackbar.show(
+                SnackbarType.INFO,
+                Res.string.reader_word_spacing_processing,
+                duration = SnackbarDuration.Long
+            )
+        }
+    }
+
     Box(modifier = modifier.dismissKeyboardOnClick()) {
         HSKTextView(
             text = text,

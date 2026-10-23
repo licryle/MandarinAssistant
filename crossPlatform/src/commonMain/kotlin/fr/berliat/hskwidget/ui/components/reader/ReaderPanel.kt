@@ -14,11 +14,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -34,15 +29,11 @@ import fr.berliat.hskwidget.data.model.AnnotatedChineseWord
 import fr.berliat.hskwidget.dictionary_noresult_icon
 import fr.berliat.hskwidget.dictionary_noresult_text
 import fr.berliat.hskwidget.dictionary_noresultwithfilter_text
-import fr.berliat.hskwidget.dictionary_search_loading
 import fr.berliat.hskwidget.filter_alt_off_24px
-import fr.berliat.hskwidget.ui.components.LoadingView
 import fr.berliat.hskwidget.ui.components.PrettyCardShapeModifier
-import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.StringResource
-import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Locked layout: takes all height, inner reader scrolls, panel itself does not.
@@ -80,37 +71,23 @@ fun ReaderPanel(
             onAnnotate = onAnnotate
         )
 
-        // Analysing before the segmenter finishes preloading would leave
-        // spacers that HSKTextView never retries, so gate the text on readiness.
-        var isSegmenterReady by remember(segmenter) { mutableStateOf(segmenter.isReady()) }
-        LaunchedEffect(segmenter) {
-            while (!segmenter.isReady()) {
-                delay(100.milliseconds)
-            }
-            isSegmenterReady = true
-        }
-
         Box(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            if (!isSegmenterReady) {
-                LoadingView(loadingText = Res.string.dictionary_search_loading)
-            } else {
-                SegmentedReaderView(
-                    text = text,
-                    textSize = textSize,
-                    showPinyins = showPinyins,
-                    separatorEnabled = separatorEnabled,
-                    clickedWords = clickedWords,
-                    onWordClick = onWordClick,
-                    onAppeared = onAppeared,
-                    onFailure = onFailure,
-                    segmenter = segmenter,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
+            SegmentedReaderView(
+                text = text,
+                textSize = textSize,
+                showPinyins = showPinyins,
+                separatorEnabled = separatorEnabled,
+                clickedWords = clickedWords,
+                onWordClick = onWordClick,
+                onAppeared = onAppeared,
+                onFailure = onFailure,
+                segmenter = segmenter,
+                modifier = Modifier.fillMaxSize()
+            )
         }
 
         SelectableWordCard(

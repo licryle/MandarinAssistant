@@ -180,6 +180,7 @@ We recommend to choose the level you're at plus the one below, or above dependin
     <string name="ocr_display_conf_bigger">Increase Text Size</string>
     <string name="ocr_display_pinyins">Show pinyins</string>
     <string name="ocr_display_separator">Space words</string>
+    <string name="reader_word_spacing_processing">Words spacing is being processed</string>
     <string name="ocr_display_smallest_text">Smallest text available</string>
     <string name="ocr_display_word_not_found">Couldn't find word, copying to clipboard</string>
     <string name="ocr_display_no_text_found">No text found</string>

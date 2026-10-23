@@ -180,6 +180,7 @@ Nous vous recommandons de choisir le niveau où vous en êtes plus celui du dess
     <string name="ocr_display_conf_bigger">Augmenter la taille du texte</string>
     <string name="ocr_display_pinyins">Afficher les pinyins</string>
     <string name="ocr_display_separator">Espacer les mots</string>
+    <string name="reader_word_spacing_processing">L\'espacement des mots est en cours de traitement</string>
     <string name="ocr_display_smallest_text">Texte le plus petit disponible</string>
     <string name="ocr_display_word_not_found">Mot non trouvé, copié dans le presse-papier</string>
     <string name="ocr_display_no_text_found">Aucun texte trouvé</string>
