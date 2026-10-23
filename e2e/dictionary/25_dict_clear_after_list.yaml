@@ -1,0 +1,16 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Dictionary / P1 / Clearing the search bar after opening a list must not
+# resurrect the list:"..." filter (regression: EntryQueryApplicator restore).
+- launchApp:
+      clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Lists"
+- assertVisible: "HSK7"
+- tapOn: "HSK7"
+- assertVisible: "以"
+
+# The list filter is in the search bar; clearing it empties the bar (no filter).
+- tapOn: "Clear search"
+- assertVisible: "Search pinyin, definition, hanzi"

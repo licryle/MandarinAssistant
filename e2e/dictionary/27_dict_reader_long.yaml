@@ -1,0 +1,17 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Dictionary / P2 / A long hanzi text is analysed in place but must NOT
+# offer the "add annotation" prompt (annotating a whole long text is not allowed).
+- launchApp:
+      clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "我是外星人我是外星人我是外星人我是外星人我是外星人"
+- hideKeyboard
+- extendedWaitUntil:
+    visible: "外"
+    timeout: 6000
+- assertNotVisible: "add annotation?"

@@ -1,0 +1,16 @@
+appId: fr.berliat.hskwidget
+---
+# CUJ: Dictionary / P2 / A short hanzi phrase not in the dictionary is analysed
+# in place and offers the "add annotation" prompt.
+- launchApp:
+      clearState: true
+
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "我是外星人"
+- hideKeyboard
+- extendedWaitUntil:
+    visible: "我是外星人 not in dictionary, add annotation?"
+    timeout: 6000
