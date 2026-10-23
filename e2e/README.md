@@ -12,7 +12,8 @@ e2e/
   setup/00_setup1.yaml        seed: clearState + annotate 你好 + E2E-list(你好)
   dictionary/01..07           search, annotated filter, locale(TODO), add-to-list,
                               paginate, text size, no-result
-  annotations/08..12          create, edit, delete, custom(fragile), exam(TODO)
+  annotations/08..12,24       create, edit, delete, custom(fragile), exam(TODO),
+                              delete-keeps-personal-lists
   wordlists/13..18            create, view, remove, rename, delete, duplicate
   widgets/19..20              SMOKE-ONLY (no widget placeable by Maestro)
   config/21..22               app language round-trip, locale persist

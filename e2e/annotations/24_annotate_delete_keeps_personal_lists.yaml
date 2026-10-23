@@ -1,0 +1,53 @@
+appId: fr.berliat.hskwidget
+---
+# Regression: deleting an annotation must clear the word from the system lists
+# (Annotated words + At the exam) but keep it in personal lists (E2E-list).
+# Setup: setup1 (annotated 你好, E2E-list contains 你好).
+
+- runFlow:
+    file: ../setup/00_setup1.yaml
+
+# --- Flag the annotated word as exam so it is in both system lists ---
+- tapOn: "Menu"
+- tapOn: "Dictionary"
+- tapOn: "Search pinyin, definition, hanzi"
+- eraseText: 100
+- inputText: "nihao"
+- hideKeyboard
+- assertVisible: "你"
+- tapOn: "Annotate a word"
+- tapOn: "Exam switch"
+- tapOn: "Save"
+- assertVisible: "你好 successfully saved"
+
+# --- Delete the annotation ---
+- tapOn: "Annotate a word"
+- tapOn: "Delete"
+- assertVisible: "Confirm deletion"
+- tapOn: "Delete"
+- assertVisible: "你好 successfully deleted"
+
+# --- Annotated words no longer contains the word ---
+- tapOn: "Menu"
+- tapOn: "Lists"
+- tapOn: "Annotated words"
+- extendedWaitUntil:
+    visible: "No result!"
+    timeout: 10000
+- assertNotVisible: "你"
+- back
+
+# --- At the exam no longer contains the word ---
+- tapOn: "At the exam"
+- extendedWaitUntil:
+    visible: "No result!"
+    timeout: 10000
+- assertNotVisible: "你"
+- back
+
+# --- The personal list still contains the word ---
+- tapOn: "E2E-list"
+- extendedWaitUntil:
+    visible: "你"
+    timeout: 10000
+- assertNotVisible: "No result!"

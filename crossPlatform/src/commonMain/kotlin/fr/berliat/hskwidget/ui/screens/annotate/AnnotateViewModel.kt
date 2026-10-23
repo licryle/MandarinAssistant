@@ -100,6 +100,8 @@ class AnnotateViewModel(
 
                 if (annotatedWord.annotation.isExam == true) {
                     ankiCaller(wordListRepo.addWordToSysExamList(annotatedWord))
+                } else {
+                    ankiCaller(wordListRepo.removeWordFromSysExamList(annotatedWord.simplified))
                 }
 
                 val ankiOperation = wordListRepo.updateInAllLists(annotatedWord.simplified)
@@ -124,7 +126,12 @@ class AnnotateViewModel(
                 Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.ANNOTATION_DELETE)
 
                 wordListRepo.touchAnnotatedList()
-                ankiCaller(wordListRepo.removeWordFromAllLists(simplified))
+                wordListRepo.touchExamList()
+                ankiCaller(wordListRepo.removeWordFromSysAnnotatedList(simplified))
+                ankiCaller(wordListRepo.removeWordFromSysExamList(simplified))
+
+                val ankiOperation = wordListRepo.updateInAllLists(simplified)
+                ankiCaller(ankiOperation)
             } catch (e: Exception) {
                 error = e
             }

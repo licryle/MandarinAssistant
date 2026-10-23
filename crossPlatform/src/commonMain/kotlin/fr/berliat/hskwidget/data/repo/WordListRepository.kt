@@ -172,7 +172,7 @@ class WordListRepository(
             wordListDAO.insertWordToList(entry)
         }
 
-        if (entry.ankiNoteId != WordList.Companion.ANKI_ID_EMPTY) {
+        if (entry.ankiNoteId != WordList.ANKI_ID_EMPTY) {
             return@withContext null
         }
 
@@ -197,6 +197,7 @@ class WordListRepository(
 
         // Checked on first list of function
         wordListDAO.deleteWordFromList(entry.listId, entry.simplified)
+        wordListDAO.touchList(entry.listId)
 
         return@withContext suspend { // Will execute only if Anki integration is active, allowed and ready to fire
             if (ankiStore.deleteCard(entry)) {
@@ -204,8 +205,6 @@ class WordListRepository(
             } else {
                 Result.failure(Exception("Couldn't delete entry $entry"))
             }
-
-            Result.failure(Exception("Word not in list"))
         }
     }
 
@@ -246,7 +245,7 @@ class WordListRepository(
         }
 
         // Anki now
-        if (entry.ankiNoteId != WordList.Companion.ANKI_ID_EMPTY) return@withContext null
+        if (entry.ankiNoteId != WordList.ANKI_ID_EMPTY) return@withContext null
 
         return@withContext suspend { // Will execute only if Anki integration is active, allowed and ready to fire
             // Create deck if needed (shouldn't)
@@ -280,13 +279,42 @@ class WordListRepository(
         return@withContext addWordToList(annotList.wordList, word)
     }
 
+    suspend fun removeWordFromSysAnnotatedList(simplified: String): (suspend () -> Result<Unit>)?
+            = withContext(AppDispatchers.IO) {
+        val wordList = getSystemLists()
+
+        val annotList = wordList.find { it.name == WordList.SYSTEM_ANNOTATED_NAME }
+        if (annotList == null) return@withContext null
+
+        return@withContext removeWordFromList(annotList.wordList, simplified)
+    }
+
+    suspend fun removeWordFromSysExamList(simplified: String): (suspend () -> Result<Unit>)?
+            = withContext(AppDispatchers.IO) {
+        val wordList = getSystemLists()
+
+        val examList = wordList.find { it.name == WordList.SYSTEM_EXAM_NAME }
+        if (examList == null) return@withContext null
+
+        return@withContext removeWordFromList(examList.wordList, simplified)
+    }
+
     suspend fun touchAnnotatedList() : Boolean = withContext(AppDispatchers.IO) {
         val wordList = getSystemLists()
 
-        val annotList = wordList.find { it.name == WordList.Companion.SYSTEM_ANNOTATED_NAME }
+        val annotList = wordList.find { it.name == WordList.SYSTEM_ANNOTATED_NAME }
         if (annotList == null) return@withContext false
 
         return@withContext wordListDAO.touchList(annotList.id) > 0
+    }
+
+    suspend fun touchExamList() : Boolean = withContext(AppDispatchers.IO) {
+        val wordList = getSystemLists()
+
+        val examList = wordList.find { it.name == WordList.SYSTEM_EXAM_NAME }
+        if (examList == null) return@withContext false
+
+        return@withContext wordListDAO.touchList(examList.id) > 0
     }
 
     suspend fun updateInAllLists(simplified: String): (suspend () -> Result<Unit>)?
