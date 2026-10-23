@@ -46,7 +46,7 @@ fun SegmentedReaderView(
     // AND each HSKWordView item, so passing fillMaxWidth/fillMaxSize here
     // forces every character onto its own line. Keep the inner call bare and
     // apply layout at the Box level instead.
-    Box(modifier = modifier) {
+    Box(modifier = modifier.dismissKeyboardOnClick()) {
         HSKTextView(
             text = text,
             segmenter = segmenter,
