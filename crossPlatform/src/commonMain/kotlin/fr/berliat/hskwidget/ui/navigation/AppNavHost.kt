@@ -2,13 +2,16 @@ package fr.berliat.hskwidget.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import kotlinx.coroutines.withContext
 
 import fr.berliat.hskwidget.domain.SearchQuery
 import fr.berliat.hskwidget.core.IntentSources
@@ -22,8 +25,11 @@ import fr.berliat.hskwidget.ui.screens.dictionary.DictionarySearchScreen
 import fr.berliat.hskwidget.ui.screens.support.SupportScreen
 import fr.berliat.hskwidget.ui.screens.widget.WidgetsListScreen
 import fr.berliat.hskwidget.ui.screens.wordlist.WordListScreen
+import fr.berliat.hskwidget.ui.components.LoadingView
+import fr.berliat.hskwidget.core.AppDispatchers
 
 import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.exists
 import io.github.vinceglb.filekit.absolutePath
 
 import kotlin.reflect.typeOf
@@ -31,7 +37,6 @@ import kotlin.reflect.typeOf
 @Composable
 fun AppNavHost(viewModel : AppViewModel) {
     val navController = rememberNavController()
-    val isViewModelReady by viewModel.isReady.collectAsState()
     val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
 
     LaunchedEffect(navController) {
@@ -52,14 +57,16 @@ fun AppNavHost(viewModel : AppViewModel) {
         ) { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.Dictionary>()
 
-            // Queue the search update until the viewModel is ready
-            LaunchedEffect(args.search, isViewModelReady) {
-                if (isViewModelReady && args.search != null) {
-                    val currentSearch = viewModel.appConfig.searchQuery.value.toString()
-                    if (args.search != currentSearch) {
-                         viewModel.appConfig.searchQuery.value =
-                            SearchQuery.processSearchQuery(args.search)
-                    }
+            // A route's `search` is a one-shot command, consumed only when this
+            // entry is first shown. Re-applying it on every recomposition (e.g.
+            // coming back from Annotate) would bring back a stale query over
+            // whatever the user typed or cleared in the AppBar meanwhile.
+            var routeSearchApplied by rememberSaveable { mutableStateOf(false) }
+            LaunchedEffect(Unit) {
+                if (routeSearchApplied) return@LaunchedEffect
+                routeSearchApplied = true
+                args.search?.let { raw ->
+                    viewModel.appConfig.searchQuery.value = SearchQuery.processSearchQuery(raw)
                 }
             }
 
@@ -167,18 +174,37 @@ fun AppNavHost(viewModel : AppViewModel) {
                 viewModel.navigationManager.registerScreenVisit(args)
             }
 
-            // No I/O here: PlatformFile(path) is just a wrapper.
-            // Existence is validated in DisplayOCRViewModel.recognizeText on IO.
-            val imageFile = remember(args.imageFilePath) {
-                args.imageFilePath?.let { PlatformFile(it) }
+            // File existence is disk I/O: never run it during composition (StrictMode
+            // DiskReadViolation / main-thread jank). Resolve it on an IO dispatcher and
+            // gate the screen until the check completes so we neither crash nor show a
+            // spurious "no text" warning or start OCR on a missing file.
+            val imageFilePath = args.imageFilePath
+            var imageFile by remember(imageFilePath) { mutableStateOf<PlatformFile?>(null) }
+            var isFileCheckDone by remember(imageFilePath) { mutableStateOf(imageFilePath == null) }
+
+            LaunchedEffect(imageFilePath) {
+                if (imageFilePath == null) {
+                    imageFile = null
+                    isFileCheckDone = true
+                } else {
+                    imageFile = withContext(AppDispatchers.IO) {
+                        val f = PlatformFile(imageFilePath)
+                        if (f.exists()) f else null
+                    }
+                    isFileCheckDone = true
+                }
             }
 
-            DisplayOCRScreen(
-                preText = args.preText,
-                imageFile = imageFile,
-                onFavoriteClick = { word -> navController.navigate(Screen.Annotate(word.simplified)) },
-                onClickOCRAdd = { preText -> navController.navigate(Screen.OCRCapture(preText)) }
-            )
+            if (!isFileCheckDone) {
+                LoadingView()
+            } else {
+                DisplayOCRScreen(
+                    preText = args.preText,
+                    imageFile = imageFile,
+                    onFavoriteClick = { word -> navController.navigate(Screen.Annotate(word.simplified)) },
+                    onClickOCRAdd = { preText -> navController.navigate(Screen.OCRCapture(preText)) }
+                )
+            }
         }
     }
 }

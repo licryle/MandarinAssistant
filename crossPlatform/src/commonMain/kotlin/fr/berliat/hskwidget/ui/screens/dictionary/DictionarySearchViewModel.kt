@@ -101,6 +101,7 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
             "HAS_ANNOTATION_FILTER" to annotatedOnly.toString(),
             "IN_LIST" to inList.toString(),
             "LOCALE" to localeCode,
+            "EXACT_WORD" to searchQuery.value.exactWord.toString(),
             "SOURCE" to source.toString()
         )
         currentSearchJob?.cancel()
@@ -179,6 +180,10 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
         val annotatedOnly = prefsStore.searchFilterHasAnnotation.value
         val locale = Locale.resolve(prefsStore.dictionaryLocale.value)
 
+        if (searchQuery.exactWord) {
+            return fetchExactWordPage(searchQuery.query.trim(), listName, annotatedOnly)
+        }
+
         val results = if (listName != null) {
             // Search within the specified word list
             annotatedChineseWordDAO.searchFromWordList(listName, searchQuery.query, locale, annotatedOnly && !searchQuery.ignoreAnnotation, currentPage, itemsPerPage)
@@ -188,6 +193,20 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
 
         currentPage++
         return results
+    }
+
+    /** exactWord: exact simplified lookup, no examples/collocations/definitions noise. */
+    private suspend fun fetchExactWordPage(query: String, listName: String?, annotatedOnly: Boolean): List<AnnotatedChineseWord> {
+        if (currentPage > 0 || query.isEmpty()) return emptyList()
+        currentPage++
+
+        val hit = annotatedChineseWordDAO.getFromSimplified(query) ?: return emptyList()
+        if (annotatedOnly && !hit.hasAnnotation()) return emptyList()
+        if (listName != null) {
+            val inList = annotatedChineseWordDAO.searchFromWordList(listName, query, Locale.resolve(prefsStore.dictionaryLocale.value), annotatedOnly, 0, 1)
+            if (inList.none { it.simplified == hit.simplified }) return emptyList()
+        }
+        return listOf(hit)
     }
 
     fun speakWord(word: String) {

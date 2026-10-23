@@ -3,6 +3,7 @@ package fr.berliat.hskwidget.domain
 data class SearchQuery(
     val query: String = "",
     val ignoreAnnotation: Boolean = false,
+    val exactWord: Boolean = false,
     val inListName: String? = null
 ) {
     override fun toString(): String {
@@ -10,6 +11,7 @@ data class SearchQuery(
 
         if (inListName != null) params.add("""list:"$inListName"""")
         if (ignoreAnnotation) params.add("""ignAnnot:""""")
+        if (exactWord) params.add("""exactWord:""""")
 
         return params.joinToString(" ")
     }
@@ -27,17 +29,20 @@ data class SearchQuery(
 
             var inListName: String? = null
             var ignoreAnnotation = false
+            var exactWord = false
 
             flags.forEach { (flag, value) ->
                 when (flag) {
                     "list" -> inListName = value
                     "ignAnnot" -> ignoreAnnotation = true
+                    "exactWord" -> exactWord = true
                 }
             }
 
             return SearchQuery(
                 query = baseQuery,
                 ignoreAnnotation = ignoreAnnotation,
+                exactWord = exactWord,
                 inListName = inListName
             )
         }

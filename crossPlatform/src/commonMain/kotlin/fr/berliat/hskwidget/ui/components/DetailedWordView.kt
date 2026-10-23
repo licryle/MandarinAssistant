@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -62,6 +64,8 @@ import fr.berliat.hskwidget.dictionary_item_type
 import fr.berliat.hskwidget.format_list_bulleted_add_24px
 import fr.berliat.hskwidget.keyboard_arrow_down_24px
 import fr.berliat.hskwidget.keyboard_arrow_up_24px
+import fr.berliat.hskwidget.search_24px
+import fr.berliat.hskwidget.search_hint
 import fr.berliat.hskwidget.dictionary_item_collocations
 import fr.berliat.hskwidget.widget_btn_copy
 import fr.berliat.hskwidget.widget_btn_speak
@@ -120,6 +124,7 @@ fun DetailedWordView (
     onSpeakClick: ((AnnotatedChineseWord) -> Unit)? = null,
     onCopyClick: ((AnnotatedChineseWord) -> Unit)? = null,
     onListsClick: ((AnnotatedChineseWord) -> Unit)? = null,
+    onSearchTerm: ((String) -> Unit)? = null,
     onPinyinChange: (String) -> Unit = {},
     showAnnotation: Boolean = true,
     verticallyConstrained: Boolean = false,
@@ -307,10 +312,13 @@ fun DetailedWordView (
                         }
 
                         word.word?.synonyms?.takeIf { it.isNotEmpty() }?.let {
-                            Text(
-                                stringResource(Res.string.dictionary_item_synonyms),
-                                style = AppTypographies.detailCardSubTitle)
-                            Text(it, style = bodyMediumStyle)
+                            SearchableDetailField(
+                                title = stringResource(Res.string.dictionary_item_synonyms),
+                                content = it,
+                                bodyStyle = bodyMediumStyle,
+                                onSearchTerm = onSearchTerm,
+                                splitRegex = Regex("[\\n,，、；;]+")
+                            )
                         }
                     }
                     Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
@@ -326,10 +334,13 @@ fun DetailedWordView (
                         }
 
                         word.word?.antonym?.takeIf { it.isNotEmpty() }?.let {
-                            Text(
-                                stringResource(Res.string.dictionary_item_antonym),
-                                style = AppTypographies.detailCardSubTitle)
-                            Text(it, style = bodyMediumStyle)
+                            SearchableDetailField(
+                                title = stringResource(Res.string.dictionary_item_antonym),
+                                content = it,
+                                bodyStyle = bodyMediumStyle,
+                                onSearchTerm = onSearchTerm,
+                                splitRegex = Regex("[\\n,，、；;]+")
+                            )
                         }
                     }
                 }
@@ -338,12 +349,14 @@ fun DetailedWordView (
                     Row(
                         modifier = Modifier.padding(10.dp)
                     ) {
-                        Column {
-                            Text(
-                                stringResource(Res.string.dictionary_item_collocations),
-                                style = AppTypographies.detailCardSubTitle)
-                            Text(it, style = bodyMediumStyle)
-                        }
+                        SearchableDetailField(
+                            title = stringResource(Res.string.dictionary_item_collocations),
+                            content = it,
+                            bodyStyle = bodyMediumStyle,
+                            onSearchTerm = onSearchTerm,
+                            splitRegex = Regex("\\n+"),
+                            modifier = Modifier.weight(1f)
+                        )
                     }
                 }
 
@@ -351,12 +364,14 @@ fun DetailedWordView (
                     Row(
                         modifier = Modifier.padding(10.dp)
                     ) {
-                        Column {
-                            Text(
-                                stringResource(Res.string.dictionary_item_examples),
-                                style = AppTypographies.detailCardSubTitle)
-                            Text(it, style = bodyMediumStyle)
-                        }
+                        SearchableDetailField(
+                            title = stringResource(Res.string.dictionary_item_examples),
+                            content = it,
+                            bodyStyle = bodyMediumStyle,
+                            onSearchTerm = onSearchTerm,
+                            splitRegex = Regex("\\n+"),
+                            modifier = Modifier.weight(1f)
+                        )
                     }
                 }
 
@@ -375,5 +390,88 @@ fun DetailedWordView (
                 }
             }
         }
+    }
+}
+
+/**
+ * Detail field split into one searchable row per entry, magnifier at the
+ * beginning of each line (not far right). Whole line is clickable.
+ *
+ * Split rules: collocations/examples break on newlines (each line = 1 entry);
+ * synonyms/antonyms additionally break on `, ， 、 ； ;`.
+ */
+@Composable
+private fun SearchableDetailField(
+    title: String,
+    content: String,
+    bodyStyle: androidx.compose.ui.text.TextStyle,
+    onSearchTerm: ((String) -> Unit)?,
+    modifier: Modifier = Modifier,
+    splitRegex: Regex? = null
+) {
+    Column(modifier = modifier) {
+        Text(title, style = AppTypographies.detailCardSubTitle)
+        // DB strings sometimes carry literal "\n" escapes (backslash + n)
+        // instead of real line breaks — normalize first so they split too.
+        val normalized = content.replace("\\n", "\n")
+        if (onSearchTerm == null || splitRegex == null) {
+            Text(normalized, style = bodyStyle)
+            return@Column
+        }
+        val entries = normalized.split(splitRegex).map { it.trim() }.filter { it.isNotEmpty() }
+        if (entries.isEmpty()) {
+            Text(normalized, style = bodyStyle)
+            return@Column
+        }
+        // Fallback: single entry identical to content keeps old whole-block search.
+        if (entries.size == 1 && entries[0] == normalized.trim()) {
+            SearchableLine(
+                entry = entries[0],
+                bodyStyle = bodyStyle,
+                onSearchTerm = onSearchTerm
+            )
+            return@Column
+        }
+        entries.forEach { entry ->
+            SearchableLine(
+                entry = entry,
+                bodyStyle = bodyStyle,
+                onSearchTerm = onSearchTerm
+            )
+        }
+    }
+}
+
+@Composable
+private fun SearchableLine(
+    entry: String,
+    bodyStyle: androidx.compose.ui.text.TextStyle,
+    onSearchTerm: ((String) -> Unit)?,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onSearchTerm?.let{ onSearchTerm(entry) } },
+        verticalAlignment = Alignment.Top
+    ) {
+        onSearchTerm?.let {
+            IconButton(
+                onClick = { onSearchTerm(entry) },
+                modifier = Modifier.size(28.dp).padding(top = 2.dp)
+            ) {
+                Icon(
+                    painter = painterResource(Res.drawable.search_24px),
+                    contentDescription = stringResource(Res.string.search_hint),
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
+        Text(
+            entry,
+            style = bodyStyle,
+            modifier = Modifier.weight(1f).padding(top = 4.dp, bottom = 4.dp)
+        )
     }
 }

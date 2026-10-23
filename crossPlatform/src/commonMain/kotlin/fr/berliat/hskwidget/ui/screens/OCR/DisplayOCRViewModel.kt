@@ -1,6 +1,5 @@
 package fr.berliat.hskwidget.ui.screens.OCR
 
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -26,9 +25,7 @@ import fr.berliat.hskwidget.core.Logging
 import fr.berliat.hskwidget.core.SnackbarType
 import fr.berliat.hskwidget.ocr_display_no_text_found
 import fr.berliat.hskwidget.ocr_display_ocr_failed
-import fr.berliat.hskwidget.ocr_display_smallest_text
 import fr.berliat.hskwidget.ocr_display_word_not_found
-import fr.berliat.hskwidget.ui.theme.AppTypographies
 
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.exists
@@ -180,38 +177,6 @@ class DisplayOCRViewModel(
                 Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.OCR_WORD_FOUND)
             }
         }
-    }
-
-    fun updateTextSize(increment: Float) {
-        val textSize = (appPreferences.readerTextSize.value.value + increment).coerceAtLeast(
-            AppTypographies.smallestHanziFontSize.value)
-
-        if (textSize == AppTypographies.smallestHanziFontSize.value) {
-            viewModelScope.launch {
-                HSKAppServices.snackbar.show(SnackbarType.WARNING, Res.string.ocr_display_smallest_text)
-            }
-        }
-
-        Logger.d(tag = TAG, messageString = "updateTextSize to $textSize")
-        appPreferences.readerTextSize.value = textSize.sp
-
-        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.OCR_TEXT_SIZE_CHANGE)
-    }
-
-    fun toggleShowPinyins(showPinyins: Boolean) {
-        appPreferences.readerShowAllPinyins.value = showPinyins
-        Logging.logAnalyticsEvent(
-            Logging.ANALYTICS_EVENTS.OCR_TOGGLE_PINYIN,
-            mapOf("ENABLED" to showPinyins.toString())
-        )
-    }
-
-    fun toggleSeparator(showSeparator: Boolean) {
-        appPreferences.readerSeparateWords.value = showSeparator
-        Logging.logAnalyticsEvent(
-            Logging.ANALYTICS_EVENTS.OCR_TOGGLE_SEPARATOR,
-            mapOf("ENABLED" to showSeparator.toString())
-        )
     }
 
     fun copyToClipboard(word: AnnotatedChineseWord) {
