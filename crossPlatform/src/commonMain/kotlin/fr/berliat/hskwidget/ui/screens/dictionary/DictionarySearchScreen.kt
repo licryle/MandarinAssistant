@@ -51,6 +51,7 @@ import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.bookmark_add_24px
 import fr.berliat.hskwidget.bookmark_heart_24px
 import fr.berliat.hskwidget.core.ContainHanziResult
+import fr.berliat.hsktextviews.PinyinUtils.isHanzi
 import fr.berliat.hskwidget.core.containsHanzi
 import fr.berliat.hskwidget.dictionary_search_loading
 import fr.berliat.hskwidget.dictionary_noresult_icon
@@ -113,7 +114,9 @@ fun DictionarySearchScreen(
         ContainHanziResult.SOME, ContainHanziResult.ALL -> true
         ContainHanziResult.NONE, ContainHanziResult.EMPTY -> false
     }
-    val couldAnnotate = wordExists == false && queryHasHanzi
+    val isLongText = query.length > 100 || query.count { it.isHanzi() } > 20
+    val mayAnnotate = wordExists == false && queryHasHanzi
+    val couldAnnotate = mayAnnotate && !isLongText
     val isEmptyResult = results.isEmpty()
 
     // Nothing in the dictionary for a hanzi query: analyse the text in place.
@@ -121,7 +124,7 @@ fun DictionarySearchScreen(
     // exists but is hidden by a filter keeps the normal filters + "filtered
     // out" message instead of swapping the chips away. Derived from state only
     // (no navigation), so typing/clearing can never be fought by a screen change.
-    val isReaderMode = isEmptyResult && couldAnnotate
+    val isReaderMode = isEmptyResult && mayAnnotate
 
     // Picking a synonym/example/collocation searches that term as an exact word.
     val onSearchTerm: (String) -> Unit = { term ->
@@ -183,31 +186,43 @@ fun DictionarySearchScreen(
             } else if (isLoading) {
                 LoadingView(loadingText = Res.string.dictionary_search_loading)
             } else if (isReaderMode) {
-                ReaderPanel(
-                    text = query,
-                    textSize = readerTextSize,
-                    cardTextSize = textSize,
-                    showPinyins = showPinyins,
-                    separatorEnabled = separatorEnabled,
-                    clickedWords = clickedWords,
-                    selectedWord = selectedWord,
-                    dictionaryLocale = dictionaryLocale,
-                    couldAnnotate = couldAnnotate,
-                    onAnnotate = { onAnnotate(query) },
-                    onWordClick = { readerSession.fetchWordForDisplay(it) },
-                    onAppeared = { readerSession.augmentAppeared(it) },
-                    onFailure = {
-                        HSKAppServices.snackbar.show(
-                            SnackbarType.WARNING,
-                            Res.string.ocr_display_text_segmentation_failed
+                Column {
+                    if (couldAnnotate) {
+                        Row {
+                            CompactNoResultHeader(
+                                query = query,
+                                couldAnnotate = couldAnnotate,
+                                onAnnotate = onAnnotate
+                            )
+                        }
+                    }
+
+                    Row {
+                        ReaderPanel(
+                            text = query,
+                            textSize = readerTextSize,
+                            cardTextSize = textSize,
+                            showPinyins = showPinyins,
+                            separatorEnabled = separatorEnabled,
+                            clickedWords = clickedWords,
+                            selectedWord = selectedWord,
+                            dictionaryLocale = dictionaryLocale,
+                            onWordClick = { readerSession.fetchWordForDisplay(it) },
+                            onAppeared = { readerSession.augmentAppeared(it) },
+                            onFailure = {
+                                HSKAppServices.snackbar.show(
+                                    SnackbarType.WARNING,
+                                    Res.string.ocr_display_text_segmentation_failed
+                                )
+                            },
+                            onFavoriteClick = { onAnnotate(it.simplified) },
+                            onSpeakClick = { readerSession.speakWord(it) },
+                            onCopyClick = { readerSession.copyWord(it) },
+                            onSearchTerm = onSearchTerm,
+                            onListsSaved = { viewModel.listsAssociationChanged() }
                         )
-                    },
-                    onFavoriteClick = { onAnnotate(it.simplified) },
-                    onSpeakClick = { readerSession.speakWord(it) },
-                    onCopyClick = { readerSession.copyWord(it) },
-                    onSearchTerm = onSearchTerm,
-                    onListsSaved = { viewModel.listsAssociationChanged() }
-                )
+                    }
+                }
             } else if (isEmptyResult) {
                 CompactNoResultHeader(
                     query = query,

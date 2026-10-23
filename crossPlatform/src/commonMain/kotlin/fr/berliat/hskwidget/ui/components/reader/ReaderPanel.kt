@@ -50,8 +50,6 @@ fun ReaderPanel(
     clickedWords: Map<String, String>,
     selectedWord: AnnotatedChineseWord?,
     dictionaryLocale: Locale,
-    couldAnnotate: Boolean,
-    onAnnotate: (String) -> Unit,
     onWordClick: (String) -> Unit,
     onAppeared: (List<Pair<String, String>>) -> Unit,
     onFailure: (StringResource) -> Unit,
@@ -65,12 +63,6 @@ fun ReaderPanel(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
-        CompactNoResultHeader(
-            query = text,
-            couldAnnotate = couldAnnotate,
-            onAnnotate = onAnnotate
-        )
-
         Box(
             modifier = Modifier
                 .weight(1f)
