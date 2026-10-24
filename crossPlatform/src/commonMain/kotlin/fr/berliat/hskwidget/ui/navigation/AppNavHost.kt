@@ -18,7 +18,7 @@ import fr.berliat.hskwidget.domain.SearchQuery
 import fr.berliat.hskwidget.core.IntentSources
 import fr.berliat.hskwidget.ui.application.AppViewModel
 import fr.berliat.hskwidget.ui.screens.OCR.CaptureImageScreen
-import fr.berliat.hskwidget.ui.reader.ReaderScreen
+import fr.berliat.hskwidget.ui.screens.reader.ReaderScreen
 import fr.berliat.hskwidget.ui.screens.about.AboutScreen
 import fr.berliat.hskwidget.ui.screens.annotate.AnnotateScreen
 import fr.berliat.hskwidget.ui.screens.config.ConfigScreen

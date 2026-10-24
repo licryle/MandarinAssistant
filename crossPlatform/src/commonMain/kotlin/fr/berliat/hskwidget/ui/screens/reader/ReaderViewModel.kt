@@ -1,4 +1,4 @@
-package fr.berliat.hskwidget.ui.reader
+package fr.berliat.hskwidget.ui.screens.reader
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
