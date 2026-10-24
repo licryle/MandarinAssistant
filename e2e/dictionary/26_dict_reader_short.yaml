@@ -14,3 +14,15 @@ appId: fr.berliat.hskwidget
 - extendedWaitUntil:
     visible: "我是外星人 not in dictionary, add annotation?"
     timeout: 6000
+- tapOn: "Space words"
+
+- extendedWaitUntil:
+    visible: "·"
+    timeout: 6000
+
+- tapOn: "人"
+- extendedWaitUntil:
+    visible: "space alien; extraterrestrial"
+    timeout: 3000
+- tapOn: "Manage lists for this word"
+- assertVisible: "Select personal list(s)"
