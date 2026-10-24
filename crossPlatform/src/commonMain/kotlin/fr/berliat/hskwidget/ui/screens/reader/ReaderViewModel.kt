@@ -122,15 +122,6 @@ class ReaderViewModel(
         }
     }
 
-    fun resetText() {
-        _uiState.update {
-            it.copy(
-                text = "",
-                selectedWord = null,
-                clickedWords = emptyMap())
-        }
-    }
-
     fun augmentWordFrequencyAppeared(words: List<Pair<String, String>>) {
         viewModelScope.launch(AppDispatchers.IO) {
             frequencyWordsRepo.incrementAppeared(words.groupingBy { it.first }.eachCount())
