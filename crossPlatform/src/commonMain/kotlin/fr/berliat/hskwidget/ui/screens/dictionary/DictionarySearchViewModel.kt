@@ -1,5 +1,6 @@
 package fr.berliat.hskwidget.ui.screens.dictionary
 
+import androidx.compose.ui.unit.TextUnit
 import fr.berliat.hskwidget.core.IntentSources
 import fr.berliat.hskwidget.core.Locale
 import fr.berliat.hskwidget.core.AppDispatchers
@@ -50,13 +51,13 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
 
     val hasAnnotationFilter: StateFlow<Boolean> = prefsStore.searchFilterHasAnnotation.asStateFlow()
 
-    val dictionaryLocale: StateFlow<Locale> = prefsStore.dictionaryLocale.asStateFlow()
+    val dictionaryLocale: StateFlow<Locale?> = prefsStore.dictionaryLocale.asStateFlow()
+    val textLocale: StateFlow<Locale> = prefsStore.dictionaryLocale.asStateFlow()
         .map { Locale.resolve(it) }
         .stateIn(CoroutineScope(AppDispatchers.Main), SharingStarted.Eagerly, Locale.resolve(prefsStore.dictionaryLocale.value))
 
-    val textSize: StateFlow<Float> = prefsStore.dictionaryTextSize.asStateFlow()
-        .map { it.value }
-        .stateIn(CoroutineScope(AppDispatchers.Main), SharingStarted.Eagerly, prefsStore.dictionaryTextSize.value.value)
+
+    val textSize: StateFlow<TextUnit> = prefsStore.dictionaryTextSize.asStateFlow()
 
     private var currentPage = 0
     private val itemsPerPage = 30

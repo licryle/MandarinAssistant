@@ -86,6 +86,7 @@ fun DictionarySearchScreen(
     val hasAnnotationFilter by viewModel.hasAnnotationFilter.collectAsState()
     val textSize by viewModel.textSize.collectAsState()
     val dictionaryLocale by viewModel.dictionaryLocale.collectAsState()
+    val textLocale by viewModel.textLocale.collectAsState()
 
     var showWordListDialog by remember { mutableStateOf<ChineseWord?>(null) }
 
@@ -192,8 +193,8 @@ fun DictionarySearchScreen(
                         DetailedWordView(
                             word = word,
                             pinyinEditable = false,
-                            textSize = textSize,
-                            dictionaryLocale = dictionaryLocale,
+                            textSize = textSize.value,
+                            dictionaryLocale = textLocale,
                             onFavoriteClick = onAnnotate,
                             onSpeakClick = { viewModel.speakWord(word.simplified) },
                             onCopyClick = { viewModel.copyWord(word.simplified) },
