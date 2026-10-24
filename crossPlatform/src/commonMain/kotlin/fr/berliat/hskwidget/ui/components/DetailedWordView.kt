@@ -71,6 +71,9 @@ import fr.berliat.hskwidget.widget_btn_copy
 import fr.berliat.hskwidget.widget_btn_speak
 
 import HSKWordView
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import fr.berliat.hskwidget.core.ContainHanziResult
 import fr.berliat.hskwidget.core.containsHanzi
 
@@ -306,23 +309,44 @@ fun DetailedWordView (
                 }
             }
 
+            val padding = PaddingValues(start = 10.dp, top = 0.dp, bottom = 5.dp, end = 10.dp)
             if (isMoreVisible) {
                 // More section
                 Row(
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(padding)
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         val modality = word.word?.modality ?: Modality.UNKNOWN
                         if (modality != Modality.UNKNOWN) {
                             Text(
                                 stringResource(Res.string.dictionary_item_modality),
-                                style = AppTypographies.detailCardSubTitle)
+                                style = AppTypographies.detailCardSubTitle
+                            )
                             Text(
                                 stringResource(modality.toRes()),
                                 style = bodyMediumStyle
                             )
                         }
+                    }
 
+                    Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
+                        val wordType = word.word?.wordType ?: WordType.UNKNOWN
+                        if (wordType != WordType.UNKNOWN) {
+                            Text(
+                                stringResource(Res.string.dictionary_item_type),
+                                style = AppTypographies.detailCardSubTitle
+                            )
+                            Text(
+                                stringResource(wordType.toRes()),
+                                style = bodyMediumStyle
+                            )
+                        }
+                    }
+                }
+                Row(
+                    modifier = Modifier.padding(padding)
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
                         word.word?.synonyms?.takeIf { it.isNotEmpty() }?.let {
                             SearchableDetailField(
                                 title = stringResource(Res.string.dictionary_item_synonyms),
@@ -333,18 +357,8 @@ fun DetailedWordView (
                             )
                         }
                     }
-                    Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
-                        val wordType = word.word?.wordType ?: WordType.UNKNOWN
-                        if (wordType != WordType.UNKNOWN) {
-                            Text(
-                                stringResource(Res.string.dictionary_item_type),
-                                style = AppTypographies.detailCardSubTitle)
-                            Text(
-                                stringResource(wordType.toRes()),
-                                style = bodyMediumStyle
-                            )
-                        }
 
+                    Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
                         word.word?.antonym?.takeIf { it.isNotEmpty() }?.let {
                             SearchableDetailField(
                                 title = stringResource(Res.string.dictionary_item_antonym),
@@ -359,36 +373,34 @@ fun DetailedWordView (
 
                 word.word?.collocations?.takeIf { it.isNotEmpty() }?.let {
                     Row(
-                        modifier = Modifier.padding(10.dp)
+                        modifier = Modifier.padding(padding)
                     ) {
                         SearchableDetailField(
                             title = stringResource(Res.string.dictionary_item_collocations),
                             content = it,
                             bodyStyle = bodyMediumStyle,
                             onSearchTerm = onSearchTerm,
-                            splitRegex = Regex("\\n+"),
-                            modifier = Modifier.weight(1f)
+                            splitRegex = Regex("\\n+")
                         )
                     }
                 }
 
                 word.word?.examples?.takeIf { it.isNotEmpty() }?.let {
                     Row(
-                        modifier = Modifier.padding(10.dp)
+                        modifier = Modifier.padding(padding)
                     ) {
                         SearchableDetailField(
                             title = stringResource(Res.string.dictionary_item_examples),
                             content = it,
                             bodyStyle = bodyMediumStyle,
                             onSearchTerm = onSearchTerm,
-                            splitRegex = Regex("\\n+"),
-                            modifier = Modifier.weight(1f)
+                            splitRegex = Regex("\\n+")
                         )
                     }
                 }
 
                 Row(
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(padding)
                 ) {
                     Column {
                         if (altDef.isNotEmpty()) {
@@ -398,8 +410,7 @@ fun DetailedWordView (
                                     content = altDef,
                                     bodyStyle = bodyMediumStyle,
                                     onSearchTerm = onSearchTerm,
-                                    splitRegex = Regex("\\n+"),
-                                    modifier = Modifier.weight(1f)
+                                    splitRegex = Regex("\\n+")
                                 )
                             } else {
                                 Text(
@@ -475,28 +486,26 @@ private fun SearchableLine(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { onSearchTerm?.let{ onSearchTerm(entry) } },
-        verticalAlignment = Alignment.Top
+        modifier = modifier.clickable { onSearchTerm?.let{ onSearchTerm(entry) } },
+        verticalAlignment = Alignment.CenterVertically
     ) {
         onSearchTerm?.let {
             IconButton(
                 onClick = { onSearchTerm(entry) },
-                modifier = Modifier.size(28.dp).padding(top = 2.dp)
+                modifier = Modifier.size(bodyStyle.fontSize.value.dp)
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.search_24px),
                     contentDescription = stringResource(Res.string.search_hint),
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(18.dp)
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
+            Spacer(modifier = modifier.width(bodyStyle.fontSize.value.dp / 3))
         }
         Text(
             entry,
             style = bodyStyle,
-            modifier = Modifier.weight(1f).padding(top = 4.dp, bottom = 4.dp)
+            modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
         )
     }
 }
