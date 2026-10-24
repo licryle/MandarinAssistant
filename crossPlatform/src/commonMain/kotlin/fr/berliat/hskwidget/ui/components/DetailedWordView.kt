@@ -71,6 +71,8 @@ import fr.berliat.hskwidget.widget_btn_copy
 import fr.berliat.hskwidget.widget_btn_speak
 
 import HSKWordView
+import fr.berliat.hskwidget.core.ContainHanziResult
+import fr.berliat.hskwidget.core.containsHanzi
 
 /**
  * When [verticallyConstrained] is true, the center column must not contribute to the
@@ -226,12 +228,22 @@ fun DetailedWordView (
                         clickedPinyinStyle = AppTypographies.clickedPinyin.copy(fontSize = pinyinFontSize.sp),
                     )
                     // Definition & Annotation
-                    Text(
-                        definition.ifEmpty { annotation },
-                        style = bodyLargeStyle,
-                        overflow = TextOverflow.Clip,
-                        softWrap = true
-                    )
+                    val defOrAnnot = definition.ifEmpty { annotation }
+                    if (defOrAnnot.containsHanzi() in ContainHanziResult.SOME..ContainHanziResult.ALL) {
+                        SearchableDetailField(
+                            content = defOrAnnot,
+                            bodyStyle = bodyMediumStyle,
+                            onSearchTerm = onSearchTerm,
+                            splitRegex = Regex("\\n+")
+                        )
+                    } else {
+                        Text(
+                            definition.ifEmpty { annotation },
+                            style = bodyLargeStyle,
+                            overflow = TextOverflow.Clip,
+                            softWrap = true
+                        )
+                    }
                     if (showAnnotation && !definition.isEmpty() && annotation.isNotEmpty()) {
                         Text(
                             annotation,
@@ -379,12 +391,22 @@ fun DetailedWordView (
                     modifier = Modifier.padding(10.dp)
                 ) {
                     Column {
-                        Text(
-                            stringResource(Res.string.dictionary_item_altdefinition),
-                            style = AppTypographies.detailCardSubTitle)
-
                         if (altDef.isNotEmpty()) {
-                            Text(altDef, style = bodyMediumStyle)
+                            if (altDef.containsHanzi() in ContainHanziResult.SOME..ContainHanziResult.ALL) {
+                                SearchableDetailField(
+                                    title = stringResource(Res.string.dictionary_item_altdefinition),
+                                    content = altDef,
+                                    bodyStyle = bodyMediumStyle,
+                                    onSearchTerm = onSearchTerm,
+                                    splitRegex = Regex("\\n+"),
+                                    modifier = Modifier.weight(1f)
+                                )
+                            } else {
+                                Text(
+                                    stringResource(Res.string.dictionary_item_altdefinition),
+                                    style = AppTypographies.detailCardSubTitle)
+                                Text(altDef, style = bodyMediumStyle)
+                            }
                         }
                     }
                 }
@@ -402,7 +424,7 @@ fun DetailedWordView (
  */
 @Composable
 private fun SearchableDetailField(
-    title: String,
+    title: String? = null,
     content: String,
     bodyStyle: androidx.compose.ui.text.TextStyle,
     onSearchTerm: ((String) -> Unit)?,
@@ -410,7 +432,10 @@ private fun SearchableDetailField(
     splitRegex: Regex? = null
 ) {
     Column(modifier = modifier) {
-        Text(title, style = AppTypographies.detailCardSubTitle)
+        title?.let {
+            Text(title, style = AppTypographies.detailCardSubTitle)
+        }
+
         // DB strings sometimes carry literal "\n" escapes (backslash + n)
         // instead of real line breaks — normalize first so they split too.
         val normalized = content.replace("\\n", "\n")
