@@ -45,7 +45,7 @@ fun HSKWordView(
     val extPinyinList = mutableListOf<String>()
 
     FlowRow(
-        modifier = modifier.clickable { onWordClick?.invoke(hanziText) },
+        modifier = if (onWordClick !=null) modifier.clickable { onWordClick.invoke(hanziText) } else modifier,
         horizontalArrangement = Arrangement.spacedBy(0.dp),
         verticalArrangement = Arrangement.spacedBy(0.5.dp)
     ) {
