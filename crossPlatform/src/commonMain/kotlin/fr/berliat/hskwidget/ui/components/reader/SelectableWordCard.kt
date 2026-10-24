@@ -15,7 +15,7 @@ import fr.berliat.hskwidget.ui.screens.wordlist.WordListSelectionDialog
 
 /**
  * Word detail card + lists dialog. Stateless: the caller owns [word] and
- * all callbacks (backed by ReaderSessionViewModel or DisplayOCRViewModel).
+ * all callbacks (backed by ReaderSessionViewModel or ReaderViewModel).
  * Glued to the bottom by the caller — never scrolls the reader itself.
  */
 @Composable

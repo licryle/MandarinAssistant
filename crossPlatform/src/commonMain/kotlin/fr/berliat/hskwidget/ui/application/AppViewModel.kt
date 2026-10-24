@@ -289,7 +289,14 @@ open class CommonAppViewModel(val navigationManager: NavigationManager): ViewMod
             Logging.ANALYTICS_EVENTS.OCR_CAPTURE,
             mapOf("SOURCE" to source.toString())
         )
-        navigationManager.navigate(Screen.OCRDisplay("", imageFile.path))
+        navigationManager.navigate(
+            Screen.Reader(
+                "",
+                imageFile.path,
+                allowPicture = true,
+                couldAnnotate = false
+            )
+        )
     }
 
     fun ocrCapture() {

@@ -1,4 +1,4 @@
-package fr.berliat.hskwidget.ui.screens.OCR
+package fr.berliat.hskwidget.ui.reader
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -48,7 +48,7 @@ import kotlin.reflect.KClass
 
 import kotlin.time.Duration.Companion.milliseconds
 
-class DisplayOCRViewModel(
+class ReaderViewModel(
     savedStateHandle: SavedStateHandle,
     private val appPreferences: AppPreferencesStore,
     private val annotatedChineseWordDAO: AnnotatedChineseWordDAO,
@@ -243,13 +243,13 @@ class DisplayOCRViewModel(
     }
 
     companion object {
-        private const val TAG = "DisplayOCRViewModel"
+        private const val TAG = "ReaderViewModel"
 
         const val WORD_SEPARATOR = "·"
 
         val FACTORY = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
-                return DisplayOCRViewModel(
+                return ReaderViewModel(
                     savedStateHandle = extras.createSavedStateHandle(),
                     appPreferences = HSKAppServices.appPreferences,
                     annotatedChineseWordDAO = HSKAppServices.database.annotatedChineseWordDAO(),

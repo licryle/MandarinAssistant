@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import fr.berliat.hskwidget.core.IntentSources
 import fr.berliat.hskwidget.core.Locale
 import fr.berliat.hskwidget.core.HSKAppServices
-import fr.berliat.hskwidget.core.SnackbarType
 import fr.berliat.hskwidget.data.model.ChineseWord
 import fr.berliat.hskwidget.ui.components.DetailedWordView
 import fr.berliat.hskwidget.ui.components.TextSizeChip
@@ -41,8 +40,6 @@ import fr.berliat.hskwidget.ui.components.LanguageFilterChip
 import fr.berliat.hskwidget.ui.components.DbUpdateView
 import fr.berliat.hskwidget.ui.components.reader.CompactNoResultHeader
 import fr.berliat.hskwidget.ui.components.reader.ReaderFilterBar
-import fr.berliat.hskwidget.ui.components.reader.ReaderPanel
-import fr.berliat.hskwidget.ui.components.reader.ReaderSessionViewModel
 import fr.berliat.hskwidget.ui.navigation.NavigationManager
 import fr.berliat.hskwidget.ui.navigation.Screen
 import fr.berliat.hskwidget.ui.screens.wordlist.WordListSelectionDialog
@@ -53,12 +50,12 @@ import fr.berliat.hskwidget.bookmark_heart_24px
 import fr.berliat.hskwidget.core.ContainHanziResult
 import fr.berliat.hsktextviews.PinyinUtils.isHanzi
 import fr.berliat.hskwidget.core.containsHanzi
+import fr.berliat.hskwidget.data.model.AnnotatedChineseWord
 import fr.berliat.hskwidget.dictionary_search_loading
 import fr.berliat.hskwidget.dictionary_noresult_icon
 import fr.berliat.hskwidget.dictionary_search_filter_hasannotation_hint
 import fr.berliat.hskwidget.domain.DatabaseHelper
 import fr.berliat.hskwidget.domain.SearchQuery
-import fr.berliat.hskwidget.ocr_display_text_segmentation_failed
 import fr.berliat.hskwidget.ui.components.PrettyCardShapeModifier
 import fr.berliat.hskwidget.ui.dismissKeyboardOnClick
 import fr.berliat.hskwidget.ui.dismissKeyboardOnTap
@@ -70,7 +67,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DictionarySearchScreen(
-    onAnnotate: (String) -> Unit,
+    onAnnotate: (AnnotatedChineseWord) -> Unit,
     modifier: Modifier = Modifier,
     initialIntentSource: IntentSources,
     viewModel: DictionarySearchViewModel = remember { DictionarySearchViewModel(
@@ -90,13 +87,6 @@ fun DictionarySearchScreen(
     val textSize by viewModel.textSize.collectAsState()
     val dictionaryLocale by viewModel.dictionaryLocale.collectAsState()
     val dictionaryLocalePreference by viewModel.dictionaryLocalePreference.collectAsState()
-
-    val readerSession: ReaderSessionViewModel = remember { ReaderSessionViewModel() }
-    val selectedWord by readerSession.selectedWord.collectAsState()
-    val clickedWords by readerSession.clickedWords.collectAsState()
-    val readerTextSize by readerSession.textSize.collectAsState()
-    val separatorEnabled by readerSession.separatorEnabled.collectAsState()
-    val showPinyins by readerSession.showPinyins.collectAsState()
 
     var showWordListDialog by remember { mutableStateOf<ChineseWord?>(null) }
 
@@ -122,20 +112,29 @@ fun DictionarySearchScreen(
     // Nothing in the dictionary for a hanzi query: analyse the text in place.
     // Gated on `couldAnnotate` (the word really is absent) so that a word that
     // exists but is hidden by a filter keeps the normal filters + "filtered
-    // out" message instead of swapping the chips away. Derived from state only
-    // (no navigation), so typing/clearing can never be fought by a screen change.
+    // out" message instead of swapping the chips away. Derived from state only,
+    // so typing/clearing can never be fought by a screen change; the one
+    // navigation step it implies is handled below.
     val isReaderMode = isEmptyResult && mayAnnotate
+
+    if (isReaderMode) {
+        NavigationManager.navigate(
+            Screen.Reader(
+                preText = searchQuery.query,
+                imageFilePath = null,
+                couldAnnotate = couldAnnotate,
+                allowPicture = false
+            )
+        )
+
+        return
+    }
 
     // Picking a synonym/example/collocation searches that term as an exact word.
     val onSearchTerm: (String) -> Unit = { term ->
         NavigationManager.navigate(
             Screen.Dictionary(SearchQuery.fromString(term).copy(exactWord = true).toString())
         )
-    }
-
-    // A new text means a new reading session: drop the previous word card.
-    LaunchedEffect(query) {
-        readerSession.resetForText(query)
     }
 
     // Whenever searchQuery changes, scroll to top.
@@ -185,49 +184,11 @@ fun DictionarySearchScreen(
                 DbUpdateView(progress = updateProgress)
             } else if (isLoading) {
                 LoadingView(loadingText = Res.string.dictionary_search_loading)
-            } else if (isReaderMode) {
-                Column {
-                    if (couldAnnotate) {
-                        Row {
-                            CompactNoResultHeader(
-                                query = query,
-                                couldAnnotate = couldAnnotate,
-                                onAnnotate = onAnnotate
-                            )
-                        }
-                    }
-
-                    Row {
-                        ReaderPanel(
-                            text = query,
-                            textSize = readerTextSize,
-                            cardTextSize = textSize,
-                            showPinyins = showPinyins,
-                            separatorEnabled = separatorEnabled,
-                            clickedWords = clickedWords,
-                            selectedWord = selectedWord,
-                            dictionaryLocale = dictionaryLocale,
-                            onWordClick = { readerSession.fetchWordForDisplay(it) },
-                            onAppeared = { readerSession.augmentAppeared(it) },
-                            onFailure = {
-                                HSKAppServices.snackbar.show(
-                                    SnackbarType.WARNING,
-                                    Res.string.ocr_display_text_segmentation_failed
-                                )
-                            },
-                            onFavoriteClick = { onAnnotate(it.simplified) },
-                            onSpeakClick = { readerSession.speakWord(it) },
-                            onCopyClick = { readerSession.copyWord(it) },
-                            onSearchTerm = onSearchTerm,
-                            onListsSaved = { viewModel.listsAssociationChanged() }
-                        )
-                    }
-                }
             } else if (isEmptyResult) {
                 CompactNoResultHeader(
-                    query = query,
+                    word = null,
                     couldAnnotate = couldAnnotate,
-                    onAnnotate = { onAnnotate(query) }
+                    onAnnotate = onAnnotate
                 )
             } else {
                 LazyColumn(
@@ -241,7 +202,7 @@ fun DictionarySearchScreen(
                             pinyinEditable = false,
                             textSize = textSize,
                             dictionaryLocale = dictionaryLocale,
-                            onFavoriteClick = { onAnnotate(word.simplified) },
+                            onFavoriteClick = onAnnotate,
                             onSpeakClick = { viewModel.speakWord(word.simplified) },
                             onCopyClick = { viewModel.copyWord(word.simplified) },
                             onListsClick = { showWordListDialog = word.toChineseWord() },
@@ -265,7 +226,7 @@ fun DictionarySearchScreen(
 
             if (couldAnnotate && !isReaderMode && !isLoading && updateProgress == null) {
                 FloatingActionButton(
-                    onClick = { onAnnotate(query) },
+                    onClick = { onAnnotate(AnnotatedChineseWord.getBlank(query)) },
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(16.dp),

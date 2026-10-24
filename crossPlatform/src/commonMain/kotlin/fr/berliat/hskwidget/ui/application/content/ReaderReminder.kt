@@ -20,13 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.close_24px
-import fr.berliat.hskwidget.nav_host_ocr_reminder_close
-import fr.berliat.hskwidget.nav_host_ocr_reminder_text
+import fr.berliat.hskwidget.nav_host_reader_reminder_close
+import fr.berliat.hskwidget.nav_host_reader_reminder_text
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun OCRReminder(
+fun ReaderReminder(
     onClose: () -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -51,7 +51,7 @@ fun OCRReminder(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(Res.string.nav_host_ocr_reminder_text),
+            text = stringResource(Res.string.nav_host_reader_reminder_text),
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Start,
             fontWeight = FontWeight.Bold,
@@ -62,7 +62,7 @@ fun OCRReminder(
         IconButton(onClick = onClose) {
             Icon(
                 painter = painterResource(Res.drawable.close_24px),
-                contentDescription = stringResource(Res.string.nav_host_ocr_reminder_close)
+                contentDescription = stringResource(Res.string.nav_host_reader_reminder_close)
             )
         }
     }

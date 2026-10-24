@@ -13,7 +13,7 @@ import fr.berliat.hskwidget.menu_lists
 import fr.berliat.hskwidget.baseline_info_24
 import fr.berliat.hskwidget.baseline_widgets_24
 import fr.berliat.hskwidget.menu_about
-import fr.berliat.hskwidget.menu_ocr
+import fr.berliat.hskwidget.menu_reader
 import fr.berliat.hskwidget.menu_settings
 import fr.berliat.hskwidget.menu_widgets
 import fr.berliat.hskwidget.photo_camera_24px
@@ -52,7 +52,12 @@ sealed class Screen() {
     data class OCRCapture(val preText: String = "") : Screen()
 
     @Serializable
-    data class OCRDisplay(val preText: String = "", val imageFilePath: String? = null) : Screen()
+    data class Reader(
+        val preText: String,
+        val imageFilePath: String?,
+        val allowPicture: Boolean,
+        val couldAnnotate: Boolean
+    ) : Screen()
 
     fun decoratedScreen(): DecoratedScreen {
         return DecoratedScreen.fromScreen(this)
@@ -103,13 +108,13 @@ sealed class DecoratedScreen(val screen: Screen,
 
     data object OCRCapture : DecoratedScreen(
         Screen.OCRCapture(),
-        { stringResource(Res.string.menu_ocr) },
+        { stringResource(Res.string.menu_reader) },
         Res.drawable.photo_camera_24px,
         disableDrawer = true)
 
     data object OCRDisplay : DecoratedScreen(
-        Screen.OCRDisplay(),
-        { stringResource(Res.string.menu_ocr) },
+        Screen.Reader("", null, allowPicture = false, couldAnnotate = false),
+        { stringResource(Res.string.menu_reader) },
         Res.drawable.photo_camera_24px)
 
     companion object {
@@ -121,7 +126,7 @@ sealed class DecoratedScreen(val screen: Screen,
             is Screen.Dictionary -> Dictionary
             is Screen.Lists -> Lists
             is Screen.OCRCapture -> OCRCapture
-            is Screen.OCRDisplay -> OCRDisplay
+            is Screen.Reader -> OCRDisplay
             is Screen.Widgets -> Widgets
         }
     }

@@ -17,7 +17,7 @@
     <string name="menu_dictionary">Dictionnaire</string>
     <string name="menu_lists">Listes</string>
     <string name="menu_widgets">Widgets</string>
-    <string name="menu_ocr">OCR</string>
+    <string name="menu_reader">Analyse de Texte</string>
     <string name="menu_support">Soutenir le créateur !</string>
     <string name="menu_settings">Paramètres</string>
     <string name="menu_annotate">Annoter un mot</string>
@@ -28,8 +28,8 @@
     <string name="search_clear">Effacer la recherche</string>
 
     <string name="nav_header_desc">En-tête de navigation</string>
-    <string name="nav_host_ocr_reminder_close">Fermer le rappel OCR</string>
-    <string name="nav_host_ocr_reminder_text">Votre texte scanné est toujours accessible en cliquant ici.</string>
+    <string name="nav_host_reader_reminder_close">Fermer le rappel OCR</string>
+    <string name="nav_host_reader_reminder_text">Votre analyse de texte est toujours accessible en cliquant ici.</string>
 
 
     <string name="about_btn_view_source">Voir le code source</string>
@@ -65,7 +65,7 @@ Couverture des champs IA :
 - Type+Usage (%8$d%)</string>
     <string name="about_email_noapp">Aucun client e-mail trouvé. Adresse copiée dans le presse-papier.</string>
 
-    <string name="dictionary_noresult_text">%1$s n'est pas dans le dictionnaire, ajouter une annotation ?</string>
+    <string name="dictionary_noresult_text">"%1$s" n'est pas dans le dictionnaire, ajouter une annotation ?</string>
     <string name="dictionary_noresultwithfilter_text">Tous les mots sont filtrés.\nSupprimez les filtres comme les listes ou le "♥ uniquement".</string>
     <string name="dictionary_noresult_icon">Aucun résultat !</string>
     <string name="dictionary_search_loading">Chargement des résultats</string>
@@ -180,7 +180,7 @@ Nous vous recommandons de choisir le niveau où vous en êtes plus celui du dess
     <string name="ocr_display_conf_bigger">Augmenter la taille du texte</string>
     <string name="ocr_display_pinyins">Afficher les pinyins</string>
     <string name="ocr_display_separator">Espacer les mots</string>
-    <string name="reader_word_spacing_processing">L\'espacement des mots est en cours de traitement</string>
+    <string name="reader_word_spacing_processing">L'espacement des mots est en cours de traitement</string>
     <string name="ocr_display_smallest_text">Texte le plus petit disponible</string>
     <string name="ocr_display_word_not_found">Mot non trouvé, copié dans le presse-papier</string>
     <string name="ocr_display_no_text_found">Aucun texte trouvé</string>

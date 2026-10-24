@@ -17,7 +17,7 @@ import fr.berliat.hskwidget.domain.SearchQuery
 import fr.berliat.hskwidget.core.IntentSources
 import fr.berliat.hskwidget.ui.application.AppViewModel
 import fr.berliat.hskwidget.ui.screens.OCR.CaptureImageScreen
-import fr.berliat.hskwidget.ui.screens.OCR.DisplayOCRScreen
+import fr.berliat.hskwidget.ui.reader.ReaderScreen
 import fr.berliat.hskwidget.ui.screens.about.AboutScreen
 import fr.berliat.hskwidget.ui.screens.annotate.AnnotateScreen
 import fr.berliat.hskwidget.ui.screens.config.ConfigScreen
@@ -77,7 +77,7 @@ fun AppNavHost(viewModel : AppViewModel) {
             DictionarySearchScreen(
                 initialIntentSource = args.source,
                 onAnnotate = { word ->
-                    navController.navigate(Screen.Annotate(word))
+                    navController.navigate(Screen.Annotate(word.simplified))
                 }
             )
         }
@@ -161,15 +161,17 @@ fun AppNavHost(viewModel : AppViewModel) {
             }
 
             CaptureImageScreen(onImageReady = { imageFile: PlatformFile ->
-                navController.navigate(Screen.OCRDisplay(
+                navController.navigate(Screen.Reader(
                     preText = args.preText,
-                    imageFilePath = imageFile.absolutePath()
+                    imageFilePath = imageFile.absolutePath(),
+                    allowPicture = true,
+                    couldAnnotate = false
                 ))
             })
         }
 
-        composable<Screen.OCRDisplay> { backStackEntry ->
-            val args = backStackEntry.toRoute<Screen.OCRDisplay>()
+        composable<Screen.Reader> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.Reader>()
             LaunchedEffect(args) {
                 viewModel.navigationManager.registerScreenVisit(args)
             }
@@ -198,11 +200,13 @@ fun AppNavHost(viewModel : AppViewModel) {
             if (!isFileCheckDone) {
                 LoadingView()
             } else {
-                DisplayOCRScreen(
+                ReaderScreen(
                     preText = args.preText,
                     imageFile = imageFile,
+                    allowPicture = args.allowPicture,
+                    couldAnnotate = args.couldAnnotate,
                     onFavoriteClick = { word -> navController.navigate(Screen.Annotate(word.simplified)) },
-                    onClickOCRAdd = { preText -> navController.navigate(Screen.OCRCapture(preText)) }
+                    onClickOCRAdd = { preText -> navController.navigate(Screen.OCRCapture(preText)) },
                 )
             }
         }

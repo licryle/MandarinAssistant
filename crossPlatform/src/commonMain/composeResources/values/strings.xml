@@ -17,7 +17,7 @@
     <string name="menu_dictionary">Dictionary</string>
     <string name="menu_lists">Lists</string>
     <string name="menu_widgets">Widgets</string>
-    <string name="menu_ocr">OCR</string>
+    <string name="menu_reader">Text Analysis</string>
     <string name="menu_support">Support the creator!</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_annotate">Annotate a word</string>
@@ -28,8 +28,8 @@
     <string name="search_clear">Clear search</string>
 
     <string name="nav_header_desc">Navigation header</string>
-    <string name="nav_host_ocr_reminder_close">Close OCR Reminder</string>
-    <string name="nav_host_ocr_reminder_text">Your scanned text is still accessible by clicking here.</string>
+    <string name="nav_host_reader_reminder_close">Close OCR Reminder</string>
+    <string name="nav_host_reader_reminder_text">Your text analysis is still accessible by clicking here.</string>
 
 
     <string name="about_btn_view_source">View source code</string>
@@ -65,7 +65,7 @@ AI Fields coverage:
 - Type+Usage (%8$d%)</string>
     <string name="about_email_noapp">No email client found. Address copied to clipboard.</string>
 
-    <string name="dictionary_noresult_text">%1$s not in dictionary, add annotation?</string>
+    <string name="dictionary_noresult_text">"%1$s" not in dictionary, add annotation?</string>
     <string name="dictionary_noresultwithfilter_text">All words are filtered out.\nRemove filters like the lists, or the "♥ only".</string>
     <string name="dictionary_noresult_icon">No result!</string>
     <string name="dictionary_search_loading">Loading results</string>

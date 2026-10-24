@@ -23,7 +23,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.menu
 import fr.berliat.hskwidget.menu_24px
-import fr.berliat.hskwidget.menu_ocr
+import fr.berliat.hskwidget.menu_reader
 import fr.berliat.hskwidget.photo_camera_24px
 import fr.berliat.hskwidget.search_hint
 
@@ -87,7 +87,7 @@ fun AppBar(
             IconButton(onClick = onOcrClick) {
                 Icon(
                     painterResource(Res.drawable.photo_camera_24px),
-                    contentDescription = stringResource(Res.string.menu_ocr)
+                    contentDescription = stringResource(Res.string.menu_reader)
                 )
             }
         }

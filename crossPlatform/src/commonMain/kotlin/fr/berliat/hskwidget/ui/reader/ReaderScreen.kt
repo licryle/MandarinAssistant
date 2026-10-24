@@ -1,4 +1,4 @@
-package fr.berliat.hskwidget.ui.screens.OCR
+package fr.berliat.hskwidget.ui.reader
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +25,6 @@ import androidx.lifecycle.SavedStateHandle
 import fr.berliat.hskwidget.core.Locale
 import fr.berliat.hsktextviews.HSKTextSegmenter
 import fr.berliat.hskwidget.core.HSKAppServices
-import fr.berliat.hskwidget.data.model.AnnotatedChineseWord
 import fr.berliat.hskwidget.data.store.AppPreferencesStore
 import fr.berliat.hskwidget.ui.components.Error
 import fr.berliat.hskwidget.ui.components.ErrorView
@@ -50,15 +49,17 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 import co.touchlab.kermit.Logger
+import fr.berliat.hskwidget.data.model.AnnotatedChineseWord
+import fr.berliat.hskwidget.ui.components.reader.CompactNoResultHeader
 
-private const val TAG = "DisplayOCRScreen"
+private const val TAG = "ReaderScreen"
 
 @Composable
-fun DisplayOCRScreen(
+fun ReaderScreen(
     modifier: Modifier = Modifier,
-    viewModel: DisplayOCRViewModel = remember {
+    viewModel: ReaderViewModel = remember {
         val database = HSKAppServices.database
-        DisplayOCRViewModel(
+        ReaderViewModel(
             savedStateHandle = SavedStateHandle(),
             appPreferences = HSKAppServices.appPreferences,
             annotatedChineseWordDAO = database.annotatedChineseWordDAO(),
@@ -70,6 +71,8 @@ fun DisplayOCRScreen(
     appConfig : AppPreferencesStore = HSKAppServices.appPreferences,
     imageFile: PlatformFile? = null,
     preText: String = "",
+    allowPicture: Boolean = false,
+    couldAnnotate: Boolean = false,
     onClickOCRAdd : (String) -> Unit = {},
     onFavoriteClick : (AnnotatedChineseWord) -> Unit = {}
 ) {
@@ -117,6 +120,17 @@ fun DisplayOCRScreen(
                     )
                 } else {
                     Column {
+                        if (couldAnnotate) {
+                            Row {
+                                val potentialWord = AnnotatedChineseWord.getBlank(preText)
+                                CompactNoResultHeader(
+                                    word = potentialWord,
+                                    couldAnnotate = couldAnnotate,
+                                    onAnnotate = onFavoriteClick
+                                )
+                            }
+                        }
+
                         SegmentedReaderView(
                             text = uiState.text,
                             textSize = uiState.textSize,
@@ -131,10 +145,12 @@ fun DisplayOCRScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
 
-                        OcrDisplayAdd(
-                            modifier = modifier,
-                            onClick = { onClickOCRAdd(uiState.text) }
-                        )
+                        if (allowPicture) {
+                            OcrDisplayAdd(
+                                modifier = modifier,
+                                onClick = { onClickOCRAdd(uiState.text) }
+                            )
+                        }
                     }
                 }
             }
