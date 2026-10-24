@@ -55,7 +55,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun BackupDiskView(
     modifier: Modifier = Modifier,
-    viewModel: BackupDiskViewModel = remember { BackupDiskViewModel(HSKAppServices.appPreferences) }
+    viewModel: BackupDiskViewModel
     ) {
     val backupDiskActive by viewModel.backupDiskActive.collectAsState()
     val backupDiskFolder by viewModel.backupDiskFolder.collectAsState()

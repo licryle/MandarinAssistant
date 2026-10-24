@@ -68,6 +68,8 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun DictionarySearchScreen(
     onAnnotate: (AnnotatedChineseWord) -> Unit,
+    onSearchTerm: (String) -> Unit = {},
+    onNavigate: (Screen) -> Unit = {},
     modifier: Modifier = Modifier,
     initialIntentSource: IntentSources,
     viewModel: DictionarySearchViewModel = remember { DictionarySearchViewModel(
@@ -118,7 +120,7 @@ fun DictionarySearchScreen(
     val isReaderMode = isEmptyResult && mayAnnotate
 
     if (isReaderMode) {
-        NavigationManager.navigate(
+        onNavigate(
             Screen.Reader(
                 preText = searchQuery.query,
                 imageFilePath = null,
@@ -128,13 +130,6 @@ fun DictionarySearchScreen(
         )
 
         return
-    }
-
-    // Picking a synonym/example/collocation searches that term as an exact word.
-    val onSearchTerm: (String) -> Unit = { term ->
-        NavigationManager.navigate(
-            Screen.Dictionary(SearchQuery.fromString(term).copy(exactWord = true).toString())
-        )
     }
 
     // Whenever searchQuery changes, scroll to top.

@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -27,6 +28,9 @@ import fr.berliat.hskwidget.ui.screens.widget.WidgetsListScreen
 import fr.berliat.hskwidget.ui.screens.wordlist.WordListScreen
 import fr.berliat.hskwidget.ui.components.LoadingView
 import fr.berliat.hskwidget.core.AppDispatchers
+import fr.berliat.hskwidget.core.HSKAppServices
+import fr.berliat.hskwidget.ui.screens.config.ConfigViewModel
+import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
 
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.exists
@@ -37,7 +41,7 @@ import kotlin.reflect.typeOf
 @Composable
 fun AppNavHost(viewModel : AppViewModel) {
     val navController = rememberNavController()
-    val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(navController) {
         viewModel.navigationManager.navigationEvents.collect { route ->
@@ -78,7 +82,13 @@ fun AppNavHost(viewModel : AppViewModel) {
                 initialIntentSource = args.source,
                 onAnnotate = { word ->
                     navController.navigate(Screen.Annotate(word.simplified))
-                }
+                },
+                onSearchTerm = { term -> navController.navigate(
+                    Screen.Dictionary(
+                        SearchQuery.fromString(term).copy(exactWord = true).toString())
+                    )
+                },
+                onNavigate = { screen -> navController.navigate(screen) }
             )
         }
 
@@ -151,7 +161,15 @@ fun AppNavHost(viewModel : AppViewModel) {
                 viewModel.navigationManager.registerScreenVisit(args)
             }
 
-            ConfigScreen()
+            ConfigScreen(
+                viewModel = ConfigViewModel(
+                    appConfig = HSKAppServices.appPreferences,
+                    widgetProvider = FlashcardWidgetProvider(),
+                    ankiDelegate = HSKAppServices.ankiDelegate,
+                    gDriveBackup = HSKAppServices.gDriveBackup,
+                    onRestoreSuccess = { viewModel.navigationManager.navigate(Screen.Dictionary("")) }
+                ),
+            )
         }
 
         composable<Screen.OCRCapture> { backStackEntry ->
@@ -207,6 +225,7 @@ fun AppNavHost(viewModel : AppViewModel) {
                     couldAnnotate = args.couldAnnotate,
                     onFavoriteClick = { word -> navController.navigate(Screen.Annotate(word.simplified)) },
                     onClickOCRAdd = { preText -> navController.navigate(Screen.OCRCapture(preText)) },
+                    onSearchTerm = { query -> navController.navigate(Screen.Dictionary(SearchQuery.fromString(query).copy(exactWord = true).toString())) }
                 )
             }
         }

@@ -65,10 +65,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun BackupCloudView(
     modifier: Modifier = Modifier,
-    viewModel: BackupCloudViewModel = remember { BackupCloudViewModel(
-        HSKAppServices.appPreferences,
-        HSKAppServices.gDriveBackup
-    ) }
+    viewModel: BackupCloudViewModel
 ) {
     val lastCloudUpdate = viewModel.cloudLastBackup.collectAsState()
     val busy = viewModel.isBusy.collectAsState()

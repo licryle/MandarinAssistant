@@ -41,7 +41,8 @@ import org.jetbrains.compose.resources.getString
 
 
 class BackupDiskViewModel(
-    val appConfig: AppPreferencesStore = HSKAppServices.appPreferences): ViewModel() {
+    val appConfig: AppPreferencesStore = HSKAppServices.appPreferences,
+    val onRestoreSuccess: () -> Unit): ViewModel() {
     val backupDiskActive = appConfig.dbBackUpDiskActive.asStateFlow()
     val backupDiskMaxFiles = appConfig.dbBackUpDiskMaxFiles.asStateFlow()
 
@@ -102,7 +103,7 @@ class BackupDiskViewModel(
                             withContext(Dispatchers.Main) {
                                 HSKAppServices.snackbar.show(SnackbarType.SUCCESS, Res.string.dbrestore_success)
 
-                                NavigationManager.navigate(Screen.Dictionary())
+                                onRestoreSuccess()
                             }
 
                             // Backup was successful, let's trigger widget updates, hoping any matches

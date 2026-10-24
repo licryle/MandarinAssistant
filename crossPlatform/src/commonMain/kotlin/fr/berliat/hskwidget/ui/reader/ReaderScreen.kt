@@ -32,11 +32,8 @@ import fr.berliat.hskwidget.ui.components.LoadingView
 import fr.berliat.hskwidget.ui.components.reader.ReaderFilterBar
 import fr.berliat.hskwidget.ui.components.reader.SegmentedReaderView
 import fr.berliat.hskwidget.ui.components.reader.SelectableWordCard
-import fr.berliat.hskwidget.ui.navigation.NavigationManager
-import fr.berliat.hskwidget.ui.navigation.Screen
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.core.SnackbarType
-import fr.berliat.hskwidget.domain.SearchQuery
 import fr.berliat.hskwidget.ocr_display_add
 import fr.berliat.hskwidget.ocr_display_ocr_no_text
 import fr.berliat.hskwidget.photo_camera_24px
@@ -74,7 +71,8 @@ fun ReaderScreen(
     allowPicture: Boolean = false,
     couldAnnotate: Boolean = false,
     onClickOCRAdd : (String) -> Unit = {},
-    onFavoriteClick : (AnnotatedChineseWord) -> Unit = {}
+    onFavoriteClick : (AnnotatedChineseWord) -> Unit = {},
+    onSearchTerm: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val dictionaryTextSize by appConfig.dictionaryTextSize.asStateFlow().collectAsStateWithLifecycle()
@@ -96,12 +94,6 @@ fun ReaderScreen(
 
     if (uiState.isSegmenterReady && imageFile == null && preText == "") {
         HSKAppServices.snackbar.show(SnackbarType.WARNING,Res.string.ocr_display_ocr_no_text)
-    }
-
-    val onSearchTerm: (String) -> Unit = { line ->
-        NavigationManager.navigate(
-            Screen.Dictionary(SearchQuery.fromString(line).copy(exactWord = true).toString())
-        )
     }
 
     Column (modifier = modifier) {

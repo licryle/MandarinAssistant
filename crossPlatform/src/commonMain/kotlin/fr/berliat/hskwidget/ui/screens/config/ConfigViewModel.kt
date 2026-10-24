@@ -17,7 +17,8 @@ class ConfigViewModel(
     private val appConfig: AppPreferencesStore = HSKAppServices.appPreferences,
     private val widgetProvider: FlashcardWidgetProvider = FlashcardWidgetProvider(),
     ankiDelegate: HSKAnkiDelegate = HSKAppServices.ankiDelegate,
-    gDriveBackup: GoogleDriveBackup
+    gDriveBackup: GoogleDriveBackup,
+    onRestoreSuccess: () -> Unit
 ): ViewModel() {
     fun onLanguageChange(newCode: String? = null) {
         if (appConfig.dictionaryLocale.value == null) {
@@ -32,7 +33,7 @@ class ConfigViewModel(
         )
     }
 
-    val backupDiskViewModel = BackupDiskViewModel()
-    val backupCloudViewModel = BackupCloudViewModel(appConfig, gDriveBackup)
+    val backupDiskViewModel = BackupDiskViewModel(onRestoreSuccess = onRestoreSuccess)
+    val backupCloudViewModel = BackupCloudViewModel(appConfig, gDriveBackup, onRestoreSuccess = onRestoreSuccess)
     val ankiSyncViewModel = AnkiSyncViewModel(ankiDelegate)
 }

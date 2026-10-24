@@ -18,12 +18,7 @@ import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
 @Composable
 fun ConfigScreen(
     modifier: Modifier = Modifier,
-    viewModel: ConfigViewModel = remember { ConfigViewModel(
-        appConfig = HSKAppServices.appPreferences,
-        widgetProvider = FlashcardWidgetProvider(),
-        ankiDelegate = HSKAppServices.ankiDelegate,
-        gDriveBackup = HSKAppServices.gDriveBackup
-    ) }
+    viewModel: ConfigViewModel
 ) {
     val scrollState = rememberScrollState()
     var refreshKey by remember { mutableStateOf(0) }

@@ -46,7 +46,8 @@ import kotlinx.datetime.Instant
 import org.jetbrains.compose.resources.getString
 
 class BackupCloudViewModel (
-    val appConfig: AppPreferencesStore, val gDriveBackup: GoogleDriveBackup) :
+    val appConfig: AppPreferencesStore, val gDriveBackup: GoogleDriveBackup,
+    val onRestoreSuccess: () -> Unit) :
     ViewModel() {
     val cloudLastBackup = appConfig.dbBackupCloudLastSuccess.asStateFlow()
     val isBusy = gDriveBackup.state.map { it == GoogleDriveState.Busy }
@@ -126,8 +127,8 @@ class BackupCloudViewModel (
                 DatabaseHelper.getInstance().replaceLiveUserDataFromFile(fileToRestore)
                 HSKAppServices.snackbar.show(SnackbarType.SUCCESS, Res.string.dbrestore_success)
 
-                // Backup was successful, let's redirect to the dictionary & trigger widget updates, hoping any matches
-                NavigationManager.navigate(Screen.Dictionary())
+                onRestoreSuccess()
+
                 withContext(AppDispatchers.Main) {
                     FlashcardWidgetProvider().updateAllFlashCardWidgets()
                 }
