@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.SavedStateHandle
 
-import fr.berliat.hskwidget.core.Locale
 import fr.berliat.hsktextviews.HSKTextSegmenter
 import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.data.store.AppPreferencesStore
@@ -75,7 +74,11 @@ fun ReaderScreen(
     onSearchTerm: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val dictionaryTextSize by appConfig.dictionaryTextSize.asStateFlow().collectAsStateWithLifecycle()
+    val showPinyins by viewModel.showPinyins.collectAsState()
+    val separateWords by viewModel.separateWords.collectAsState()
+    val readerTextSize by viewModel.readerTextSize.collectAsState()
+    val dictTextSize by viewModel.dictTextSize.collectAsState()
+    val dictionaryLocale by viewModel.dictionaryLocale.collectAsState()
 
     LaunchedEffect(preText) {
         viewModel.setText(preText)
@@ -125,9 +128,9 @@ fun ReaderScreen(
 
                         SegmentedReaderView(
                             text = uiState.text,
-                            textSize = uiState.textSize,
-                            showPinyins = uiState.showPinyins,
-                            separatorEnabled = uiState.separatorEnabled,
+                            textSize = readerTextSize,
+                            showPinyins = showPinyins,
+                            separatorEnabled = separateWords,
                             clickedWords = uiState.clickedWords,
                             onWordClick = { word -> viewModel.fetchWordForDisplay(word) },
                             onAppeared = { words -> viewModel.augmentWordFrequencyAppeared(words) },
@@ -150,8 +153,8 @@ fun ReaderScreen(
 
         SelectableWordCard(
             word = uiState.selectedWord,
-            textSize = dictionaryTextSize.value,
-            dictionaryLocale = Locale.resolve(appConfig.dictionaryLocale.value),
+            textSize = dictTextSize,
+            dictionaryLocale = dictionaryLocale,
             onFavoriteClick = onFavoriteClick,
             onSpeakClick = viewModel::speakWord,
             onCopyClick = viewModel::copyToClipboard,

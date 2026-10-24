@@ -40,7 +40,6 @@ import fr.berliat.hskwidget.ui.components.LanguageFilterChip
 import fr.berliat.hskwidget.ui.components.DbUpdateView
 import fr.berliat.hskwidget.ui.components.reader.CompactNoResultHeader
 import fr.berliat.hskwidget.ui.components.reader.ReaderFilterBar
-import fr.berliat.hskwidget.ui.navigation.NavigationManager
 import fr.berliat.hskwidget.ui.navigation.Screen
 import fr.berliat.hskwidget.ui.screens.wordlist.WordListSelectionDialog
 
@@ -55,7 +54,6 @@ import fr.berliat.hskwidget.dictionary_search_loading
 import fr.berliat.hskwidget.dictionary_noresult_icon
 import fr.berliat.hskwidget.dictionary_search_filter_hasannotation_hint
 import fr.berliat.hskwidget.domain.DatabaseHelper
-import fr.berliat.hskwidget.domain.SearchQuery
 import fr.berliat.hskwidget.ui.components.PrettyCardShapeModifier
 import fr.berliat.hskwidget.ui.dismissKeyboardOnClick
 import fr.berliat.hskwidget.ui.dismissKeyboardOnTap
@@ -88,7 +86,6 @@ fun DictionarySearchScreen(
     val hasAnnotationFilter by viewModel.hasAnnotationFilter.collectAsState()
     val textSize by viewModel.textSize.collectAsState()
     val dictionaryLocale by viewModel.dictionaryLocale.collectAsState()
-    val dictionaryLocalePreference by viewModel.dictionaryLocalePreference.collectAsState()
 
     var showWordListDialog by remember { mutableStateOf<ChineseWord?>(null) }
 
@@ -139,7 +136,7 @@ fun DictionarySearchScreen(
     LaunchedEffect(
         searchQuery.toString(),
         hasAnnotationFilter.toString(),
-        dictionaryLocalePreference.toString()
+        dictionaryLocale.toString()
     ) {
         viewModel.performSearch(pendingSource)
         pendingSource = IntentSources.IN_APP
@@ -167,7 +164,7 @@ fun DictionarySearchScreen(
                 { viewModel.toggleHasAnnotation(it) },
                 { viewModel.updateTextSize(-2f) },
                 { viewModel.updateTextSize(2f) },
-                dictionaryLocale = dictionaryLocalePreference,
+                dictionaryLocale = dictionaryLocale,
                 onLocaleSelected = { viewModel.updateDictionaryLocale(it) }
             )
         }

@@ -21,6 +21,7 @@ import fr.berliat.hskwidget.data.store.AppPreferencesStore
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.core.AppDispatchers
 import fr.berliat.hskwidget.core.HSKAppServices
+import fr.berliat.hskwidget.core.Locale
 import fr.berliat.hskwidget.core.Logging
 import fr.berliat.hskwidget.core.SnackbarType
 import fr.berliat.hskwidget.ocr_display_no_text_found
@@ -30,14 +31,16 @@ import fr.berliat.hskwidget.ocr_display_word_not_found
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.exists
 import io.github.vinceglb.filekit.path
+import kotlinx.coroutines.CoroutineScope
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -61,11 +64,6 @@ class ReaderViewModel(
         val clickedWords: Map<String, String> = emptyMap(),
         val selectedWord: AnnotatedChineseWord? = null,
 
-        // Configuration (User Preferences)
-        val showPinyins: Boolean = false,
-        val separatorEnabled: Boolean = false,
-        val textSize: Float = 14f,
-
         // UI Status (Indicators)
         val isProcessing: Boolean = false,
         val isSegmenterReady: Boolean = false
@@ -73,6 +71,30 @@ class ReaderViewModel(
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+
+    val dictionaryLocale: StateFlow<Locale> = appPreferences.dictionaryLocale.asStateFlow()
+        .map { Locale.resolve(it) }
+        .stateIn(CoroutineScope(AppDispatchers.Main), SharingStarted.Eagerly, Locale.resolve(appPreferences.dictionaryLocale.value))
+
+
+    val showPinyins: StateFlow<Boolean> = appPreferences.readerShowAllPinyins.asStateFlow()
+        .map { it }
+        .stateIn(CoroutineScope(AppDispatchers.Main), SharingStarted.Eagerly, appPreferences.readerShowAllPinyins.value)
+
+
+    val separateWords: StateFlow<Boolean> = appPreferences.readerSeparateWords.asStateFlow()
+        .map { it }
+        .stateIn(CoroutineScope(AppDispatchers.Main), SharingStarted.Eagerly, appPreferences.readerSeparateWords.value)
+
+
+    val readerTextSize: StateFlow<Float> = appPreferences.readerTextSize.asStateFlow()
+        .map { it.value }
+        .stateIn(CoroutineScope(AppDispatchers.Main), SharingStarted.Eagerly, appPreferences.readerTextSize.value.value)
+
+    val dictTextSize: StateFlow<Float> = appPreferences.dictionaryTextSize.asStateFlow()
+        .map { it.value }
+        .stateIn(CoroutineScope(AppDispatchers.Main), SharingStarted.Eagerly, appPreferences.dictionaryTextSize.value.value)
+
 
     private val frequencyWordsRepo: ChineseWordFrequencyRepo = ChineseWordFrequencyRepo(
         chineseWordFrequencyDAO,
@@ -97,24 +119,6 @@ class ReaderViewModel(
             }
 
             _uiState.update { it.copy(isSegmenterReady = true) }
-        }
-
-        viewModelScope.launch(AppDispatchers.IO) {
-            // Combine flows from AppPreferences and update UiState
-            combine(
-                appPreferences.readerShowAllPinyins.asStateFlow(),
-                appPreferences.readerSeparateWords.asStateFlow(),
-                appPreferences.readerTextSize.asStateFlow()
-            ) { showPinyins, separatorEnabled, textSize ->
-                // This block runs whenever any of the three underlying preferences change
-                _uiState.update { current ->
-                    current.copy(
-                        showPinyins = showPinyins,
-                        separatorEnabled = separatorEnabled,
-                        textSize = textSize.value
-                    )
-                }
-            }.collect() // Start collecting the combined flow
         }
     }
 

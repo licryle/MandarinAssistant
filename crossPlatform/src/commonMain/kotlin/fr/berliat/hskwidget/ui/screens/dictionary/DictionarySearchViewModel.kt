@@ -54,8 +54,6 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
         .map { Locale.resolve(it) }
         .stateIn(CoroutineScope(AppDispatchers.Main), SharingStarted.Eagerly, Locale.resolve(prefsStore.dictionaryLocale.value))
 
-    val dictionaryLocalePreference: StateFlow<Locale?> = prefsStore.dictionaryLocale.asStateFlow()
-
     val textSize: StateFlow<Float> = prefsStore.dictionaryTextSize.asStateFlow()
         .map { it.value }
         .stateIn(CoroutineScope(AppDispatchers.Main), SharingStarted.Eagerly, prefsStore.dictionaryTextSize.value.value)
