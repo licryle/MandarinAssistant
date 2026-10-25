@@ -101,7 +101,11 @@ fun AppView(
                 contentWindowInsets = WindowInsets.systemBars.union(WindowInsets.ime),
                 topBar = {
                     AppBar(
-                        onOcrClick = { viewModel.navigationManager.navigate(Screen.OCRCapture()) },
+                        onOcrClick = {
+                            if (currentScreen !is Screen.OCRCapture) {
+                                viewModel.navigationManager.navigate(Screen.OCRCapture())
+                            }
+                        },
                         onMenuClick = { drawerIsOpen.value = !drawerIsOpen.value },
                         viewModel = appBarViewModel
                     )
