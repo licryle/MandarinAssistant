@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,6 +70,7 @@ fun DictionarySearchScreen(
     val updateProgress by DatabaseHelper.updateProgress.collectAsState()
     val isLoadingMore by viewModel.isLoadingMore.collectAsState()
     val wordExists by viewModel.wordExists.collectAsState()
+    val searchedQuery by viewModel.searchedQuery.collectAsState()
     val hasAnnotationFilter by viewModel.hasAnnotationFilter.collectAsState()
     val textSize by viewModel.textSize.collectAsState()
     val dictionaryLocale by viewModel.dictionaryLocale.collectAsState()
@@ -95,25 +97,38 @@ fun DictionarySearchScreen(
     val couldAnnotate = mayAnnotate && !isLongText
     val isEmptyResult = results.isEmpty()
 
-    // Nothing in the dictionary for a hanzi query: analyse the text in place.
-    // Gated on `couldAnnotate` (the word really is absent) so that a word that
-    // exists but is hidden by a filter keeps the normal filters + "filtered
-    // out" message instead of swapping the chips away. Derived from state only,
-    // so typing/clearing can never be fought by a screen change; the one
-    // navigation step it implies is handled below.
-    val isReaderMode = isEmptyResult && mayAnnotate
+    // Nothing in the dictionary for a hanzi query: analyse the text in the
+    // Reader. Only treat the miss as final once the results actually belong to
+    // the current query; otherwise the stale, empty results of the previous
+    // query would hand off before the new search even starts.
+    val trimmedQuery = query.trim()
+    val searchSettled = searchedQuery == trimmedQuery &&
+        !isLoading &&
+        updateProgress == null
+    val isReaderMode = searchSettled && isEmptyResult && mayAnnotate
 
-    if (isReaderMode) {
-        onNavigate(
-            Screen.Reader(
-                preText = searchQuery.query,
-                imageFilePath = null,
-                couldAnnotate = couldAnnotate,
-                allowPicture = false
-            )
-        )
-
-        return
+    // Hand off exactly once per query. The marker is saveable so it survives
+    // the round trip: coming back from the Reader re-runs the search, and
+    // without this it would immediately re-open the Reader. It is only
+    // cleared when a *different* query settles, so re-searching the same
+    // failed text later still opens the Reader.
+    var handedOffQuery by rememberSaveable { mutableStateOf("") }
+    LaunchedEffect(isReaderMode, trimmedQuery, searchSettled) {
+        if (isReaderMode) {
+            if (handedOffQuery != trimmedQuery) {
+                handedOffQuery = trimmedQuery
+                onNavigate(
+                    Screen.Reader(
+                        preText = query,
+                        imageFilePath = null,
+                        couldAnnotate = couldAnnotate,
+                        allowPicture = false
+                    )
+                )
+            }
+        } else if (searchSettled && trimmedQuery != handedOffQuery) {
+            handedOffQuery = ""
+        }
     }
 
     // Whenever searchQuery changes, scroll to top.
@@ -148,8 +163,9 @@ fun DictionarySearchScreen(
             showAnnotationFilter = true
         )
 
-        // Main content: word results, or a segmented reading of the query when
-        // no word matches.
+        // Main content: word results, or a no-result message when nothing
+        // matches. In reader mode the prompt keeps the searched word so coming
+        // back from the Reader still offers to annotate it.
         Box(modifier = Modifier.fillMaxSize()) {
             if (updateProgress != null) {
                 DbUpdateView(progress = updateProgress)
@@ -157,7 +173,7 @@ fun DictionarySearchScreen(
                 LoadingView(loadingText = Res.string.dictionary_search_loading)
             } else if (isEmptyResult) {
                 CompactNoResultHeader(
-                    word = null,
+                    word = if (isReaderMode) AnnotatedChineseWord.getBlank(query) else null,
                     couldAnnotate = couldAnnotate,
                     onAnnotate = onAnnotate
                 )

@@ -49,6 +49,14 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
     private val _wordExists = MutableStateFlow<Boolean?>(null)
     val wordExists: StateFlow<Boolean?> = _wordExists.asStateFlow()
 
+    /**
+     * The query that produced the current [searchResults] and [wordExists].
+     * Null while a search is in flight. Screens use this to tell "no result"
+     * apart from "the result is still from the previous query".
+     */
+    private val _searchedQuery = MutableStateFlow<String?>(null)
+    val searchedQuery: StateFlow<String?> = _searchedQuery.asStateFlow()
+
     val hasAnnotationFilter: StateFlow<Boolean> = prefsStore.searchFilterHasAnnotation.asStateFlow()
 
     val dictionaryLocale: StateFlow<Locale?> = prefsStore.dictionaryLocale.asStateFlow()
@@ -62,7 +70,6 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
     private var currentPage = 0
     private val itemsPerPage = 30
     private var currentSearchJob: Job? = null
-    private var currentWordCheckJob: Job? = null
 
     fun toggleHasAnnotation(value: Boolean) {
         prefsStore.searchFilterHasAnnotation.value = value
@@ -104,16 +111,24 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
             "SOURCE" to source.toString()
         )
         currentSearchJob?.cancel()
-        currentWordCheckJob?.cancel()
+        // Results below still belong to the previous query until this one lands.
+        _searchedQuery.value = null
         currentSearchJob = CoroutineScope(AppDispatchers.IO).launch {
             _isLoading.value = true
             currentPage = 0
 
             val results = fetchResultsForPage()
+            val wordExists = if (querySnapshot.isEmpty()) {
+                null
+            } else {
+                annotatedChineseWordDAO.getFromSimplified(querySnapshot) != null
+            }
 
             withContext(Dispatchers.Main) {
                 _hasMoreResults.value = results.size == itemsPerPage
                 _searchResults.value = results
+                _wordExists.value = wordExists
+                _searchedQuery.value = querySnapshot
                 _isLoading.value = false
 
                 Logging.logAnalyticsEvent(
@@ -126,25 +141,6 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
                         baseParams
                     )
                 }
-            }
-        }
-
-        checkIfWordExists()
-    }
-
-    private fun checkIfWordExists() {
-        val searchWord = searchQuery.value.query.trim()
-
-        if (searchWord.isEmpty()) {
-            _wordExists.value = null
-            return
-        }
-
-        currentWordCheckJob = CoroutineScope(AppDispatchers.IO).launch {
-            val result = annotatedChineseWordDAO.getFromSimplified(searchWord)
-
-            withContext(Dispatchers.Main) {
-                _wordExists.value = result != null
             }
         }
     }

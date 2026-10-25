@@ -137,6 +137,7 @@ kotlin {
                 implementation(libs.androidx.lifecycle.runtimeCompose)
                 implementation(libs.compose.runtime)
                 implementation(libs.compose.foundation)
+                implementation(libs.compose.ui.backhandler)
                 implementation(libs.compose.material3)
                 implementation(libs.compose.resources)
                 implementation(libs.kermit)

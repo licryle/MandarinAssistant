@@ -2,11 +2,14 @@ package fr.berliat.hskwidget.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -38,20 +41,37 @@ import io.github.vinceglb.filekit.absolutePath
 
 import kotlin.reflect.typeOf
 
+@Suppress("DEPRECATION")
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AppNavHost(viewModel : AppViewModel) {
     val navController = rememberNavController()
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(navController) {
-        viewModel.navigationManager.navigationEvents.collect { route ->
-            // Only clear focus if we are navigating to a screen other than the Dictionary.
-            // This prevents the keyboard from dismissing during live search updates or
-            // when navigating to results while typing.
-            if (route !is Screen.Dictionary) {
-                focusManager.clearFocus()
+        viewModel.navigationManager.navigationEvents.collect { event ->
+            when (event) {
+                is NavigationEvent.Push -> {
+                    // Only clear focus if we are navigating to a screen other than the Dictionary.
+                    // This prevents the keyboard from dismissing during live search updates or
+                    // when navigating to results while typing.
+                    if (event.screen !is Screen.Dictionary) {
+                        focusManager.clearFocus()
+                    }
+                    navController.navigate(event.screen)
+                }
+
+                is NavigationEvent.Back -> {
+                    val popped = event.previous?.let { previous ->
+                        navController.popBackStack(previous, inclusive = false)
+                    } ?: false
+                    if (!popped) {
+                        // The mirrored stack was ahead of the host; a plain pop
+                        // still unwinds one real entry.
+                        navController.popBackStack()
+                    }
+                }
             }
-            navController.navigate(route)
         }
     }
 
@@ -101,8 +121,8 @@ fun AppNavHost(viewModel : AppViewModel) {
 
             AnnotateScreen(
                 word = args.simplifiedWord,
-                onSaveSuccess = { navController.popBackStack() },
-                onDeleteSuccess = { navController.popBackStack() },
+                onSaveSuccess = { viewModel.navigationManager.back() },
+                onDeleteSuccess = { viewModel.navigationManager.back() },
             )
         }
 
@@ -229,5 +249,19 @@ fun AppNavHost(viewModel : AppViewModel) {
                 )
             }
         }
+    }
+
+    // System back unwinds through NavigationManager so the mirrored stack and
+    // the host stack stay in step. Composed after NavHost so it takes
+    // precedence over the NavHost's own back handler.
+    //
+    // `visibleEntries` is only read to recompose when the stack changes:
+    // `previousBackStackEntry` ignores navigation-graph entries, so this stays
+    // disabled at the root and lets the system exit the app.
+    val visibleEntries by navController.visibleEntries.collectAsState()
+    val canGoBack = visibleEntries.isNotEmpty() &&
+        navController.previousBackStackEntry != null
+    BackHandler(enabled = canGoBack) {
+        viewModel.navigationManager.back()
     }
 }
