@@ -28,7 +28,6 @@ import fr.berliat.hskwidget.data.store.AppPreferencesStore
 import fr.berliat.hskwidget.ui.components.Error
 import fr.berliat.hskwidget.ui.components.ErrorView
 import fr.berliat.hskwidget.ui.components.LoadingView
-import fr.berliat.hskwidget.ui.components.reader.ReaderFilterBar
 import fr.berliat.hskwidget.ui.components.reader.SegmentedReaderView
 import fr.berliat.hskwidget.ui.components.reader.SelectableWordCard
 import fr.berliat.hskwidget.Res
@@ -46,6 +45,8 @@ import org.jetbrains.compose.resources.stringResource
 
 import co.touchlab.kermit.Logger
 import fr.berliat.hskwidget.data.model.AnnotatedChineseWord
+import fr.berliat.hskwidget.ui.components.filterBar.PrefsFilterBar
+import fr.berliat.hskwidget.ui.components.filterBar.TextSizeMode
 import fr.berliat.hskwidget.ui.components.reader.CompactNoResultHeader
 
 private const val TAG = "ReaderScreen"
@@ -100,7 +101,13 @@ fun ReaderScreen(
     }
 
     Column (modifier = modifier) {
-        ReaderFilterBar(prefs = appConfig, modifier = modifier)
+        PrefsFilterBar(
+            prefs = appConfig,
+            textSizeMode = TextSizeMode.READER,
+            showSeparatorFilter = true,
+            showPinyinFilter = true,
+            modifier = modifier
+        )
 
         Row(modifier = modifier.weight(1f)) {
             if (uiState.isProcessing) {

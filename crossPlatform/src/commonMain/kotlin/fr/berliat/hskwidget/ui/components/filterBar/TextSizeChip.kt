@@ -1,4 +1,4 @@
-package fr.berliat.hskwidget.ui.components
+package fr.berliat.hskwidget.ui.components.filterBar
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 import fr.berliat.hskwidget.Res
@@ -45,7 +46,7 @@ fun TextSizeChip(
         modifier = modifier,
         shape = RoundedCornerShape(50),
         tonalElevation = 0.dp,
-        color = androidx.compose.ui.graphics.Color.Transparent,
+        color = Color.Transparent,
         border = BorderStroke(borderWidth, MaterialTheme.colorScheme.outlineVariant),
         shadowElevation = 0.dp
     ) {

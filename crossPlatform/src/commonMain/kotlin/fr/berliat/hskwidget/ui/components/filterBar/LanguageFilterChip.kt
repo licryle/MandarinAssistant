@@ -1,4 +1,4 @@
-package fr.berliat.hskwidget.ui.components
+package fr.berliat.hskwidget.ui.components.filterBar
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -41,7 +42,7 @@ fun LanguageFilterChip(
                         painter = painterResource(flag),
                         contentDescription = null,
                         modifier = Modifier.size(20.dp),
-                        tint = if (selectedLocale?.flag == null) MaterialTheme.colorScheme.onSurfaceVariant else androidx.compose.ui.graphics.Color.Unspecified
+                        tint = if (selectedLocale?.flag == null) MaterialTheme.colorScheme.onSurfaceVariant else Color.Unspecified
                     )
                     Spacer(Modifier.width(8.dp))
                     Icon(
@@ -90,7 +91,7 @@ fun LanguageFilterChip(
                                     painter = painterResource(it),
                                     contentDescription = null,
                                     modifier = Modifier.size(20.dp),
-                                    tint = androidx.compose.ui.graphics.Color.Unspecified
+                                    tint = Color.Unspecified
                                 )
                                 Spacer(Modifier.width(8.dp))
                             }
