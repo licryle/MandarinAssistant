@@ -9,6 +9,9 @@ import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.core.Logging
 import fr.berliat.hskwidget.data.dao.AnnotatedChineseWordDAO
 
+import co.touchlab.kermit.Logger
+
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,6 +25,7 @@ import kotlinx.coroutines.launch
 
 import fr.berliat.hskwidget.data.model.AnnotatedChineseWord
 import fr.berliat.hskwidget.data.store.AppPreferencesStore
+import fr.berliat.hskwidget.domain.SearchQuery
 import fr.berliat.hskwidget.ui.theme.AppTypographies
 import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
 import androidx.compose.ui.unit.sp
@@ -32,6 +36,8 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
                           private val annotatedChineseWordDAO: AnnotatedChineseWordDAO = HSKAppServices.database.annotatedChineseWordDAO(),
                           private val widgetProvider: FlashcardWidgetProvider = FlashcardWidgetProvider()
 ) {
+    private val TAG = "DictionarySearchViewModel"
+
     val searchQuery = prefsStore.searchQuery.asStateFlow()
 
     private val _searchResults = MutableStateFlow<List<AnnotatedChineseWord>>(emptyList())
@@ -71,6 +77,13 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
     private val itemsPerPage = 30
     private var currentSearchJob: Job? = null
 
+    /**
+     * Monotonic id of the latest search. A completion from an older search is
+     * ignored, so a cancelled job can never overwrite the results (or move the
+     * page cursor) of the search that replaced it.
+     */
+    private var searchGeneration = 0
+
     fun toggleHasAnnotation(value: Boolean) {
         prefsStore.searchFilterHasAnnotation.value = value
 
@@ -98,33 +111,60 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
     }
 
     fun performSearch(source: IntentSources) {
-        val querySnapshot = searchQuery.value.query.trim()
-        val inList = searchQuery.value.inListName != null
+        // Snapshot everything the query needs *now*. The DAO call must not read
+        // the live search field later: the user may have typed again while this
+        // search was in flight.
+        val query = searchQuery.value
+        val querySnapshot = query.query.trim()
         val annotatedOnly = prefsStore.searchFilterHasAnnotation.value
-        val localeCode = Locale.resolve(prefsStore.dictionaryLocale.value).code
+        val locale = Locale.resolve(prefsStore.dictionaryLocale.value)
         val baseParams = mapOf(
             "QUERY_LEN" to querySnapshot.length.toString(),
             "HAS_ANNOTATION_FILTER" to annotatedOnly.toString(),
-            "IN_LIST" to inList.toString(),
-            "LOCALE" to localeCode,
-            "EXACT_WORD" to searchQuery.value.exactWord.toString(),
+            "IN_LIST" to (query.inListName != null).toString(),
+            "LOCALE" to locale.code,
+            "EXACT_WORD" to query.exactWord.toString(),
             "SOURCE" to source.toString()
         )
+
+        // Reset synchronously, before any coroutine runs: an old job that is
+        // cancelled while awaiting the DAO could otherwise finish its
+        // `currentPage++` (or clear the loading flag) after the new search
+        // started, making it read page 1 of a fresh query -> empty results.
+        val generation = ++searchGeneration
         currentSearchJob?.cancel()
-        // Results below still belong to the previous query until this one lands.
+        currentPage = 0
         _searchedQuery.value = null
+
         currentSearchJob = CoroutineScope(AppDispatchers.IO).launch {
             _isLoading.value = true
-            currentPage = 0
 
-            val results = fetchResultsForPage()
-            val wordExists = if (querySnapshot.isEmpty()) {
-                null
-            } else {
-                annotatedChineseWordDAO.getFromSimplified(querySnapshot) != null
+            var results: List<AnnotatedChineseWord> = emptyList()
+            var wordExists: Boolean? = null
+            var failure: Throwable? = null
+            try {
+                results = fetchResultsForPage(query, locale, annotatedOnly, page = 0)
+                wordExists = if (querySnapshot.isEmpty()) {
+                    null
+                } else {
+                    annotatedChineseWordDAO.getFromSimplified(querySnapshot) != null
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                failure = e
+                Logger.e(
+                    tag = TAG,
+                    messageString = "Dictionary search failed",
+                    throwable = e
+                )
             }
 
             withContext(Dispatchers.Main) {
+                // A newer search took over while this one was running.
+                if (generation != searchGeneration) return@withContext
+
+                currentPage = 1
                 _hasMoreResults.value = results.size == itemsPerPage
                 _searchResults.value = results
                 _wordExists.value = wordExists
@@ -135,7 +175,7 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
                     Logging.ANALYTICS_EVENTS.DICT_SEARCH,
                     baseParams + mapOf("RESULT_COUNT" to results.size.toString())
                 )
-                if (results.isEmpty()) {
+                if (failure == null && results.isEmpty()) {
                     Logging.logAnalyticsEvent(
                         Logging.ANALYTICS_EVENTS.DICT_EMPTY_RESULT,
                         baseParams
@@ -146,13 +186,37 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
     }
 
     fun loadMore() {
-        if (_isLoadingMore.value) return
-        _isLoadingMore.value = true
+        // Never paginate while the first page is still loading: the page cursor
+        // belongs to the search that produced the currently displayed results.
+        if (_isLoading.value || _isLoadingMore.value) return
+
+        val query = searchQuery.value
+        val annotatedOnly = prefsStore.searchFilterHasAnnotation.value
+        val locale = Locale.resolve(prefsStore.dictionaryLocale.value)
+        val generation = searchGeneration
         val page = currentPage
+
+        _isLoadingMore.value = true
         CoroutineScope(AppDispatchers.IO).launch {
-            val newResults = fetchResultsForPage()
+            val newResults = try {
+                fetchResultsForPage(query, locale, annotatedOnly, page)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Logger.e(
+                    tag = TAG,
+                    messageString = "Dictionary load more failed",
+                    throwable = e
+                )
+                emptyList()
+            }
 
             withContext(Dispatchers.Main) {
+                // The query changed while this page was loading: drop the page,
+                // the new search already reset the loading flag.
+                if (generation != searchGeneration) return@withContext
+
+                currentPage = page + 1
                 _hasMoreResults.value = newResults.size == itemsPerPage
                 _searchResults.value += newResults
                 _isLoadingMore.value = false
@@ -169,36 +233,41 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
         }
     }
 
-    private suspend fun fetchResultsForPage(): List<AnnotatedChineseWord> {
-        val searchQuery = searchQuery.value
-        val listName = searchQuery.inListName
-        val annotatedOnly = prefsStore.searchFilterHasAnnotation.value
-        val locale = Locale.resolve(prefsStore.dictionaryLocale.value)
+    private suspend fun fetchResultsForPage(
+        query: SearchQuery,
+        locale: Locale,
+        annotatedOnly: Boolean,
+        page: Int
+    ): List<AnnotatedChineseWord> {
+        val listName = query.inListName
+        val filterAnnotation = annotatedOnly && !query.ignoreAnnotation
 
-        if (searchQuery.exactWord) {
-            return fetchExactWordPage(searchQuery.query.trim(), listName, annotatedOnly)
+        if (query.exactWord) {
+            return fetchExactWordPage(query.query.trim(), listName, locale, filterAnnotation, page)
         }
 
-        val results = if (listName != null) {
+        return if (listName != null) {
             // Search within the specified word list
-            annotatedChineseWordDAO.searchFromWordList(listName, searchQuery.query, locale, annotatedOnly && !searchQuery.ignoreAnnotation, currentPage, itemsPerPage)
+            annotatedChineseWordDAO.searchFromWordList(listName, query.query, locale, filterAnnotation, page, itemsPerPage)
         } else {
-            annotatedChineseWordDAO.searchFromStrLike(searchQuery.query, locale, annotatedOnly && !searchQuery.ignoreAnnotation, atExam = null, currentPage, itemsPerPage)
+            annotatedChineseWordDAO.searchFromStrLike(query.query, locale, filterAnnotation, atExam = null, page, itemsPerPage)
         }
-
-        currentPage++
-        return results
     }
 
     /** exactWord: exact simplified lookup, no examples/collocations/definitions noise. */
-    private suspend fun fetchExactWordPage(query: String, listName: String?, annotatedOnly: Boolean): List<AnnotatedChineseWord> {
-        if (currentPage > 0 || query.isEmpty()) return emptyList()
-        currentPage++
+    private suspend fun fetchExactWordPage(
+        query: String,
+        listName: String?,
+        locale: Locale,
+        annotatedOnly: Boolean,
+        page: Int
+    ): List<AnnotatedChineseWord> {
+        if (page > 0 || query.isEmpty()) return emptyList()
 
         val hit = annotatedChineseWordDAO.getFromSimplified(query) ?: return emptyList()
         if (annotatedOnly && !hit.hasAnnotation()) return emptyList()
         if (listName != null) {
-            val inList = annotatedChineseWordDAO.searchFromWordList(listName, query, Locale.resolve(prefsStore.dictionaryLocale.value), annotatedOnly, 0, 1)
+            val inList = annotatedChineseWordDAO.searchFromWordList(listName, query, locale, annotatedOnly, 0, 1)
             if (inList.none { it.simplified == hit.simplified }) return emptyList()
         }
         return listOf(hit)

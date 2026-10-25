@@ -85,7 +85,13 @@ fun AppView(
                 AppDrawer(
                     currentScreen = currentScreen,
                 ) { selectedScreen ->
-                    viewModel.navigationManager.navigate(selectedScreen)
+                    // Selecting the section already on screen must not push a
+                    // duplicate entry (which would make back appear to do
+                    // nothing); selecting another one already in the stack
+                    // returns to it instead of stacking it again.
+                    if (selectedScreen::class != currentScreen::class) {
+                        viewModel.navigationManager.backTo(selectedScreen)
+                    }
                     drawerIsOpen.value = false
                 }
             },
@@ -123,7 +129,7 @@ fun AppView(
                             && viewModel.navigationManager.inBackStack(Screen.Reader::class)) {
                             ReaderReminder(
                                 onClose = { mutedReaderReminders.value = ocrScreens }, // Muting all OCR screens in backstack
-                                onClick = { viewModel.navigationManager.navigate(ocrScreens.last()) }
+                                onClick = { viewModel.navigationManager.backTo(ocrScreens.last()) }
                             )
                         }
 

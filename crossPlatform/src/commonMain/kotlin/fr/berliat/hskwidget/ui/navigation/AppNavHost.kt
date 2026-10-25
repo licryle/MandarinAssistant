@@ -62,12 +62,15 @@ fun AppNavHost(viewModel : AppViewModel) {
                 }
 
                 is NavigationEvent.Back -> {
-                    val popped = event.previous?.let { previous ->
+                    val target = event.previous
+                    val popped = target?.let { previous ->
                         navController.popBackStack(previous, inclusive = false)
                     } ?: false
-                    if (!popped) {
-                        // The mirrored stack was ahead of the host; a plain pop
-                        // still unwinds one real entry.
+                    if (!popped && navController.previousBackStackEntry != null) {
+                        // Either the mirror had no logical previous, or it and
+                        // the host drifted apart (e.g. the target is already on
+                        // top). Unwind exactly one entry, but never the last
+                        // one: popping the root would leave an empty NavHost.
                         navController.popBackStack()
                     }
                 }
@@ -101,9 +104,9 @@ fun AppNavHost(viewModel : AppViewModel) {
             DictionarySearchScreen(
                 initialIntentSource = args.source,
                 onAnnotate = { word ->
-                    navController.navigate(Screen.Annotate(word.simplified))
+                    viewModel.navigationManager.navigate(Screen.Annotate(word.simplified))
                 },
-                onSearchTerm = { term -> navController.navigate(
+                onSearchTerm = { term -> viewModel.navigationManager.navigate(
                     Screen.Dictionary(
                         SearchQuery.fromString(term).copy(exactWord = true).toString())
                     )
@@ -135,7 +138,7 @@ fun AppNavHost(viewModel : AppViewModel) {
             WordListScreen(
                 onClickList = { list ->
                     val sq = SearchQuery(inListName = list.name)
-                    navController.navigate(Screen.Dictionary(sq.toString()))
+                    viewModel.navigationManager.navigate(Screen.Dictionary(sq.toString()))
                 }
             )
         }
@@ -199,7 +202,7 @@ fun AppNavHost(viewModel : AppViewModel) {
             }
 
             CaptureImageScreen(onImageReady = { imageFile: PlatformFile ->
-                navController.navigate(Screen.Reader(
+                viewModel.navigationManager.navigate(Screen.Reader(
                     preText = args.preText,
                     imageFilePath = imageFile.absolutePath(),
                     allowPicture = true,
@@ -243,9 +246,9 @@ fun AppNavHost(viewModel : AppViewModel) {
                     imageFile = imageFile,
                     allowPicture = args.allowPicture,
                     couldAnnotate = args.couldAnnotate,
-                    onFavoriteClick = { word -> navController.navigate(Screen.Annotate(word.simplified)) },
-                    onClickOCRAdd = { preText -> navController.navigate(Screen.OCRCapture(preText)) },
-                    onSearchTerm = { query -> navController.navigate(Screen.Dictionary(SearchQuery.fromString(query).copy(exactWord = true).toString())) }
+                    onFavoriteClick = { word -> viewModel.navigationManager.navigate(Screen.Annotate(word.simplified)) },
+                    onClickOCRAdd = { preText -> viewModel.navigationManager.navigate(Screen.OCRCapture(preText)) },
+                    onSearchTerm = { query -> viewModel.navigationManager.navigate(Screen.Dictionary(SearchQuery.fromString(query).copy(exactWord = true).toString())) }
                 )
             }
         }
