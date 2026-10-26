@@ -15,6 +15,8 @@ import fr.berliat.hskwidget.dictionary_search_filter_hasannotation_hint
 import fr.berliat.hskwidget.ui.dismissKeyboardOnClick
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 
 @Composable
@@ -40,4 +42,12 @@ fun AnnotationFilterChip(
             )
         }
     )
+}
+
+@Preview
+@Composable
+fun AnnotationFilterChipPreview() {
+    AppTheme {
+        AnnotationFilterChip(selected = true, onToggle = {})
+    }
 }

@@ -3,6 +3,7 @@ package fr.berliat.hskwidget.ui.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -21,6 +22,8 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 /*** Note: I couldn't use the OutlineTextDefaults because it gives buggy controls over padding */
 @Composable
@@ -86,5 +89,21 @@ fun OutlinedContainer(
                     translationX = 4.dp.toPx()
                 }
         )
+    }
+}
+
+@Preview
+@Composable
+fun OutlinedContainerPreview() {
+    AppTheme {
+        OutlinedContainer(
+            label = "Sample Label",
+            modifier = Modifier.fillMaxWidth().padding(16.dp)
+        ) {
+            Text(
+                text = "Container Content Goes Here",
+                modifier = Modifier.padding(16.dp)
+            )
+        }
     }
 }

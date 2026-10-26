@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.ocr_display_pinyins
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 
 @Composable
@@ -31,4 +33,12 @@ fun PinyinChip(
             )
         }
     )
+}
+
+@Preview
+@Composable
+fun PinyinChipPreview() {
+    AppTheme {
+        PinyinChip(selected = true, onToggle = {})
+    }
 }

@@ -13,10 +13,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fr.berliat.hskwidget.ui.dismissKeyboardOnClick
+import fr.berliat.hskwidget.Res
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
+import fr.berliat.hskwidget.baseline_volume_up_24
+import fr.berliat.hskwidget.widget_btn_speak
 
 @Composable
 fun RoundIconButton(
@@ -39,6 +44,18 @@ fun RoundIconButton(
                 .clip(CircleShape)           // make it round
                 .background(MaterialTheme.colorScheme.secondaryContainer) // background color
                 .padding(5.dp)
+        )
+    }
+}
+
+@Preview
+@Composable
+fun RoundIconButtonPreview() {
+    AppTheme {
+        RoundIconButton(
+            iconRes = Res.drawable.baseline_volume_up_24,
+            contentDescriptionRes = Res.string.widget_btn_speak,
+            onClick = {}
         )
     }
 }

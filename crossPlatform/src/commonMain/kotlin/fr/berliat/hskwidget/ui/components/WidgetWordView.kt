@@ -23,9 +23,19 @@ import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.baseline_refresh_24
 import fr.berliat.hskwidget.baseline_volume_up_24
 import fr.berliat.hskwidget.data.model.AnnotatedChineseWord
+import fr.berliat.hskwidget.data.model.ChineseWord
+import fr.berliat.hskwidget.data.model.ChineseWordAnnotation
+import fr.berliat.hskwidget.data.type.ClassLevel
+import fr.berliat.hskwidget.data.type.ClassType
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 import fr.berliat.hskwidget.data.type.HSK_Level
+import fr.berliat.hskwidget.data.type.Modality
+import fr.berliat.hskwidget.data.type.Pinyins
+import fr.berliat.hskwidget.data.type.WordType
 import fr.berliat.hskwidget.dictionary_item_reload
 import fr.berliat.hskwidget.widget_btn_speak
+import kotlinx.datetime.Instant
 
 @Composable
 fun WidgetWordView(
@@ -106,5 +116,41 @@ fun WidgetWordView(
                 modifier = Modifier.padding(0.dp)
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun WidgetWordViewPreview() {
+    AppTheme {
+        WidgetWordView(
+            word = AnnotatedChineseWord(
+                word = ChineseWord(
+                    simplified ="你好",
+                    traditional = "妳好",
+                    hskLevel = HSK_Level.HSK1,
+                    pinyins = Pinyins("nǐ hǎo"),
+                    popularity = 100,
+                    examples = "你好吗？",
+                    collocations = "你好, 您好",
+                    modality = Modality.ORAL,
+                    wordType = WordType.INTERJECTION,
+                    synonyms = "您好",
+                    antonym = "再见",
+                    searchableText = ""
+                ),
+                annotation = ChineseWordAnnotation(
+                    simplified = "你好",
+                    pinyins = Pinyins("nǐ hǎo"),
+                    notes = "important note",
+                    classType = ClassType.Speaking,
+                    level = ClassLevel.Elementary1,
+                    themes = "greeting",
+                    firstSeen = Instant.fromEpochMilliseconds(1672531200000L),
+                    isExam = true,
+                    searchableText = ""
+                )
+            )
+        )
     }
 }

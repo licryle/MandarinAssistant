@@ -18,6 +18,8 @@ import fr.berliat.hskwidget.keyboard_arrow_down_24px
 import fr.berliat.hskwidget.translate_24px
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,5 +107,18 @@ fun LanguageFilterChip(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun LanguageFilterChipPreview() {
+    AppTheme {
+        LanguageFilterChip(
+            selectedLocale = Locale.ENGLISH,
+            supportedLocales = listOf(Locale.ENGLISH, Locale.FRENCH),
+            includeNullLocale = true,
+            onLocaleSelected = {}
+        )
     }
 }

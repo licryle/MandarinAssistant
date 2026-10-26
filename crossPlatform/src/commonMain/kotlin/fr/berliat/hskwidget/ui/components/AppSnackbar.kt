@@ -23,6 +23,9 @@ import fr.berliat.hskwidget.ui.theme.snackbarStyleFor
 
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import androidx.compose.foundation.layout.Column
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 @Composable
 fun AppSnackbar(
@@ -75,6 +78,21 @@ fun AppSnackbar(
                     )
                 }
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun AppSnackbarPreview() {
+    AppTheme {
+        Column {
+            AppSnackbar(
+                message = "This is a success notification message.",
+                type = SnackbarType.SUCCESS,
+                actionLabel = "Dismiss",
+                onActionClick = {}
+            )
         }
     }
 }

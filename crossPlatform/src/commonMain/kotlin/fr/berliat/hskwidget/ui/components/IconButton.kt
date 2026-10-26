@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 @Composable
 fun IconButton(text: String, onClick: () -> Unit,
@@ -42,5 +44,13 @@ fun IconButton(text: String, onClick: () -> Unit,
 
             Text(text)
         }
+    }
+}
+
+@Preview
+@Composable
+fun IconButtonPreview() {
+    AppTheme {
+        IconButton(text = "Click Me", onClick = {})
     }
 }

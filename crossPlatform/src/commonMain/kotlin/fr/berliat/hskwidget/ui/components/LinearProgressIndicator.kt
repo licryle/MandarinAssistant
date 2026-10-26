@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 @Composable
 fun SmartLinearProgressIndicator(
@@ -31,5 +33,13 @@ fun SmartLinearProgressIndicator(
             trackColor = trackColor,
             strokeCap = strokeCap
         )
+    }
+}
+
+@Preview
+@Composable
+fun SmartLinearProgressIndicatorPreview() {
+    AppTheme {
+        SmartLinearProgressIndicator(progress = 0.5f)
     }
 }

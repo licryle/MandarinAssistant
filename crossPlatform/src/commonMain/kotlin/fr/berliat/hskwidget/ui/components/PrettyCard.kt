@@ -16,6 +16,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fr.berliat.hskwidget.ui.dismissKeyboardOnClick
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
+import androidx.compose.material3.Text
 
 sealed interface PrettyCardShapeModifier {
     object First: PrettyCardShapeModifier
@@ -63,5 +66,15 @@ fun PrettyCard(
             modifier = Modifier.padding(0.dp),
             content = content
         )
+    }
+}
+
+@Preview
+@Composable
+fun PrettyCardPreview() {
+    AppTheme {
+        PrettyCard(modifier = Modifier.padding(16.dp)) {
+            Text("Pretty Card Content", modifier = Modifier.padding(16.dp))
+        }
     }
 }

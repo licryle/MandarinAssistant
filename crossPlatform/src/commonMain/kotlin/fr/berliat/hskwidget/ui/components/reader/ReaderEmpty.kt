@@ -6,6 +6,8 @@ import androidx.compose.ui.Modifier
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.ocr_display_ocr_no_text
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 @Composable
 fun ReaderEmpty(modifier: Modifier = Modifier) {
@@ -13,4 +15,12 @@ fun ReaderEmpty(modifier: Modifier = Modifier) {
         text = stringResource(Res.string.ocr_display_ocr_no_text),
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+fun ReaderEmptyPreview() {
+    AppTheme {
+        ReaderEmpty()
+    }
 }

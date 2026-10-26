@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.sp
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.bookmark_add_24px
 import fr.berliat.hskwidget.data.model.AnnotatedChineseWord
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 import fr.berliat.hskwidget.dictionary_noresult_icon
 import fr.berliat.hskwidget.dictionary_noresult_text
 import fr.berliat.hskwidget.dictionary_noresultwithfilter_text
@@ -80,6 +82,18 @@ fun CompactNoResultHeader(
             fontWeight = FontWeight.Bold,
             fontSize = 15.sp,
             color = MaterialTheme.colorScheme.onSurface
+        )
+    }
+}
+
+@Preview
+@Composable
+fun CompactNoResultHeaderPreview() {
+    AppTheme {
+        CompactNoResultHeader(
+            word = AnnotatedChineseWord.getBlank("测试"),
+            couldAnnotate = true,
+            onAnnotate = {}
         )
     }
 }

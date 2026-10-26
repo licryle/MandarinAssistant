@@ -18,6 +18,8 @@ import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.database_updating_progress
 import fr.berliat.hskwidget.loading
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 @Composable
 fun DbUpdateView(
@@ -46,5 +48,13 @@ fun DbUpdateView(
             text = if (progress != null) stringResource(Res.string.database_updating_progress, progress.toInt()) else stringResource(Res.string.loading),
             style = MaterialTheme.typography.titleMedium
         )
+    }
+}
+
+@Preview
+@Composable
+fun DbUpdateViewPreview() {
+    AppTheme {
+        DbUpdateView(progress = 45f)
     }
 }

@@ -12,6 +12,8 @@ import fr.berliat.hskwidget.data.model.ChineseWord
 import fr.berliat.hskwidget.ui.components.DetailedWordView
 import fr.berliat.hskwidget.ui.components.PrettyCardShapeModifier
 import fr.berliat.hskwidget.ui.screens.wordlist.WordListSelectionDialog
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 /**
  * Word detail card + lists dialog. Stateless: the caller owns [word] and
@@ -57,6 +59,21 @@ fun SelectableWordCard(
             onSearchTerm = onSearchTerm,
             shapeModifier = shapeModifier,
             modifier = modifier
+        )
+    }
+}
+
+@Preview
+@Composable
+fun SelectableWordCardPreview() {
+    AppTheme {
+        SelectableWordCard(
+            word = AnnotatedChineseWord.getBlank("测试"),
+            textSize = 16f,
+            dictionaryLocale = Locale.ENGLISH,
+            onFavoriteClick = {},
+            onSpeakClick = {},
+            onCopyClick = {}
         )
     }
 }

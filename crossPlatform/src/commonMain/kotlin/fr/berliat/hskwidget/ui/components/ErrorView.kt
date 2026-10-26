@@ -26,6 +26,8 @@ import fr.berliat.hskwidget.refresh_24px
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 class Error(
     val errorText: StringResource = Res.string.loading,
@@ -66,5 +68,19 @@ fun ErrorView(
                 drawable = Res.drawable.refresh_24px
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun ErrorViewPreview() {
+    AppTheme {
+        ErrorView(
+            error = Error(
+                errorText = Res.string.loading,
+                retryText = Res.string.fix_it,
+                onRetryClick = {}
+            )
+        )
     }
 }

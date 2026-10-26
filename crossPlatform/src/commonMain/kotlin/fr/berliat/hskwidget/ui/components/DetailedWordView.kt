@@ -2,6 +2,8 @@ package fr.berliat.hskwidget.ui.components
 
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -45,6 +47,9 @@ import fr.berliat.hskwidget.data.model.AnnotatedChineseWord
 import fr.berliat.hskwidget.data.type.Modality
 import fr.berliat.hskwidget.data.type.WordType
 import fr.berliat.hskwidget.data.type.HSK_Level
+import fr.berliat.hskwidget.data.type.Pinyins
+import fr.berliat.hskwidget.data.type.ClassType
+import fr.berliat.hskwidget.data.type.ClassLevel
 import fr.berliat.hskwidget.ui.theme.AppTypographies
 import fr.berliat.hskwidget.ui.toRes
 import fr.berliat.hskwidget.Res
@@ -74,8 +79,12 @@ import HSKWordView
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
+import androidx.compose.ui.text.TextStyle
 import fr.berliat.hskwidget.core.ContainHanziResult
 import fr.berliat.hskwidget.core.containsHanzi
+import fr.berliat.hskwidget.data.model.ChineseWord
+import fr.berliat.hskwidget.data.model.ChineseWordAnnotation
+import kotlinx.datetime.Instant
 
 /**
  * When [verticallyConstrained] is true, the center column must not contribute to the
@@ -437,7 +446,7 @@ fun DetailedWordView (
 private fun SearchableDetailField(
     title: String? = null,
     content: String,
-    bodyStyle: androidx.compose.ui.text.TextStyle,
+    bodyStyle: TextStyle,
     onSearchTerm: ((String) -> Unit)?,
     modifier: Modifier = Modifier,
     splitRegex: Regex? = null
@@ -478,10 +487,48 @@ private fun SearchableDetailField(
     }
 }
 
+@Preview
+@Composable
+fun DetailedWordViewPreview() {
+    AppTheme {
+        DetailedWordView(
+            word = AnnotatedChineseWord(
+                word = ChineseWord(
+                    simplified ="你好",
+                    traditional = "妳好",
+                    hskLevel = HSK_Level.HSK1,
+                    pinyins = Pinyins("nǐ hǎo"),
+                    popularity = 100,
+                    examples = "你好吗？",
+                    collocations = "你好, 您好",
+                    modality = Modality.ORAL,
+                    wordType = WordType.INTERJECTION,
+                    synonyms = "您好",
+                    antonym = "再见",
+                    searchableText = ""
+                ),
+                annotation = ChineseWordAnnotation(
+                    simplified = "你好",
+                    pinyins = Pinyins("nǐ hǎo"),
+                    notes = "important note",
+                    classType = ClassType.Speaking,
+                    level = ClassLevel.Elementary1,
+                    themes = "greeting",
+                    firstSeen = Instant.fromEpochMilliseconds(1672531200000L),
+                    isExam = true,
+                    searchableText = ""
+                )
+            ),
+            pinyinEditable = false,
+            shapeModifier = PrettyCardShapeModifier.Single
+        )
+    }
+}
+
 @Composable
 private fun SearchableLine(
     entry: String,
-    bodyStyle: androidx.compose.ui.text.TextStyle,
+    bodyStyle: TextStyle,
     onSearchTerm: ((String) -> Unit)?,
     modifier: Modifier = Modifier
 ) {

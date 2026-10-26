@@ -23,6 +23,8 @@ import fr.berliat.hskwidget.widget_not_configured
 
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 @Composable
 fun WidgetEmptyWordView (
@@ -51,5 +53,13 @@ fun WidgetEmptyWordView (
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyLarge
         )
+    }
+}
+
+@Preview
+@Composable
+fun WidgetEmptyWordViewPreview() {
+    AppTheme {
+        WidgetEmptyWordView()
     }
 }

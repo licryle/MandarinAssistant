@@ -23,6 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 import fr.berliat.hskwidget.Res
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 import fr.berliat.hskwidget.ocr_display_conf_bigger
 import fr.berliat.hskwidget.ocr_display_conf_smaller
 import fr.berliat.hskwidget.text_decrease_24px
@@ -91,5 +93,13 @@ fun TextSizeChip(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun TextSizeChipPreview() {
+    AppTheme {
+        TextSizeChip(onDecrease = {}, onIncrease = {})
     }
 }

@@ -20,6 +20,8 @@ import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.loading
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 @Composable
 fun LoadingView(
@@ -43,5 +45,13 @@ fun LoadingView(
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onBackground
         )
+    }
+}
+
+@Preview
+@Composable
+fun LoadingViewPreview() {
+    AppTheme {
+        LoadingView()
     }
 }

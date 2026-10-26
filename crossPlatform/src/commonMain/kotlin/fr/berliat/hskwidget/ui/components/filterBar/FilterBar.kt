@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fr.berliat.hskwidget.core.Locale
 import fr.berliat.hskwidget.ui.horizontalScrollbar
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 /**
  * Stateless filter bar component containing shared controls:
@@ -77,5 +79,24 @@ fun FilterBar(
                 onToggle = onPinyinToggle
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun FilterBarPreview() {
+    AppTheme {
+        FilterBar(
+            selectedLocale = Locale.ENGLISH,
+            onLocaleSelected = {},
+            onDecreaseTextSize = {},
+            onIncreaseTextSize = {},
+            hasAnnotation = true,
+            onHasAnnotationToggle = {},
+            separatorEnabled = true,
+            onSeparatorToggle = {},
+            showPinyins = true,
+            onPinyinToggle = {}
+        )
     }
 }

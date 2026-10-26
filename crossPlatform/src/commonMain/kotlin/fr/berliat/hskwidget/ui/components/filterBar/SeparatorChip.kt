@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.ocr_display_separator
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 @Composable
 fun SeparatorChip(
@@ -30,5 +32,13 @@ fun SeparatorChip(
             )
         }
     )
+}
+
+@Preview
+@Composable
+fun SeparatorChipPreview() {
+    AppTheme {
+        SeparatorChip(selected = true, onToggle = {})
+    }
 }
 

@@ -6,6 +6,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 @Composable
 fun AppDivider(modifier: Modifier = Modifier) {
@@ -14,4 +16,12 @@ fun AppDivider(modifier: Modifier = Modifier) {
         thickness = 0.5.dp,
         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.50f)
     )
+}
+
+@Preview
+@Composable
+fun AppDividerPreview() {
+    AppTheme {
+        AppDivider()
+    }
 }

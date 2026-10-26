@@ -18,6 +18,9 @@ import fr.berliat.hskwidget.cancel
 
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
+import fr.berliat.hskwidget.proceed
 
 @Composable
 fun ProgressCard(
@@ -69,5 +72,18 @@ fun ProgressCard(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun ProgressCardPreview() {
+    AppTheme {
+        ProgressCard(
+            title = Res.string.proceed,
+            message = "Synchronizing data with Anki...",
+            progress = 0.65f,
+            onClickCancel = {}
+        )
     }
 }

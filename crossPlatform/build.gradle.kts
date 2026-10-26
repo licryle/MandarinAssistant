@@ -148,6 +148,7 @@ kotlin {
                 implementation(libs.filekit.dialogs.compose)
                 implementation(libs.camerak)
                 implementation(libs.navigation.compose)
+                implementation(libs.compose.common.preview)
                 implementation(project(":pinyin4kot"))
                 implementation(project(":hsktextviews"))
                 implementation(project(":googledrivebackup"))

@@ -19,6 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fr.berliat.hskwidget.ui.dismissKeyboardOnClick
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,5 +70,19 @@ fun <T> DropdownSelector(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun DropdownSelectorPreview() {
+    AppTheme {
+        var selected by remember { mutableStateOf("English") }
+        DropdownSelector(
+            label = "Language",
+            options = listOf("English", "French", "Chinese"),
+            selected = selected,
+            onSelected = { selected = it }
+        )
     }
 }

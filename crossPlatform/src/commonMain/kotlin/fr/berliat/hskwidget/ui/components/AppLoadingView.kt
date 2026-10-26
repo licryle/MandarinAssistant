@@ -20,6 +20,8 @@ import fr.berliat.hskwidget.ic_launcher
 
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import fr.berliat.hskwidget.ui.theme.AppTheme
 
 @Composable
 fun AppLoadingView(
@@ -41,5 +43,13 @@ fun AppLoadingView(
                 tint = Color.Unspecified // This is the fix for the black icon
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun AppLoadingViewPreview() {
+    AppTheme {
+        AppLoadingView()
     }
 }
