@@ -6,7 +6,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.backhandler.BackHandler
@@ -78,20 +77,15 @@ fun AppNavHost(viewModel : AppViewModel) {
         }
     }
 
-    NavHost(navController = navController, startDestination = Screen.Dictionary()) {
+    NavHost(navController = navController, startDestination = Screen.Dictionary(viewModel.appConfig.searchQuery.value.toString())) {
         composable<Screen.Dictionary>(
             typeMap = mapOf(typeOf<IntentSources>() to IntentSourcesNavType)
         ) { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.Dictionary>()
 
-            // A route's `search` is a one-shot command, consumed only when this
-            // entry is first shown. Re-applying it on every recomposition (e.g.
-            // coming back from Annotate) would bring back a stale query over
-            // whatever the user typed or cleared in the AppBar meanwhile.
-            var routeSearchApplied by rememberSaveable { mutableStateOf(false) }
             LaunchedEffect(Unit) {
-                if (routeSearchApplied) return@LaunchedEffect
-                routeSearchApplied = true
+                if (viewModel.appConfig.searchQuery.value.toString() == args.search.toString()) return@LaunchedEffect
+
                 args.search?.let { raw ->
                     viewModel.appConfig.searchQuery.value = SearchQuery.processSearchQuery(raw)
                 }
@@ -214,7 +208,8 @@ fun AppNavHost(viewModel : AppViewModel) {
         composable<Screen.Reader> { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.Reader>()
             LaunchedEffect(args) {
-                viewModel.navigationManager.registerScreenVisit(args)
+                val curr = viewModel.navigationManager.currentScreen.value
+                viewModel.navigationManager.registerScreenVisit(args, !(curr is Screen.Dictionary && SearchQuery.fromString(curr.search).query == args.preText ))
             }
 
             // File existence is disk I/O: never run it during composition (StrictMode

@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 
 import fr.berliat.hskwidget.core.SnackbarManager
+import fr.berliat.hskwidget.domain.SearchQuery
 import fr.berliat.hskwidget.ui.dismissKeyboardOnTap
 import fr.berliat.hskwidget.ui.application.content.AppBar
 import fr.berliat.hskwidget.ui.application.content.AppBarViewModel
@@ -36,7 +37,6 @@ import fr.berliat.hskwidget.ui.navigation.AppNavHost
 import fr.berliat.hskwidget.ui.navigation.DecoratedScreen
 import fr.berliat.hskwidget.ui.navigation.Screen
 import fr.berliat.hskwidget.ui.theme.AppTheme
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,8 +74,15 @@ fun AppView(
         val appBarViewModel = remember {
             AppBarViewModel(
                 prefsStore = viewModel.appConfig,
-                currentScreen = viewModel.navigationManager.currentScreen,
-                navigate = viewModel.navigationManager::navigate
+                onQueryChange = {
+                    str ->
+                        if (viewModel.navigationManager.currentScreen.value is Screen.Dictionary) {
+                            viewModel.appConfig.searchQuery.value = SearchQuery.processSearchQuery(str)
+                            viewModel.navigationManager.registerScreenVisit(Screen.Dictionary(str))
+                        } else {
+                            viewModel.navigationManager.navigate(Screen.Dictionary(str))
+                        }
+                }
             )
         }
 
@@ -122,14 +129,14 @@ fun AppView(
                             .padding(innerPadding)
                             .dismissKeyboardOnTap()
                     ) {
-                        val ocrScreens = viewModel.navigationManager.getFromBackStack(Screen.Reader::class)
+                        val ocrScreens = viewModel.navigationManager.ocrScreens.value
                         // Show OCR Reminder overlay if OCR in recent stack, not in muted stack
                         if (currentScreen !is Screen.Reader
-                            && ocrScreens.any { !mutedReaderReminders.value.contains(it) }
-                            && viewModel.navigationManager.inBackStack(Screen.Reader::class)) {
+                            && ocrScreens.any { !mutedReaderReminders.value.contains(it) }) {
                             ReaderReminder(
-                                onClose = { mutedReaderReminders.value = ocrScreens }, // Muting all OCR screens in backstack
-                                onClick = { viewModel.navigationManager.backTo(ocrScreens.last()) }
+                                onClose = { mutedReaderReminders.value = ArrayDeque(ocrScreens) }, // Muting all OCR screens in backstack
+                                onClick = { viewModel.navigationManager.backTo(ocrScreens.last()) },
+                                modifier = Modifier.padding(8.dp)
                             )
                         }
 

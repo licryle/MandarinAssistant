@@ -16,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -107,28 +106,17 @@ fun DictionarySearchScreen(
         updateProgress == null
     val isReaderMode = searchSettled && isEmptyResult && mayAnnotate
 
-    // Hand off exactly once per query. The marker is saveable so it survives
-    // the round trip: coming back from the Reader re-runs the search, and
-    // without this it would immediately re-open the Reader. It is only
-    // cleared when a *different* query settles, so re-searching the same
-    // failed text later still opens the Reader.
-    var handedOffQuery by rememberSaveable { mutableStateOf("") }
-    LaunchedEffect(isReaderMode, trimmedQuery, searchSettled) {
-        if (isReaderMode) {
-            if (handedOffQuery != trimmedQuery) {
-                handedOffQuery = trimmedQuery
-                onNavigate(
-                    Screen.Reader(
-                        preText = query,
-                        imageFilePath = null,
-                        couldAnnotate = couldAnnotate,
-                        allowPicture = false
-                    )
-                )
-            }
-        } else if (searchSettled && trimmedQuery != handedOffQuery) {
-            handedOffQuery = ""
-        }
+
+    if (isReaderMode) {
+        onNavigate(
+            Screen.Reader(
+                preText = query,
+                imageFilePath = null,
+                couldAnnotate = couldAnnotate,
+                allowPicture = false
+            )
+        )
+        return
     }
 
     // Whenever searchQuery changes, scroll to top.
@@ -163,9 +151,6 @@ fun DictionarySearchScreen(
             showAnnotationFilter = true
         )
 
-        // Main content: word results, or a no-result message when nothing
-        // matches. In reader mode the prompt keeps the searched word so coming
-        // back from the Reader still offers to annotate it.
         Box(modifier = Modifier.fillMaxSize()) {
             if (updateProgress != null) {
                 DbUpdateView(progress = updateProgress)

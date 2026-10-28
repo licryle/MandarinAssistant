@@ -5,11 +5,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
-import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.data.store.AppPreferencesStore
 import fr.berliat.hskwidget.domain.SearchQuery
-import fr.berliat.hskwidget.ui.navigation.NavigationManager
-import fr.berliat.hskwidget.ui.navigation.Screen
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,9 +16,8 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 class AppBarViewModel(
-    private val prefsStore: AppPreferencesStore = HSKAppServices.appPreferences,
-    private val currentScreen: StateFlow<Screen> = NavigationManager.currentScreen,
-    private val navigate: (Screen) -> Unit = { NavigationManager.navigate(it) }
+    prefsStore: AppPreferencesStore,
+    private val onQueryChange: (String) -> Unit
 ) : ViewModel() {
     val searchQuery = prefsStore.searchQuery.asStateFlow()
 
@@ -50,10 +46,8 @@ class AppBarViewModel(
         debounceJob = viewModelScope.launch {
             delay(300.milliseconds) // 300ms debounce
             val currentText = _localText.value.text
-            if (currentText != searchQuery.value.toString() &&
-                !submitSearch(currentText, currentScreen.value)
-            ) {
-                navigate(Screen.Dictionary(currentText))
+            if (currentText != searchQuery.value.toString()) {
+                onQueryChange(currentText)
             }
         }
     }
@@ -65,17 +59,5 @@ class AppBarViewModel(
     fun moveCursorToEnd() {
         val current = _localText.value
         _localText.value = current.copy(selection = TextRange(current.text.length))
-    }
-
-    /** Commits a debounced query. Returns true when handled with an in-place
-     *  update (already on Dictionary: no new route is pushed, so typing can't
-     *  race with the searchQuery->field sync and eat trailing characters).
-     *  Returns false when the caller flow must navigate (e.g. typing from Lists). */
-    internal fun submitSearch(raw: String, current: Screen): Boolean {
-        if (current is Screen.Dictionary) {
-            prefsStore.searchQuery.value = SearchQuery.processSearchQuery(raw)
-            return true
-        }
-        return false
     }
 }

@@ -35,7 +35,7 @@ import org.jetbrains.compose.resources.stringResource
 fun AppBar(
     onOcrClick: () -> Unit,
     onMenuClick: () -> Unit,
-    viewModel: AppBarViewModel = remember { AppBarViewModel() }
+    viewModel: AppBarViewModel
 ) {
     // All query state, sync and debounce live in the ViewModel; this stays a
     // dumb renderer so typing can never race navigation from here.

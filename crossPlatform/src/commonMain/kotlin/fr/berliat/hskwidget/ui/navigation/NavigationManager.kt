@@ -10,8 +10,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 
-import kotlin.reflect.KClass
-
 /** What the host should do with its own navigation stack. */
 sealed interface NavigationEvent {
     /** Push [screen] on top of the host back stack. */
@@ -36,36 +34,31 @@ object NavigationManager {
     const val STACK_SCREEN_DEPTH = 20
 
     /** The app's start destination, always kept at the bottom of the mirror. */
-    private val ROOT_SCREEN = Screen.Dictionary()
-    val stackScreen = ArrayDeque<Screen>(listOf(ROOT_SCREEN))
+    private val ROOT_SCREEN = Screen.Dictionary("")
+    private val _stackScreen = MutableStateFlow(
+        ArrayDeque<Screen>().apply {
+            add(ROOT_SCREEN)
+        }
+    )
+    val stackScreen = _stackScreen.asStateFlow()
 
     private val _currentScreen = MutableStateFlow<Screen>(ROOT_SCREEN)
     val currentScreen: StateFlow<Screen> = _currentScreen.asStateFlow() // Expose as StateFlow
 
-    fun registerScreenVisit(screen: Screen) {
+    private val _ocrScreens = MutableStateFlow(ArrayDeque<Screen>())
+    val ocrScreens = _ocrScreens.asStateFlow()
+
+    fun registerScreenVisit(screen: Screen, addToStack: Boolean = true) {
         _currentScreen.update { screen }
+        if (screen is Screen.Reader) _ocrScreens.value.add(screen)
         logCurrentScreen()
 
-        if (screen == ROOT_SCREEN) {
-            // Back on the app's anchor (drawer "Dictionary", or a pop back to
-            // the start destination): keep a single root and drop whatever
-            // stale history was left above it. Pushing a second root used to
-            // make back() target an entry that was no longer on top.
-            stackScreen.clear()
-            stackScreen.add(ROOT_SCREEN)
-            return
-        }
-
-        // Collapse earlier visits of the same screen so repeated round trips
-        // (Dictionary -> Reader -> Dictionary ...) cannot pile up.
-        stackScreen.removeAll { it == screen }
-
-        if (stackScreen.size >= STACK_SCREEN_DEPTH) {
+        if (_stackScreen.value.size >= STACK_SCREEN_DEPTH) {
             // Never trim the root: it is the anchor every back() falls back to.
-            stackScreen.removeAt(1)
+            _stackScreen.value.removeAt(1)
         }
-        if (stackScreen.lastOrNull() != screen) {
-            stackScreen.add(screen)
+        if (_stackScreen.value.lastOrNull() != screen && addToStack) {
+            _stackScreen.value.add(screen)
         }
     }
 
@@ -81,19 +74,19 @@ object NavigationManager {
      * a normal push when the screen is no longer in the mirror.
      */
     fun backTo(screen: Screen) {
-        val index = stackScreen.indexOfLast { it == screen }
+        val index = _stackScreen.value.indexOfLast { it == screen }
         if (index < 0) {
             // Not in the mirror anymore: a push is the only way there.
             navigate(screen)
             return
         }
-        if (index == stackScreen.lastIndex) {
+        if (index == _stackScreen.value.lastIndex) {
             // Already the current screen, nothing to unwind.
             return
         }
 
-        while (stackScreen.size > index + 1) {
-            stackScreen.removeLast()
+        while (_stackScreen.value.size > index + 1) {
+            _stackScreen.value.removeLast()
         }
         _currentScreen.update { screen }
         logCurrentScreen()
@@ -106,14 +99,14 @@ object NavigationManager {
      * callbacks) unwinds through the same stack.
      */
     fun back() {
-        val previous = if (stackScreen.size > 1) {
-            stackScreen.removeLast()
+        val previous = if (_stackScreen.value.size > 1) {
+            _stackScreen.value.removeLast()
             // Collapse consecutive duplicates left behind by re-entering a screen.
-            while (stackScreen.size > 1 &&
-                stackScreen.last() == stackScreen[stackScreen.size - 2]) {
-                stackScreen.removeLast()
+            while (_stackScreen.value.size > 1 &&
+                _stackScreen.value.last() == _stackScreen.value[_stackScreen.value.size - 2]) {
+                _stackScreen.value.removeLast()
             }
-            stackScreen.last()
+            _stackScreen.value.last()
         } else {
             null
         }
@@ -121,21 +114,13 @@ object NavigationManager {
         // Even without a logical previous (mirror at its root) the host may
         // still pop a duplicate entry, so keep the reported screen on the
         // mirror's top instead of leaving it on the popped screen.
-        val current = previous ?: stackScreen.firstOrNull()
+        val current = previous ?: _stackScreen.value.firstOrNull()
         current?.let {
             _currentScreen.update { it }
             logCurrentScreen()
         }
 
         _navigationEvents.trySend(NavigationEvent.Back(previous))
-    }
-
-    fun inBackStack(screenClass: KClass<out Screen>): Boolean {
-        return getFromBackStack(screenClass).isNotEmpty()
-    }
-
-    fun getFromBackStack(screenClass: KClass<out Screen>): List<Screen> {
-        return stackScreen.filter { it::class == screenClass }
     }
 
     private fun logCurrentScreen() {
