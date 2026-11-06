@@ -1,0 +1,3 @@
+/* Localized versions of Info.plist keys for HskShareExtension */
+"CFBundleDisplayName" = "在 Mandarin Assistant 中学习 (OCR/词典)";
+"CFBundleName" = "HskShareExtension";
