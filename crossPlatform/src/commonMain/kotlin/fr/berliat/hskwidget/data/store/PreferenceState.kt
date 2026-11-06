@@ -36,6 +36,26 @@ class PreferenceState<S, T>(
 
     suspend fun ensureLoaded() = isLoaded.await()
 
+    /**
+     * Replaces the cached value with one read outside DataStore, without writing it back.
+     * Used by [PrefixedPreferencesStore.reloadFromBackingFile] when a widget process re-reads
+     * the shared preferences file.
+     */
+    internal fun refreshFrom(prefs: Preferences) {
+        val valueFromStore = prefs[key]?.let { conv.fromStore(it) } ?: initialValue
+
+        // A pending optimistic write made by this process is newer than the disk snapshot.
+        val optimistic = lastOptimisticValue
+        if (optimistic == null || valueFromStore == optimistic) {
+            _flow.value = valueFromStore
+            lastOptimisticValue = null
+        }
+
+        if (!isLoaded.isCompleted) {
+            isLoaded.complete(Unit)
+        }
+    }
+
     init {
         // 1. Observe Store: Update local state when DataStore changes
         scope.launch {

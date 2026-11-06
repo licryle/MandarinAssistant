@@ -1,21 +1,31 @@
 package fr.berliat.hskwidget.data.store
 
 import androidx.compose.ui.unit.sp
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.PreferencesSerializer
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.mutablePreferencesOf
 import androidx.datastore.preferences.core.stringPreferencesKey
 import fr.berliat.hskwidget.core.Locale
 import fr.berliat.hskwidget.data.type.ClassLevel
 import fr.berliat.hskwidget.data.type.ClassType
 import fr.berliat.hskwidget.domain.SearchQuery
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Instant
+import okio.FileSystem
+import kotlin.random.Random
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AppPreferencesStoreTest {
@@ -28,6 +38,7 @@ class AppPreferencesStoreTest {
         // Clear singleton instances to ensure a fresh start and avoid scope leakage
         AppPreferencesStore.instances.clear()
         PrefixedPreferencesStore.instances.clear()
+        PrefixedPreferencesStore.dataStoreFiles.clear()
     }
 
     @Test
@@ -105,5 +116,51 @@ class AppPreferencesStoreTest {
         savedString = fakeDataStore.latestPreferences[stringPreferencesKey("dictionary_locale")]
         assertEquals("", savedString)
         assertEquals(null, store.dictionaryLocale.value)
+    }
+
+    @Test
+    fun testReloadFromDiskRefreshesDictionaryLocale() = runTest(UnconfinedTestDispatcher()) {
+        val tempDir = FileSystem.SYSTEM_TEMPORARY_DIRECTORY / "app-preferences-test-${Random.nextLong()}"
+        val file = tempDir / "app.preferences_pb"
+        val dataStoreScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+        FileSystem.SYSTEM.createDirectories(tempDir)
+
+        try {
+            // The app process has persisted French.
+            FileSystem.SYSTEM.write(file) {
+                PreferencesSerializer.writeTo(
+                    mutablePreferencesOf(stringPreferencesKey("dictionary_locale") to Locale.FRENCH.code),
+                    this
+                )
+            }
+
+            val dataStore = PreferenceDataStoreFactory.createWithPath(
+                scope = dataStoreScope,
+                produceFile = { file }
+            )
+            PrefixedPreferencesStore.dataStoreFiles[dataStore] = file
+
+            val store = AppPreferencesStore.getInstance(dataStore, scope = backgroundScope)
+            advanceUntilIdle()
+            assertEquals(Locale.FRENCH, store.dictionaryLocale.value)
+
+            // Another process (the app) changes the dictionary language.
+            FileSystem.SYSTEM.write(file) {
+                PreferencesSerializer.writeTo(
+                    mutablePreferencesOf(stringPreferencesKey("dictionary_locale") to Locale.CN_HSK3.code),
+                    this
+                )
+            }
+
+            assertTrue(store.reloadFromDisk())
+            assertEquals(Locale.CN_HSK3, store.dictionaryLocale.value)
+        } finally {
+            dataStoreScope.cancel()
+            AppPreferencesStore.instances.clear()
+            PrefixedPreferencesStore.instances.clear()
+            PrefixedPreferencesStore.dataStoreInstances.clear()
+            PrefixedPreferencesStore.dataStoreFiles.clear()
+            FileSystem.SYSTEM.deleteRecursively(tempDir, mustExist = false)
+        }
     }
 }

@@ -19,12 +19,14 @@ class PrefixedPreferencesStoreTest {
         // Ensure clean caches for each test
         PrefixedPreferencesStore.instances.clear()
         PrefixedPreferencesStore.dataStoreInstances.clear()
+        PrefixedPreferencesStore.dataStoreFiles.clear()
     }
 
     @AfterTest
     fun tearDown() {
         PrefixedPreferencesStore.instances.clear()
         PrefixedPreferencesStore.dataStoreInstances.clear()
+        PrefixedPreferencesStore.dataStoreFiles.clear()
     }
 
     @Test

@@ -1,6 +1,7 @@
 package fr.berliat.hskwidget.data.store
 
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.mutablePreferencesOf
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -9,6 +10,7 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PreferenceStateTest {
@@ -99,5 +101,17 @@ class PreferenceStateTest {
         // Ensure it also persisted to target store
         advanceUntilIdle()
         assertEquals("migrated", fakeDataStore.latestPreferences[testKey])
+    }
+
+    @Test
+    fun testRefreshFromExternalSnapshotDoesNotWrite() = runTest(UnconfinedTestDispatcher()) {
+        val state = PreferenceState(fakeDataStore, testKey, "default", coroutineScope = backgroundScope)
+        state.ensureLoaded()
+        assertEquals("default", state.value)
+
+        state.refreshFrom(mutablePreferencesOf(testKey to "external"))
+
+        assertEquals("external", state.value)
+        assertNull(fakeDataStore.latestPreferences[testKey], "refreshFrom must not persist the value")
     }
 }

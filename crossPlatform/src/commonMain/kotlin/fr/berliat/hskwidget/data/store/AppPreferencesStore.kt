@@ -67,6 +67,16 @@ class AppPreferencesStore private constructor(
         }
     }
 
+    /**
+     * Re-reads `app.preferences_pb` from disk, bypassing DataStore's in-memory cache, and
+     * refreshes every registered preference. Intended for iOS widget extensions, which run in a
+     * separate process and can keep a stale DataStore snapshot alive across app restarts.
+     *
+     * @return true if the file was read and the preferences were refreshed; false if this store
+     * has no tracked backing file or the read failed, in which case the cached values are kept.
+     */
+    suspend fun reloadFromDisk(): Boolean = reloadFromBackingFile()
+
     // --- Boolean preferences ---
     val dbBackUpDiskActive = registerBooleanPref("database_backup_disk_active", false)
     val ankiSaveNotes = registerBooleanPref("anki_save_notes", false)

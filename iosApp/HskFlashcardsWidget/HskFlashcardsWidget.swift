@@ -24,6 +24,11 @@ struct Provider: AppIntentTimelineProvider {
         let isReady = try? await services.awaitReady(timeoutMs: 5000)
         
         if isReady == true {
+            // WidgetKit can keep this extension process alive after the app is killed, so
+            // DataStore's in-memory snapshot may be stale. Re-read the shared preferences
+            // file before resolving the dictionary language.
+            _ = try? await services.appPreferences.reloadFromDisk()
+
             let selectedListIds = configuration.selectedLists?.map { KotlinLong(value: Int64($0.id)) } ?? []
 
             if !selectedListIds.isEmpty {

@@ -3,6 +3,7 @@ package fr.berliat.hskwidget.data.store
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.PreferencesSerializer
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
@@ -11,9 +12,13 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 
+import co.touchlab.kermit.Logger
+import fr.berliat.hskwidget.core.AppDispatchers
+
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.absolutePath
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.awaitAll
@@ -21,7 +26,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 
+import okio.FileSystem
+import okio.Path
 import okio.Path.Companion.toPath
 
 open class PrefixedPreferencesStore internal constructor(
@@ -52,6 +60,9 @@ open class PrefixedPreferencesStore internal constructor(
 
         private val dataStoreMutex = Mutex()
         internal val dataStoreInstances = mutableMapOf<String, DataStore<Preferences>>()
+        /** Backing file of every DataStore created by [getDataStore], used by reloadFromDisk. */
+        internal val dataStoreFiles = mutableMapOf<DataStore<Preferences>, Path>()
+
         suspend fun getDataStore(file: PlatformFile): DataStore<Preferences> {
 			val fileAbsPath = file.absolutePath().
 				removePrefix("file://").
@@ -59,14 +70,16 @@ open class PrefixedPreferencesStore internal constructor(
                 removePrefix("file:").
 				removePrefix("/").
 				removePrefix("//")
+            val path = "/$fileAbsPath".toPath()
 
             dataStoreInstances[fileAbsPath]?.let { return it }
 
             return dataStoreMutex.withLock {
                 dataStoreInstances[fileAbsPath] ?: PreferenceDataStoreFactory.createWithPath(
-                    produceFile = { "/$fileAbsPath".toPath() }
+                    produceFile = { path }
                 ).also { instance ->
                     dataStoreInstances[fileAbsPath] = instance
+                    dataStoreFiles[instance] = path
                 }
             }
         }
@@ -136,6 +149,44 @@ open class PrefixedPreferencesStore internal constructor(
      */
     suspend fun ensureAllLoaded() = coroutineScope {
         registeredPreferences.values.map { async { it.ensureLoaded() } }.awaitAll()
+    }
+
+    /**
+     * Re-reads this store's backing file from disk and refreshes the registered preferences.
+     *
+     * DataStore has no public reload API: `DataStore.data` always returns the in-memory
+     * snapshot. iOS widget extensions run in a separate process and can outlive the app
+     * process, so that snapshot can be stale even after the app persisted a new value.
+     *
+     * The file is decoded with DataStore's own [PreferencesSerializer], so the on-disk format
+     * is not reimplemented. DataStore writes to a temporary file and atomically moves it into
+     * place, so a reader never observes a partially written file: it sees either the previous
+     * or the new complete snapshot. The only remaining race is that the app's write may not
+     * have been flushed yet when this is called.
+     *
+     * @return true if the file was read and the preferences were refreshed; false if this store
+     * has no tracked backing file or the read failed, in which case the cached values are kept.
+     */
+    protected suspend fun reloadFromBackingFile(): Boolean {
+        val path = dataStoreMutex.withLock { dataStoreFiles[store] } ?: return false
+
+        val prefs = try {
+            withContext(AppDispatchers.IO) {
+                FileSystem.SYSTEM.read(path) { PreferencesSerializer.readFrom(this) }
+            }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Logger.w(
+                tag = "Preferences",
+                messageString = "Could not reload $path from disk; keeping cached values",
+                throwable = e
+            )
+            return false
+        }
+
+        registeredPreferences.values.forEach { it.refreshFrom(prefs) }
+        return true
     }
 
     @Suppress("UNCHECKED_CAST")
