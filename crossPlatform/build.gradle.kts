@@ -26,6 +26,7 @@ output.writeText(
     """
         APP_VERSION_NAME = $appVersionName
         APP_VERSION_CODE = $appVersionCode
+        CLANG_ENABLE_EXPLICIT_MODULES = NO
         """.trimIndent() + "\n"
 )
 
