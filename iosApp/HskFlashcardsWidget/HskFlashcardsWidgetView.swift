@@ -40,7 +40,7 @@ struct HskFlashcardsWidgetView: View {
 
                         Spacer()
 
-                        Link(destination:  URL(string: "hskwidget://searchTTS?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!) {
+                        Link(destination:  URL(string: "hskwidget://searchTTS?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, exactWord: false, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!) {
                             Image(systemName: "speaker.wave.2")
                                 .font(.system(size: 12))
                                 .frame(width: 24, height: 24)
@@ -51,7 +51,7 @@ struct HskFlashcardsWidgetView: View {
                     }
 
                     // Middle Content: Pinyin - Simplified - Definition
-                    Link(destination: URL(string: "hskwidget://search?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!) {
+                    Link(destination: URL(string: "hskwidget://search?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, exactWord: false, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!) {
                         VStack(spacing: 2) {
                             Spacer(minLength: 0)
 
@@ -116,7 +116,7 @@ struct LockScreenRectangularView: View {
             
             if !entry.isEmpty {
                 HStack(spacing: 4) {
-                    Link(destination: URL(string: "hskwidget://search?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!) {
+                    Link(destination: URL(string: "hskwidget://search?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, exactWord: false,  inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!) {
                         VStack(alignment: .leading, spacing: 0) {
                             HStack(alignment: .firstTextBaseline) {
                                 Text(entry.word)
@@ -136,7 +136,7 @@ struct LockScreenRectangularView: View {
                     }
 
                     VStack(spacing: 0) {
-                        Link(destination:  URL(string: "hskwidget://searchTTS?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!) {
+                        Link(destination:  URL(string: "hskwidget://searchTTS?q=\((crossPlatform.SearchQuery(query: entry.word, ignoreAnnotation: true, exactWord: false, inListName: nil).description()).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? "")&src=widget")!) {
                             Image(systemName: "speaker.wave.2")
                                 .font(.system(size: 13))
                                 .frame(width: 23, height: 23)
