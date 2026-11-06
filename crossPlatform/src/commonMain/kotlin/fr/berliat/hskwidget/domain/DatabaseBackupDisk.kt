@@ -6,8 +6,6 @@ import fr.berliat.hskwidget.core.YYMMDDHHMMSS
 import fr.berliat.hskwidget.core.toSafeFileName
 import fr.berliat.hskwidget.data.store.AppPreferencesStore
 
-import fr.berliat.hskwidget.domain.BackupFolderAccess
-
 import io.github.vinceglb.filekit.BookmarkData
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.PlatformFile
@@ -20,6 +18,7 @@ import io.github.vinceglb.filekit.lastModified
 import io.github.vinceglb.filekit.dialogs.openDirectoryPicker
 import io.github.vinceglb.filekit.dialogs.openFilePicker
 import io.github.vinceglb.filekit.exists
+import io.github.vinceglb.filekit.fromBookmarkData
 import io.github.vinceglb.filekit.isDirectory
 import io.github.vinceglb.filekit.list
 import io.github.vinceglb.filekit.name
@@ -72,7 +71,7 @@ object DatabaseDiskBackup {
             val timestamp = Clock.System.now()
             val filename = "${timestamp.YYMMDDHHMMSS()}_${DatabaseHelper.DATABASE_FILENAME}".toSafeFileName()
 
-            val backupFile = BackupFolderAccess.fromBookmarkData(destinationFolder) / filename
+            val backupFile = PlatformFile.fromBookmarkData(destinationFolder) / filename
             snapshot!!.atomicMove(backupFile)
 
             withContext(Dispatchers.Main) {
@@ -105,7 +104,7 @@ object DatabaseDiskBackup {
         if (bookmark == null) return null
 
         try {
-            val file = BackupFolderAccess.fromBookmarkData(bookmark)
+            val file = PlatformFile.fromBookmarkData(bookmark)
             return if (isDirectoryAccessible(file)) {
                 file
             } else {
@@ -140,7 +139,7 @@ object DatabaseDiskBackup {
         val oldBookmark = appConfig.dbBackUpDiskDirectory.value
         if (oldBookmark != null) {
             try {
-                BackupFolderAccess.fromBookmarkData(oldBookmark).releaseBookmark()
+                PlatformFile.fromBookmarkData(oldBookmark).releaseBookmark()
             } catch (_: Exception) {
             }
         }
