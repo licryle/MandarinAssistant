@@ -85,7 +85,7 @@ struct HskFlashcardsWidgetView: View {
                             .frame(width: 60, height: 60)
                             .cornerRadius(12)
 
-                        Text(crossPlatform.CachedResources.shared.widgetNotConfigured)
+                        Text(LocalizedStringKey("No word. Configure list(s)"))
                             .font(.system(size: 14, weight: .medium))
                             .multilineTextAlignment(.center)
                             .foregroundColor(.secondary)
@@ -165,10 +165,10 @@ struct LockScreenRectangularView: View {
             } else {
                 // Unconfigured state
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(crossPlatform.CachedResources.shared.appName)
+                    Text(LocalizedStringKey("Mandarin Assistant"))
                         .font(.caption)
                         .widgetAccentable()
-                    Text(crossPlatform.CachedResources.shared.widgetNotConfigured)
+                    Text(LocalizedStringKey("No word. Configure list(s)"))
                         .font(.caption2)
                         .lineLimit(2)
                         .widgetAccentable()

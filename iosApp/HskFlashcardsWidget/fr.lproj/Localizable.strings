@@ -1,4 +1,5 @@
 "Study in Mandarin Assistant" = "Étudier avec Mandarin Assistant";
+"Mandarin Assistant" = "Mandarin Assistant";
 "Configure Widget" = "Configurer le widget";
 "Select word lists to display in the widget." = "Sélectionnez les listes de mots à afficher dans le widget.";
 "Selected Lists" = "Listes sélectionnées";
@@ -8,3 +9,5 @@
 "Quickly take a picture to extract Mandarin text." = "Prendre rapidement une photo pour extraire du texte mandarin.";
 "Words from List" = "Mots de la liste";
 "Read a random word from the lists you have configured." = "Lire un mot au hasard parmi les listes configurées.";
+"No word. Configure list(s)" = "Aucun mot. Configurez la ou les listes";
+"Word List" = "Liste de mots";

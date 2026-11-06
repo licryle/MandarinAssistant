@@ -104,8 +104,8 @@ struct HskFlashcardsWidget: Widget {
         AppIntentConfiguration(kind: kind, intent: HskWidgetConfigurationIntent.self, provider: Provider()) { entry in
             HskFlashcardsWidgetView(entry: entry)
         }
-        .configurationDisplayName(crossPlatform.CachedResources.shared.widgetListName)
-        .description(crossPlatform.CachedResources.shared.widgetListDescription)
+        .configurationDisplayName(LocalizedStringResource("Words from List"))
+        .description(LocalizedStringResource("Read a random word from the lists you have configured."))
         .supportedFamilies([.systemSmall, .systemMedium, .accessoryRectangular])
     }
 }

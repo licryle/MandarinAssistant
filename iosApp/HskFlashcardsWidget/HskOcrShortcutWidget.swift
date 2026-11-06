@@ -26,8 +26,8 @@ struct HskOcrShortcutWidget: Widget {
         StaticConfiguration(kind: kind, provider: SimpleProvider()) { entry in
             HskFlashcardsWidgetView(entry: entry)
         }
-        .configurationDisplayName(crossPlatform.CachedResources.shared.widgetOCRName)
-        .description(crossPlatform.CachedResources.shared.widgetOCRDescription)
+        .configurationDisplayName(LocalizedStringResource("Take Picture/OCR Shortcut"))
+        .description(LocalizedStringResource("Quickly take a picture to extract Mandarin text."))
         .supportedFamilies([.accessoryCircular])
     }
 }
