@@ -275,6 +275,12 @@ class AiFieldsProvider(Provider):
 
             if ai_results:
                 for res in ai_results:
+                    # Defensive: callers must never assume the LLM obeyed the
+                    # requested shape (bare strings used to reach .pop()).
+                    if not isinstance(res, dict):
+                        discarded_count += 1
+                        continue
+
                     raw_word = res.pop('word', None)
                     if not raw_word:
                         discarded_count += 1

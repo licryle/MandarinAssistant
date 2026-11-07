@@ -104,6 +104,10 @@ class CollocationsProvider(Provider):
             ai_results = call_llm_api(API_ENDPOINT, MODEL_NAME, prompt, required_fields)
             if ai_results:
                 for res in ai_results:
+                    if not isinstance(res, dict):
+                        discarded_count += 1
+                        continue
+
                     raw_word = res.get('word')
                     collocations_raw = res.get('collocations')
                     word = str(raw_word).strip() if raw_word else ""
