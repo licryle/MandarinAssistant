@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "fr.berliat.hskwidget"
         minSdk = 26
-        targetSdk = 37
+        targetSdk = 36
         versionCode = libs.versions.app.versionCode.get().toInt()
         versionName = libs.versions.app.versionName.get()
 
