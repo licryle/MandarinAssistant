@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "fr.berliat.hskwidget"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 37
         versionCode = libs.versions.app.versionCode.get().toInt()
         versionName = libs.versions.app.versionName.get()
 
@@ -25,6 +25,9 @@ android {
                 enable = true // Enables code and resource optimizations.
                 isMinifyEnabled = true
                 isShrinkResources = true
+            }
+            ndk {
+                debugSymbolLevel = "FULL"
             }
         }
     }
