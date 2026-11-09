@@ -404,11 +404,14 @@ class DatabaseHelper private constructor() {
                 if (expected.annotations < 0 || expected.userLists < 0 || expected.freq < 0) {
                     throw IllegalStateException("Could not read user data from live database")
                 }
+                // An empty user data set is legitimate (fresh install, or a user
+                // who never annotated/created lists): carry on so the dictionary
+                // still gets updated. `expected` stays all-zero and the staging
+                // verification below simply checks the asset is sane.
                 if (expected.annotations == 0 && expected.listEntries == 0 &&
                     expected.widgets == 0 && expected.freq == 0
                 ) {
-                    Logger.i(tag = TAG, messageString = "Live DB holds no user data, aborting update")
-                    throw IllegalStateException("Database is empty")
+                    Logger.i(tag = TAG, messageString = "Live DB holds no user data, continuing update with empty user data set")
                 }
                 _updateProgress.value = 20f
                 try { original.close() } catch (_: Exception) {}
@@ -425,7 +428,9 @@ class DatabaseHelper private constructor() {
                 // 3. Import user data from the durable backup into staging.
                 source = buildDatabase(createRoomDatabaseBuilderFromFile(backupFile))
                 newDb = buildDatabase(createRoomDatabaseBuilderFromFile(stagingFile))
-                replaceUserDataInDB(newDb, source)
+                // The source is our own snapshot of live, so an empty user data
+                // set is expected here and must not abort the update.
+                replaceUserDataInDB(newDb, source, allowEmpty = true)
                 try { source.close() } catch (_: Exception) {}
                 source = null
                 _updateProgress.value = 70f
@@ -591,7 +596,7 @@ class DatabaseHelper private constructor() {
         fun shouldUpdateDatabaseFromAsset(appVersion: Int): Boolean {
             if (appVersion == 0) return false // first launch, nothing to update
 
-            val updateDbVersions = listOf(32, 37, 48, 64, 65, 69, 73)
+            val updateDbVersions = listOf(32, 37, 48, 64, 65, 69, 73, 74)
 
             return updateDbVersions.any { updateVersion ->
                 appVersion < updateVersion && Utils.getAppVersion() >= updateVersion
@@ -639,7 +644,11 @@ class DatabaseHelper private constructor() {
 
         suspend fun replaceUserDataInDB(
             dbToUpdate: ChineseWordsDatabase,
-            updateWith: ChineseWordsDatabase
+            updateWith: ChineseWordsDatabase,
+            /** Only the staged-update path may pass true: its source is a
+             *  snapshot of live, so an empty user data set is legitimate there.
+             *  Restores keep the default and still refuse empty backups. */
+            allowEmpty: Boolean = false
         ) {
             withContext(AppDispatchers.IO) {
                 Logger.d(tag = TAG, messageString = "Initiating Database Restoration: reading file")
@@ -649,7 +658,7 @@ class DatabaseHelper private constructor() {
                 val importedWidgets = updateWith.widgetListDAO().getAllEntries()
                 val importedFreq = updateWith.chineseWordFrequencyDAO().getAll()
                 val systemLists = updateWith.wordListDAO().getSystemLists()
-                if (importedAnnotations.isEmpty() && importedListEntries.isEmpty()
+                if (!allowEmpty && importedAnnotations.isEmpty() && importedListEntries.isEmpty()
                     && importedWidgets.isEmpty() && importedFreq.isEmpty()
                 ) {
                     Logger.i(tag = TAG, messageString = "Backup is empty or incompatible, aborting")
