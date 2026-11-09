@@ -92,6 +92,11 @@ import kotlinx.datetime.Instant
  * only. Combined with fillMaxHeight + clipToBounds, the center content is then
  * cropped to the height of the first column instead of expanding the card.
  */
+
+fun searchableLine(text: String) : Boolean  {
+    return text.containsHanzi() in setOf(ContainHanziResult.SOME, ContainHanziResult.ALL)
+}
+
 private fun Modifier.excludeFromHeightIntrinsics(): Modifier = this.then(
     object : LayoutModifier {
         override fun MeasureScope.measure(
@@ -245,6 +250,7 @@ fun DetailedWordView (
                         SearchableDetailField(
                             content = defOrAnnot,
                             bodyStyle = bodyMediumStyle,
+                            searchCondition = ::searchableLine,
                             onSearchTerm = onSearchTerm,
                             splitRegex = Regex("\\n+")
                         )
@@ -361,6 +367,7 @@ fun DetailedWordView (
                                 title = stringResource(Res.string.dictionary_item_synonyms),
                                 content = it,
                                 bodyStyle = bodyMediumStyle,
+                                searchCondition = ::searchableLine,
                                 onSearchTerm = onSearchTerm,
                                 splitRegex = Regex("[\\n,，、；;]+")
                             )
@@ -373,6 +380,7 @@ fun DetailedWordView (
                                 title = stringResource(Res.string.dictionary_item_antonym),
                                 content = it,
                                 bodyStyle = bodyMediumStyle,
+                                searchCondition = ::searchableLine,
                                 onSearchTerm = onSearchTerm,
                                 splitRegex = Regex("[\\n,，、；;]+")
                             )
@@ -388,6 +396,7 @@ fun DetailedWordView (
                             title = stringResource(Res.string.dictionary_item_collocations),
                             content = it,
                             bodyStyle = bodyMediumStyle,
+                            searchCondition = ::searchableLine,
                             onSearchTerm = onSearchTerm,
                             splitRegex = Regex("\\n+")
                         )
@@ -402,6 +411,7 @@ fun DetailedWordView (
                             title = stringResource(Res.string.dictionary_item_examples),
                             content = it,
                             bodyStyle = bodyMediumStyle,
+                            searchCondition = ::searchableLine,
                             onSearchTerm = onSearchTerm,
                             splitRegex = Regex("\\n+")
                         )
@@ -413,20 +423,14 @@ fun DetailedWordView (
                 ) {
                     Column {
                         if (altDef.isNotEmpty()) {
-                            if (altDef.containsHanzi() in ContainHanziResult.SOME..ContainHanziResult.ALL) {
-                                SearchableDetailField(
-                                    title = stringResource(Res.string.dictionary_item_altdefinition),
-                                    content = altDef,
-                                    bodyStyle = bodyMediumStyle,
-                                    onSearchTerm = onSearchTerm,
-                                    splitRegex = Regex("\\n+")
-                                )
-                            } else {
-                                Text(
-                                    stringResource(Res.string.dictionary_item_altdefinition),
-                                    style = AppTypographies.detailCardSubTitle)
-                                Text(altDef, style = bodyMediumStyle)
-                            }
+                            SearchableDetailField(
+                                title = stringResource(Res.string.dictionary_item_altdefinition),
+                                content = altDef,
+                                bodyStyle = bodyMediumStyle,
+                                searchCondition = ::searchableLine,
+                                onSearchTerm = onSearchTerm,
+                                splitRegex = Regex("\\n+")
+                            )
                         }
                     }
                 }
@@ -447,6 +451,7 @@ private fun SearchableDetailField(
     title: String? = null,
     content: String,
     bodyStyle: TextStyle,
+    searchCondition: ((String)) -> Boolean,
     onSearchTerm: ((String) -> Unit)?,
     modifier: Modifier = Modifier,
     splitRegex: Regex? = null
@@ -473,7 +478,7 @@ private fun SearchableDetailField(
             SearchableLine(
                 entry = entries[0],
                 bodyStyle = bodyStyle,
-                onSearchTerm = onSearchTerm
+                onSearchTerm = if (searchCondition(entries[0])) onSearchTerm else null
             )
             return@Column
         }
@@ -481,7 +486,7 @@ private fun SearchableDetailField(
             SearchableLine(
                 entry = entry,
                 bodyStyle = bodyStyle,
-                onSearchTerm = onSearchTerm
+                onSearchTerm = if (searchCondition(entry)) onSearchTerm else null
             )
         }
     }
