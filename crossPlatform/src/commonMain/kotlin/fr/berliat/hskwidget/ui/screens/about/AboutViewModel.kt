@@ -35,7 +35,8 @@ class AboutViewModel {
         val collocationsPct: Int = 0,
         val examplesPct: Int = 0,
         val antonymsSynonymsPct: Int = 0,
-        val typeUsagePct: Int = 0
+        val typeUsagePct: Int = 0,
+        val spanishDefPct: Int = 0
     )
 
     // Internal mutable state
@@ -100,6 +101,7 @@ class AboutViewModel {
                     annotationCnt = annotationsCnt,
                     englishDefPct = (defStats.englishCnt * 100f / totalWords).roundToInt(),
                     frenchDefPct = (defStats.frenchCnt * 100f / totalWords).roundToInt(),
+                    spanishDefPct = (defStats.spanishCnt * 100f / totalWords).roundToInt(),
                     hsk3DefPct = (defStats.hsk3Cnt * 100f / totalWords).roundToInt(),
                     collocationsPct = (fieldsStats.collocationsCnt * 100f / totalWords).roundToInt(),
                     examplesPct = (fieldsStats.examplesCnt * 100f / totalWords).roundToInt(),

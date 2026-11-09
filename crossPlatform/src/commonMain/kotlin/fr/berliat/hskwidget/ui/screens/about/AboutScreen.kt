@@ -150,7 +150,8 @@ fun AboutScreen(
                         stats.examplesPct,
                         stats.antonymsSynonymsPct,
                         stats.typeUsagePct,
-                        stats.annotationCnt
+                        stats.annotationCnt,
+                        stats.spanishDefPct
                     ),
                     style = MaterialTheme.typography.bodyMedium
                 )
