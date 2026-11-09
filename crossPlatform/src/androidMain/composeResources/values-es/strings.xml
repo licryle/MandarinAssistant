@@ -1,0 +1,21 @@
+<resources>
+    <string name="support_devintro">Hola a todos, aquí Cyrille, soy un desarrollador independiente originario de Francia.\n\nMientras aprendo chino, me di cuenta de que necesitaba una aplicación así y ninguna de las existentes cubría mis necesidades.\n\nAsí que aquí estamos, comparto con gusto esta creación de forma gratuita con vosotros.\n\nSi también te resulta útil, ¡considera participar en mi fondo para croissants o dejar una reseña gratuita!\n\n¡Las reseñas, comentarios y ánimos ayudan enormemente!</string>
+    <string name="support_purchase_tier1">Comprar el nivel de apoyo Bronce 🥐 por 1 US$</string>
+    <string name="support_purchase_tier2">Comprar el nivel de apoyo Plata 🥐 por 3 US$</string>
+    <string name="support_purchase_tier3">Comprar el nivel de apoyo Oro 🥐 por 6 US$</string>
+    <string name="support_total_support">Has apoyado esta aplicación con US$%.2f (hasta ahora).</string>
+    <string name="support_status">¡Gracias por el apoyo de 🥐 %s croissant(s) 🥐!</string>
+    <string name="support_status_tier1">Bronce</string>
+    <string name="support_status_tier2">Plata</string>
+    <string name="support_status_tier3">Oro</string>
+    <string name="support_status_tier4">Platino</string>
+    <string name="support_status_tpl">Seguidor 🥐 %s</string>
+    <string name="support_payment_success">¡Muchas gracias por tu apoyo, eres genial!</string>
+    <string name="support_payment_failed">Pago cancelado o fallido</string>
+    <string name="support_status_nosupport">¡Aún no apoyas la app… pero puedes hacerlo!</string>
+    <string name="support_total_error">Ocurrió un error al obtener tu historial de compras.</string>
+    <string name="support_status_error">Error</string>
+    <string name="support_review_btn">Dejar una reseña en Google Play gratis</string>
+    <string name="support_review_failed">No se pudo conectar con el servidor de reseñas de Google.</string>
+    <string name="support_reviewed">¡Muchas gracias! Si haces clic más de una vez, el cuadro de diálogo no aparecerá.</string>
+</resources>

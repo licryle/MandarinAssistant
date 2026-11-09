@@ -116,7 +116,7 @@ fun LanguageFilterChipPreview() {
     AppTheme {
         LanguageFilterChip(
             selectedLocale = Locale.ENGLISH,
-            supportedLocales = listOf(Locale.ENGLISH, Locale.FRENCH),
+            supportedLocales = listOf(Locale.ENGLISH, Locale.SPANISH, Locale.FRENCH),
             includeNullLocale = true,
             onLocaleSelected = {}
         )

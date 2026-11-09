@@ -74,6 +74,7 @@ AI Fields coverage:
     <string name="dictionary_language_filter">Dictionary language</string>
     <string name="locale_en">English</string>
     <string name="locale_fr">Français</string>
+    <string name="locale_es">Español</string>
     <string name="locale_cn_hsk3">HSK 3.0</string>
 
     <string name="dictionary_item_toggle">Expand/Fold more info</string>

@@ -1,0 +1,491 @@
+<resources>
+    <string name="app_name">Mandarin Assistant</string>
+    <string name="app_slogan">Estudia cada vez que desbloqueas tu teléfono</string>
+
+    <string name="delete">Eliminar</string>
+    <string name="proceed">Continuar</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="understood">Entendido</string>
+    <string name="loading">Cargando</string>
+    <string name="fix_it">Intentar solucionar</string>
+    <string name="disable">Desactivar</string>
+    <string name="copied_to_clipboard">Copiado %1$s al portapapeles</string>
+    <string name="report_bug">Notificar un error</string>
+
+    <string name="menu">Menú</string>
+    <string name="menu_dictionary">Diccionario</string>
+    <string name="menu_lists">Listas</string>
+    <string name="menu_widgets">Widgets</string>
+    <string name="menu_reader">Análisis de texto</string>
+    <string name="menu_support">¡Apoya al creador!</string>
+    <string name="menu_settings">Ajustes</string>
+    <string name="menu_annotate">Anotar una palabra</string>
+    <string name="menu_about">Acerca de</string>
+    <string name="menu_ocr_display">OCR: Texto escaneado</string>
+
+    <string name="search_hint">Buscar pinyin, definición, hanzi</string>
+    <string name="search_clear">Borrar búsqueda</string>
+
+    <string name="nav_header_desc">Encabezado de navegación</string>
+    <string name="nav_host_reader_reminder_close">Cerrar recordatorio de OCR</string>
+    <string name="nav_host_reader_reminder_text">Tu análisis de texto sigue accesible haciendo clic aquí.</string>
+
+
+    <string name="about_btn_view_source">Ver código fuente</string>
+    <string name="about_intro1">Mandarin Assistant HSK Widget %1$s es un proyecto de código abierto creado por Cyrille Berliat que nace de la necesidad personal de aprender mandarín.\n \nSi te resulta útil, por favor considera apoyarme a mí y a mis incontables horas de desarrollo :)</string>
+    <string name="about_intro2">Si tienes sugerencias, comentarios o problemas, no dudes en enviarme un correo electrónico.</string>
+    <string name="about_intro3">Política de privacidad: Utilizo Google Analytics para rastrear el uso, como qué pestaña se visita más según el tipo de dispositivo (Tableta, Smartphone).\nNo se recopila ni se envía ninguna Información de Identificación Personal (PII) a mí ni a Google Analytics.
+
+Licencia: GNU GPLv3. En resumen, puedes hacer lo que quieras con él, pero debes dar crédito al trabajo y usar la misma licencia en proyectos derivados.
+
+Este proyecto utiliza los increíbles proyectos de:
+- Traduccíon completa CN-EN de la lista CC-CEDICT de https://www.mdbg.net/chinese/
+- Traduccíon CN-FR de la lista CFDICT de https://chine.in/mandarin/dictionnaire/CFDICT/ (diccionario parcial de 56k entradas)
+- El resto del diccionario CN-FR se genera utilizando el LLM Qwen2.5 7b - Q4_K_M de Alibaba para tener la misma cobertura de entradas que CC-CEDICT
+- Lista HSK de https://github.com/krmanik/HSK-3.0
+- La popularidad de las palabras en chino proviene de la Universidad de Lengua y Cultura de Pekín en http://bcc.blcu.edu.cn/
+- Los metadatos de las palabras en chino (¡BETA!) se generaron utilizando el LLM Yi 1.5 6B - Q6_K de 01.AI.
+- Las colocaciones de palabras en chino (¡BETA!) se generaron utilizando el LLM Qwen2.5 7b - Q4_K_M de Alibaba.</string>
+    <string name="about_btn_email2">Enviar correo al desarrollador</string>
+    <string name="about_stats_title">Estadísticas</string>
+    <string name="about_terms_conditions_title"><![CDATA[Política de privacidad y licencias]]></string>
+    <string name="about_stats">Cargando…</string>
+    <string name="about_stats_text">Tus anotaciones: %9$d
+
+Palabras en el diccionario: %1$d
+- Definiciones en inglés (%2$d%)
+- Definiciones en francés (%3$d%)
+- Definiciones HSK3 (%4$d%)
+
+Cobertura de campos IA:
+- Colocaciones (%5$d%)
+- Ejemplos (%6$d%)
+- Antónimos+Sinónimos (%7$d%)
+- Tipo+Uso (%8$d%)</string>
+    <string name="about_email_noapp">No se encontró ningún cliente de correo. Dirección copiada al portapapeles.</string>
+
+    <string name="dictionary_noresult_text">"%1$s" no está en el diccionario, ¿añadir anotación?</string>
+    <string name="dictionary_noresultwithfilter_text">Se han filtrado todas las palabras.\nElimina filtros como las listas o "solo ♥".</string>
+    <string name="dictionary_noresult_icon">¡Sin resultados!</string>
+    <string name="dictionary_search_loading">Cargando resultados</string>
+    <string name="dictionary_search_filter_hasannotation_hint"> solo</string>
+    <string name="dictionary_filter_language_label">Idioma de la aplicación</string>
+    <string name="dictionary_language_filter">Idioma del diccionario</string>
+    <string name="locale_en">English</string>
+    <string name="locale_fr">Français</string>
+    <string name="locale_es">Español</string>
+    <string name="locale_cn_hsk3">HSK 3.0</string>
+
+    <string name="dictionary_item_toggle">Mostrar/Ocultar más información</string>
+    <string name="dictionary_item_antonym">Antónimo</string>
+    <string name="dictionary_item_synonyms">Sinónimo(s)</string>
+    <string name="dictionary_item_examples">Ejemplo(s)</string>
+    <string name="dictionary_item_collocations">Colocaciones</string>
+    <string name="dictionary_item_altdefinition">Definición alternativa</string>
+    <string name="dictionary_item_lists">Gestionar listas para esta palabra</string>
+    <string name="dictionary_item_annotate">Anotar una palabra</string>
+    <string name="dictionary_item_reload">Nueva palabra</string>
+    <string name="dictionary_item_modality">Uso</string>
+    <string name="dictionary_item_type">Tipo</string>
+
+    <string name="widget_name">Palabras de la lista</string>
+    <string name="widget_description">Lee una palabra aleatoria de las listas que has configurado.</string>
+    <string name="ocr_shortcut_name">Acceso directo Fotos/OCR</string>
+    <string name="ocr_shortcut_description">Toma una foto rápidamente para extraer texto en mandarín.</string>
+
+    <string name="widget_not_configured">Sin palabras. Configura la(s) lista(s)</string>
+
+    <string name="widget_configure">Configurar Widget</string>
+    <string name="widget_configure_close">Configurar Widget y cerrar aplicación</string>
+    <string name="widget_configure_new_back">Añadir nuevo Widget y volver</string>
+    <string name="widget_configure_error_no_list">Selecciona al menos 1 lista</string>
+    <string name="widget_configure_wordlist_title">Lista de vocabulario a incluir</string>
+    <string name="widget_configure_wordlist_word_count">%1$d palabras</string>
+    <string name="widget_configure_no_change">No hay cambios que guardar</string>
+    <string name="widget_configure_saved">Configuración del widget actualizada</string>
+    <string name="widget_configure_frequency_hint">¿Con qué frecuencia deseas una palabra nueva?</string>
+
+    <string name="widget_configure_frequency">Frecuencia de actualización</string>
+    <string-array name="widget_configure_frequency_options"> <!-- Must be in format "{Long/milliseconds} {String}" -->
+        <item>-1 Manual</item>
+        <item>1800000 30 min</item>
+        <item>21600000 6 horas</item>
+        <item>43200000 12 horas</item>
+        <item>86400000 1 día</item>
+        <item>604800000 7 días</item>
+    </string-array>
+
+    <string name="widget_demo_word_click">Este es un widget de demostración, esto abriría el diccionario</string>
+    <string name="widget_demo_update_click">Este es un widget de demostración, esto actualizaría la palabra</string>
+
+    <string name="widget_btn_speak">Escuchar esta palabra</string>
+    <string name="widget_btn_copy">Copiar al portapapeles</string>
+
+    <string name="widget_placeholder_word">你好</string>
+    <string name="widget_placeholder_pinyin">nǐ hǎo</string>
+    <string name="widget_placeholder_definition">Hola</string>
+    <string name="widget_placeholder_level">HSK1</string>
+    <string name="widget_placeholder_language">es</string>
+
+    <string name="widgets_add_widget">Añadir un nuevo widget</string>
+    <string name="widgets_add_widget_instructions">Tu lanzador no admite la adición automática de widgets.\nPor favor añade el widget de tarjetas manualmente:\nMantén presionado en la pantalla de inicio → Widgets → Mandarin Assistant.</string>
+    <string name="widgets_intro"><![CDATA[¡Te damos la bienvenida a Mandarin Assistant HSK Widget!
+
+Esta aplicación te permite configurar tantos widgets como desees en tu teléfono y seleccionar qué palabras HSK quieres ver.
+Te recomendamos elegir el nivel en el que estás más uno por debajo, o por encima según tu proceso de aprendizaje.]]></string>
+    <string name="widgets_intro2"><![CDATA[Puedes volver a esta pantalla en cualquier momento para configurar un nuevo widget o reconfigurar los existentes.]]></string>
+
+    <string name="dialog_tts_error">Error de síntesis de voz</string>
+    <string name="speech_failure_toast_unknown">Error de voz desconocido</string>
+    <string name="speech_failure_toast_muted">Desactiva el modo silencio para escuchar la palabra</string>
+    <string name="speech_failure_toast_chinese_unsupported">Falta la voz "Chino (China)" en tu síntesis de voz. Por favor instálala.</string>
+    <string name="speech_failure_toast_init">No se pudo inicializar el servicio de síntesis de voz. Es necesario activarlo, descargarlo o configurarlo en los Ajustes.</string>
+
+    <string name="annotation_edit_notes_hint">Introduce tus notas:</string>
+    <string name="annotation_edit_is_exam_hint">Examen</string>
+    <string name="annotation_exam_switch">Interruptor de examen</string>
+    <string name="annotation_edit_class_level_hint">Nivel de clase</string>
+    <string name="annotation_edit_class_type_hint">Tipo de clase</string>
+    <string name="annotation_edit_delete_success">%1$s eliminada con éxito</string>
+    <string name="annotation_edit_delete_failure">No se pudo eliminar %1$s: %2$s</string>
+    <string name="annotation_edit_save_success">%1$s guardada con éxito</string>
+    <string name="annotation_edit_save_failure">No se pudo guardar %1$s: %2$s</string>
+    <string name="annotation_edit_delete_confirm_title">Confirmar eliminación</string>
+    <string name="annotation_edit_delete_confirm_message">¿Estás seguro de que deseas *eliminar* esta anotación?</string>
+
+    <string name="wordlist_create_new_list_button">Crear lista personal</string>
+    <string name="wordlist_delete_button">Eliminar lista</string>
+    <string name="wordlist_delete_confirmation">¿Estás seguro de que deseas eliminar la lista personal \"%1$s\"?</string>
+    <string name="wordlist_word_count">%1$d palabras</string>
+    <string name="wordlist_name">Lista de palabras</string>
+    <string name="wordlist_consult_button">Consultar</string>
+    <string name="wordlist_create_button">Crear lista</string>
+    <string name="wordlist_list_name">Nombre de la lista personal</string>
+    <string name="wordlist_select_lists">Seleccionar lista(s) personal(es)</string>
+    <string name="wordlist_list_none">No tienes listas personales a las que añadir esta palabra, crea primero una lista personal.</string>
+    <string name="wordlist_lists_updated_toast">Listas personales actualizadas con éxito</string>
+    <string name="wordlist_createddate">Creada: %1$s</string>
+    <string name="wordlist_editeddate">Modificada: %1$s</string>
+    <string name="wordlist_rename_button">Renombrar lista</string>
+    <string name="wordlist_list_name_dupe">Este nombre de lista ya existe, utiliza otro.</string>
+
+    <string name="ocr_capture_btn">Capturar foto para OCR</string>
+    <string name="ocr_capture_permission_denied">Por favor permite el acceso a la cámara y a los archivos</string>
+    <string name="ocr_capture_error_processed">Ocurrió un error al capturar la imagen</string>
+    <string name="ocr_capture_pinch_hint">Pellizca para acercar/alejar</string>
+
+    <string name="ocr_display_loading">Procesando tu imagen</string>
+    <string name="ocr_display_add">Analizar más texto y añadir a continuación</string>
+    <string name="ocr_display_conf_smaller">Reducir tamaño del texto</string>
+    <string name="ocr_display_conf_bigger">Aumentar tamaño del texto</string>
+    <string name="ocr_display_pinyins">Mostrar pinyins</string>
+    <string name="ocr_display_separator">Separar palabras</string>
+    <string name="reader_word_spacing_processing">Procesando el espaciado de palabras</string>
+    <string name="ocr_display_smallest_text">Tamaño de texto más pequeño disponible</string>
+    <string name="ocr_display_word_not_found">No se encontró la palabra, copiada al portapapeles</string>
+    <string name="ocr_display_no_text_found">No se encontró ningún texto</string>
+    <string name="ocr_display_text_segmentation_failed">Falló la segmentación de texto</string>
+    <string name="ocr_display_ocr_failed">Falló el reconocimiento de texto</string>
+    <string name="ocr_display_ocr_no_text">Sin texto que mostrar</string>
+
+    <string name="config_backup_title">Copia de seguridad / Restauración desde archivo local</string>
+    <string name="config_backup_activate">Activar copia de seguridad</string>
+    <string name="config_backup_frequency">Frecuencia de copia de seguridad</string>
+    <string name="config_backup_frequency_options">Al iniciar la aplicación</string>
+    <string name="config_backup_frequency_manual">Manual</string>
+    <string name="config_backup_location">Directorio de copia de seguridad</string>
+    <string name="config_backup_directory_choose">Elegir directorio</string>
+    <string name="config_backup_directory_failed_selection">No se permitió ninguna carpeta para realizar la copia de seguridad local, cancelando</string>
+    <string name="config_backup_icon_alt">Carga de base de datos</string>
+    <string name="config_backup_max_number">Número de copias de seguridad a conservar</string>
+    <string name="config_backup_max_number_hint">Máx. archivos</string>
+    <string-array name="config_backup_max_locally"> <!-- Must be in format "{Int} {String}" -->
+        <item>2 (~10MB)</item>
+        <item>5 (~25MB)</item>
+        <item>10 (~50MB)</item>
+    </string-array>
+
+
+    <string name="dbrestore_start">Iniciada la restauración de la base de datos</string>
+    <string name="dbrestore_failure_fileformat">El archivo no parece ser una copia de seguridad para esta aplicación</string>
+    <string name="dbrestore_failure_import">Restauración fallida: %1$s</string>
+    <string name="dbrestore_failure_nofileselected">Ningún archivo seleccionado: restauración cancelada</string>
+    <string name="dbrestore_success">Base de datos restaurada con éxito</string>
+
+    <string name="database_updating_progress">Actualizando diccionario… %1$d%</string>
+    <string name="database_update_notification_name">Actualización del diccionario</string>
+    <string name="database_update_notification_description">Proporciona el progreso de la actualización del diccionario desde los activos.</string>
+    <string name="database_update_starting">Iniciando actualización…</string>
+    <string name="dbbackup_success">Copia de seguridad de la base de datos realizada con éxito</string>
+    <string name="dbbackup_failure_write">No se pudo hacer la copia de seguridad de la base de datos</string>
+    <string name="dbbackup_failure_folderpermission">Cancelando copia de seguridad: se perdió el permiso de la carpeta</string>
+
+    <string name="database_update_start">Actualizando el diccionario base, la copia de seguridad se retrasará.</string>
+    <string name="database_update_success">Diccionario base actualizado</string>
+    <string name="database_update_failure">Error al actualizar el diccionario base: %1$s</string>
+    <string name="database_update_list_system">Poblando las listas "En el examen" y "Palabras anotadas".</string>
+
+    <string name="config_restore_file">Restaurar desde archivo</string>
+    <string name="config_restore_file_choose">Elegir archivo</string>
+
+    <string name="config_language">Idioma de la interfaz</string>
+
+    <string name="config_backup_cloud_title">Copia de seguridad / Restauración desde Google</string>
+    <string name="config_backup_cloud_account">Cuenta de Google</string>
+    <string name="config_backup_cloud_account_notconfigured">Sesión no iniciada</string>
+    <string name="config_backup_cloud_lastone">Última copia de seguridad exitosa</string>
+    <string name="config_backup_cloud_lastone_never">Nunca</string>
+    <string name="config_backup_cloud_backupnow">Hacer copia de seguridad ahora</string>
+    <string name="config_backup_cloud_restorenow">Restaurar ahora</string>
+
+    <string name="googledrive_backup_start_title">Copia de seguridad en Google en curso</string>
+    <string name="googledrive_backup_start_message">Preparando la copia de seguridad.</string>
+    <string name="googledrive_backup_success_title">Copia de seguridad en Google completada</string>
+    <string name="googledrive_backup_success_message">Copia de seguridad realizada con éxito a las %1$s.</string>
+    <string name="googledrive_backup_cancel_title">Copia de seguridad en Google cancelada</string>
+    <string name="googledrive_backup_cancel_message">Copia de seguridad cancelada.</string>
+    <string name="googledrive_backup_progress_message">Copia de seguridad en curso: %1$s MB / %2$s MB.</string>
+    <string name="googledrive_backup_denied_scope">Autorización de Google no asegurada</string>
+    <string name="googledrive_backup_failed_title">Error en la copia de seguridad en Google</string>
+    <string name="googledrive_backup_failed_message">La copia de seguridad falló con el mensaje de error: %1$s.</string>
+    <string name="googledrive_backup_nogoogleapi">No hay API de Google disponible en este dispositivo</string>
+    <string name="googledrive_backup_noaccountselected">No se seleccionó ninguna cuenta de Google, cancelando.</string>
+    <string name="googledrive_restore_start_title">Restauración desde Google en curso</string>
+    <string name="googledrive_restore_start_message">Iniciada la restauración desde Google Drive.</string>
+    <string name="googledrive_restore_success_title">Descarga de restauración desde Google completada</string>
+    <string name="googledrive_restore_success_message">Archivos descargados desde Google Drive a las %1$s.</string>
+    <string name="googledrive_restore_confirm_overwrite">Estás a punto de eliminar tus datos locales y reemplazarlos con una copia de seguridad de %1$s.\n\nEsto es irrevocable. ¿Deseas continuar?</string>
+    <string name="googledrive_restore_cancel_title">Restauración desde Google cancelada</string>
+    <string name="googledrive_restore_cancel_message">Restauración cancelada.</string>
+    <string name="googledrive_restore_progress_message">Restauración en curso: %1$s MB / %2$s MB.</string>
+    <string name="googledrive_restore_failed_title">Error en la restauración desde Google</string>
+    <string name="googledrive_restore_failed_message">La restauración desde Google Drive falló con el mensaje de error: %1$s.</string>
+
+    <string name="config_anki_title">Integración con Anki</string>
+    <string name="config_anki_activate">Activar integración con Anki</string>
+    <string name="config_anki_integration">Guarda listas y sus notas correspondientes en Anki automáticamente.
+Al activarse, ejecuta una sincronización completa desde cero.</string>
+
+    <string name="anki_not_installed"><![CDATA[AnkiDroid no está instalado o ejecuta una versión muy antigua (<2.5)]]></string>
+    <string name="anki_permission_denied">Permiso para llamar a la API de AnkiDroid denegado.</string>
+    <string name="anki_must_start">Intentando iniciar Anki en segundo plano</string>
+    <string name="anki_operation_success">Cambios aplicados con éxito en Anki</string>
+    <string name="anki_operation_failed">Error al aplicar cambios en Anki: %s</string>
+    <string name="anki_operation_cancelled">Has cancelado la sincronización con Anki</string>
+
+    <string name="anki_sync_start_message">Preparando una importación completa de listas a Anki.</string>
+    <string name="anki_sync_progress_message" formatted="false">Sincronizando palabra %3$d/%2$d a AnkiDroid: %1$s</string>
+    <string name="anki_sync_notification_name">Progreso de sincronización con Anki</string>
+    <string name="anki_sync_notification_description">Te notifica el progreso de la sincronización con Anki.</string>
+
+    <string name="anki_sync_start_title">Importación a Anki en curso</string>
+    <string name="anki_sync_cancelled_title">Importación a Anki cancelada</string>
+    <string name="anki_sync_cancelled_message">La importación a Anki fue cancelada.</string>
+    <string name="anki_sync_success_title">Importación a Anki completada</string>
+    <string name="anki_sync_success_message">Se importaron con éxito todas las tarjetas a Anki a las %1$s.</string>
+    <string name="anki_sync_failure_title">Error en la importación a Anki</string>
+    <string name="anki_sync_failure_message">La importación a Anki falló, intenta desactivar y activar de nuevo.\nError: %1$s.</string>
+
+    <string name="anki_card_CNEN_front"><![CDATA[
+        <h1 class="mobile">{{Hanzi}}</h1>
+
+        <br />
+
+        {{tts zh:Hanzi}}
+        <div class="metadata">
+            <div>{{HSK}} - {{Level}}</div>
+        </div>
+    ]]></string>
+
+    <string name="anki_card_CNEN_back"><![CDATA[
+        <h1 class="mobile">{{Hanzi}}</h1>
+
+        {{Pinyin}}<br />
+
+        {{tts zh:Hanzi}}
+
+        <hr id="answer" />
+        {{Definition}}
+        {{tts en:Definition}}<br /><br />
+        {{Notes}}
+        <br /><br />
+
+        <hr id="example" />
+
+        <div class="metadata">
+            <div>{{HSK}} - {{Level}}</div>
+        </div>
+    ]]></string>
+
+    <string name="anki_card_ENCN_front"><![CDATA[
+        <h1 class="mobile">&nbsp;</h1>
+
+        <br />
+
+        <hr id="answer" />
+        {{Definition}}
+        {{tts en:Definition}}<br /><br />
+        {{Notes}}
+
+        <div class="metadata">
+            <div>{{HSK}} - {{Level}}</div>
+        </div>
+    ]]></string>
+
+    <string name="anki_card_ENCN_back"><![CDATA[
+        <h1 class="mobile">{{Hanzi}}</h1>
+
+        {{Pinyin}}<br />
+
+        {{tts zh:Hanzi}}
+
+        <hr id="answer" />
+        {{Definition}}
+        {{tts en:Definition}}<br /><br />
+        {{Notes}}
+        <br /><br />
+
+        <hr id="example" />
+
+        <div class="metadata">
+            <div>{{HSK}} - {{Level}}</div>
+        </div>
+    ]]></string>
+
+    <string name="anki_card_css">H1 {
+font-size: 60px;
+}
+
+.card {
+font-family: arial;
+font-size: 20px;
+text-align: center;
+color: black;
+background-color: white;
+}
+
+.example {
+font-size: 20px;
+}
+
+HR {
+margin-top: 35px;
+margin-bottom: 35px;
+}
+
+.metadata > div {
+flex-grow: 1;
+}
+
+.metadata > div:nth-child(2) {
+font-size: 30px;
+}
+
+.metadata > div:nth-child(1) {
+text-align: center;
+font-size: 30px;
+}
+
+.metadata > div:nth-child(3) {
+text-align: right;
+}
+
+.metadata {
+position: fixed;
+display: flex;
+flex-direction: row;
+bottom: 0;
+width: 92%;
+align-items: flex-end;
+margin: 0;
+padding: 0;
+}
+
+.mobile .disabled {display: none;visibility: hidden;}</string>
+
+    <string name="widget_config_title">Configuración del Widget</string>
+    <string name="widget_config_description">Selecciona las listas que se mostrarán en el widget.</string>
+    <string name="widget_config_selected_lists">Listas seleccionadas</string>
+
+    <string name="battery_background_restricted">La restricción de batería está activada. Es posible que los widgets no se actualicen de manera confiable.</string>
+    <string name="battery_aggressive_manufacturer">El fabricante de tu teléfono optimiza agresivamente el uso de energía/batería. Es posible que los widgets no se actualicen de manera confiable.</string>
+    <string name="battery_optimization_fix">Corregir</string>
+
+    <string name="about_bug_report_title">Enviar un informe de error</string>
+    <string name="about_bug_report_intro">Si deseas notificar un error en la aplicación, puedes compartir información adicional por correo electrónico con el desarrollador. Puede contener información personal.</string>
+    <string name="dialog_report_bug_text">Potencialmente compartirás información personal en forma de entradas del diccionario, uso detallado de la aplicación, etc. Esta información se utilizará exclusivamente para la depuración y mejora del producto, y luego se eliminará.</string>
+    <string name="about_bug_report_email_template">Hola,
+
+¡Gracias por tu informe de error!
+Ten en cuenta que esto puede contener información privada que utilizaremos únicamente para corregir errores y mejorar el producto.
+
+Describe el problema que estás experimentando:
+
+
+
+--- Información del dispositivo ---
+Versión de la aplicación: %1$s
+%2$s Versión del sistema: %3$s
+Modelo del dispositivo: %4$s
+--- Fin de la información del dispositivo ---
+
+--- Registros ---
+%5$s
+--- Fin de los registros ---
+
+Hola,
+
+¡Gracias por tu informe de error!
+Ten en cuenta que esto puede contener información privada que utilizaremos únicamente para corregir errores y mejorar el producto.
+
+Describe el problema que estás experimentando:
+
+
+
+</string>
+
+    <string name="generic_not_applicable">N/D</string>
+    <string name="generic_other">Otro</string>
+
+    <string name="enum_class_type_speaking">Expresión oral</string>
+    <string name="enum_class_type_writing">Expresión escrita</string>
+    <string name="enum_class_type_reading">Lectura</string>
+    <string name="enum_class_type_listening">Comprensión auditiva</string>
+    <string name="enum_class_type_fast_reading">Lectura rápida</string>
+
+    <string name="enum_class_level_elementary_1">Elemental 1</string>
+    <string name="enum_class_level_elementary_2">Elemental 2</string>
+    <string name="enum_class_level_elementary_3">Elemental 3</string>
+    <string name="enum_class_level_elementary_4">Elemental 4</string>
+    <string name="enum_class_level_intermediate_1">Intermedio 1</string>
+    <string name="enum_class_level_intermediate_2">Intermedio 2</string>
+    <string name="enum_class_level_intermediate_3">Intermedio 3</string>
+    <string name="enum_class_level_advanced_1">Avanzado 1</string>
+    <string name="enum_class_level_advanced_2">Avanzado 2</string>
+    <string name="enum_class_level_advanced_3">Avanzado 3</string>
+
+    <string name="enum_word_type_noun">Sustantivo</string>
+    <string name="enum_word_type_verb">Verbo</string>
+    <string name="enum_word_type_adjective">Adjetivo</string>
+    <string name="enum_word_type_adverb">Adverbio</string>
+    <string name="enum_word_type_conjunction">Conjunción</string>
+    <string name="enum_word_type_preposition">Preposición</string>
+    <string name="enum_word_type_interjection">Interjección</string>
+    <string name="enum_word_type_idiom">Modismo</string>
+
+    <string name="enum_modality_oral">Oral</string>
+    <string name="enum_modality_written">Escrito</string>
+    <string name="enum_modality_oral_written">Oral y Escrito</string>
+
+    <string name="enum_system_list_hsk_1">HSK1</string>
+    <string name="enum_system_list_hsk_2">HSK2</string>
+    <string name="enum_system_list_hsk_3">HSK3</string>
+    <string name="enum_system_list_hsk_4">HSK4</string>
+    <string name="enum_system_list_hsk_5">HSK5</string>
+    <string name="enum_system_list_hsk_6">HSK6</string>
+    <string name="enum_system_list_hsk_7">HSK7</string>
+    <string name="enum_system_list_annotated_words">Palabras anotadas</string>
+    <string name="enum_system_list_at_exam">En el examen</string>
+
+</resources>

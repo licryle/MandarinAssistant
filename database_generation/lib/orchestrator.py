@@ -416,6 +416,7 @@ class Orchestrator:
         langs = [
             ("English", "en"),
             ("French", "fr"),
+            ("Spanish", "es"),
             ("HSK3", DEFINITION_AI_LOCALE)
         ]
 

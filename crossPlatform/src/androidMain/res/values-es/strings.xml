@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Mandarin Assistant</string>
+
+    <string name="widget_not_configured">Sin palabras.\nHaz clic para configurar la(s) lista(s)</string>
+    <string name="widget_default_chinese">你好</string>
+    <string name="widget_default_english">Hola</string>
+    <string name="widget_default_pinyin">nĭ hăo</string>
+    <string name="widget_default_loading">…Cargando…</string>
+
+    <string name="widget_btn_speak">Escuchar esta palabra</string>
+    <string name="widget_btn_reload">Nueva palabra</string>
+
+    <string name="widget_description">Lee una palabra aleatoria de las listas que has configurado.</string>
+</resources>

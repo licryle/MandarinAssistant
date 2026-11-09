@@ -9,6 +9,7 @@ class LocaleTest {
     @Test
     fun testFromCode() {
         assertEquals(Locale.ENGLISH, Locale.fromCode("en"))
+        assertEquals(Locale.SPANISH, Locale.fromCode("es"))
         assertEquals(Locale.FRENCH, Locale.fromCode("fr"))
         assertEquals(Locale.CN_HSK3, Locale.fromCode("zh-CN-HSK03"))
         assertEquals(null, Locale.fromCode("unknown"))

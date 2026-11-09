@@ -3,8 +3,10 @@ package fr.berliat.hskwidget.core
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.flag_cn
 import fr.berliat.hskwidget.flag_en
+import fr.berliat.hskwidget.flag_es
 import fr.berliat.hskwidget.flag_fr
 import fr.berliat.hskwidget.locale_en
+import fr.berliat.hskwidget.locale_es
 import fr.berliat.hskwidget.locale_fr
 import fr.berliat.hskwidget.locale_cn_hsk3
 import kotlinx.serialization.KSerializer
@@ -23,6 +25,7 @@ enum class Locale(
     val flag: DrawableResource?
 ) {
     ENGLISH("en", Res.string.locale_en, Res.drawable.flag_en),
+    SPANISH("es", Res.string.locale_es, Res.drawable.flag_es),
     FRENCH("fr", Res.string.locale_fr, Res.drawable.flag_fr),
     CN_HSK3("zh-CN-HSK03", Res.string.locale_cn_hsk3, Res.drawable.flag_cn);
 

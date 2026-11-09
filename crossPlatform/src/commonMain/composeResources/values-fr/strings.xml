@@ -74,6 +74,7 @@ Couverture des champs IA :
     <string name="dictionary_language_filter">Langue du dictionnaire</string>
     <string name="locale_en">English</string>
     <string name="locale_fr">Français</string>
+    <string name="locale_es">Espagnol</string>
     <string name="locale_cn_hsk3">HSK 3.0</string>
 
     <string name="dictionary_item_toggle">Montrer/Cacher plus d'infos</string>

@@ -3,6 +3,7 @@ package fr.berliat.hskwidget.core
 object LocaleManager {
     val supportedLocales = mapOf(
         "en" to "English",
+        "es" to "Español",
         "fr" to "Français",
         "zh-Hans" to "简体中文"
     )
