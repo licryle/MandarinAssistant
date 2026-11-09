@@ -4,7 +4,7 @@ import crossPlatform
 import WidgetKit
 
 struct WordListEntity: AppEntity, Equatable {
-    static var typeDisplayRepresentation: TypeDisplayRepresentation = LocalizedStringResource("Word List")
+    static var typeDisplayRepresentation: TypeDisplayRepresentation = TypeDisplayRepresentation(name: "Word List")
     static var defaultQuery = WordListQuery()
 
     var id: Int
