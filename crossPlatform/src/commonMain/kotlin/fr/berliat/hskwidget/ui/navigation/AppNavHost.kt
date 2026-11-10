@@ -10,9 +10,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.coroutines.withContext
 
@@ -43,8 +43,7 @@ import kotlin.reflect.typeOf
 @Suppress("DEPRECATION")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AppNavHost(viewModel : AppViewModel) {
-    val navController = rememberNavController()
+fun AppNavHost(viewModel : AppViewModel, navController: NavHostController) {
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(navController) {
@@ -77,15 +76,16 @@ fun AppNavHost(viewModel : AppViewModel) {
         }
     }
 
-    NavHost(navController = navController, startDestination = Screen.Dictionary(viewModel.appConfig.searchQuery.value.toString())) {
+    NavHost(navController = navController, startDestination = Screen.Dictionary()) {
         composable<Screen.Dictionary>(
             typeMap = mapOf(typeOf<IntentSources>() to IntentSourcesNavType)
         ) { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.Dictionary>()
 
             LaunchedEffect(Unit) {
-                if (viewModel.appConfig.searchQuery.value.toString() == args.search.toString()) return@LaunchedEffect
-
+                // One-shot sync of an explicit route query into the persisted
+                // search pref. No prefs-derived start destination anymore, so
+                // this is the only writer on entry.
                 args.search?.let { raw ->
                     viewModel.appConfig.searchQuery.value = SearchQuery.processSearchQuery(raw)
                 }
@@ -105,7 +105,7 @@ fun AppNavHost(viewModel : AppViewModel) {
                         SearchQuery.fromString(term).copy(exactWord = true).toString())
                     )
                 },
-                onNavigate = { screen -> navController.navigate(screen) }
+                onNavigate = { screen -> viewModel.navigationManager.navigate(screen) }
             )
         }
 

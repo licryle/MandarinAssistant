@@ -18,10 +18,8 @@ import fr.berliat.hskwidget.core.CachedResources
 import fr.berliat.hskwidget.core.ExpectedUtils
 import fr.berliat.hskwidget.core.HSKAppServices
 import fr.berliat.hskwidget.domain.HSKAnkiDelegate
-import fr.berliat.hskwidget.ui.application.AppIntentBus
 import fr.berliat.hskwidget.ui.application.AppView
 import fr.berliat.hskwidget.ui.application.AppViewModel
-import fr.berliat.hskwidget.ui.navigation.NavigationManager
 import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
 
 import io.github.vinceglb.filekit.FileKit
@@ -33,9 +31,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        // Keep getIntent() in sync with the intent currently being handled.
+        setIntent(intent)
 
         AppViewModel.convertToAppIntent(intent)?.let {
-            AppIntentBus.emit(it)
+            viewModel.handleAppIntent(it)
         }
     }
 
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             }
         )
 
-        viewModel = AppViewModel(NavigationManager)
+        viewModel = AppViewModel()
         viewModel.init()
 
         lifecycleScope.launch {
@@ -75,8 +75,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        AppViewModel.convertToAppIntent(intent)?.let {
-            AppIntentBus.emit(it)
+        // Only the launch intent must be handled once. A recreated activity
+        // (rotation, locale change, process restore) gets the same intent back
+        // from getIntent(), and replaying it would push a stale screen.
+        if (savedInstanceState == null) {
+            AppViewModel.convertToAppIntent(intent)?.let {
+                viewModel.handleAppIntent(it)
+            }
         }
 
         setContent {

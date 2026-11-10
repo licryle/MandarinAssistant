@@ -30,24 +30,24 @@ Widgets and share extensions must boot without the full app (no billing, no Anki
 Boot sequence (`ui/application/AppViewModel.kt`):
 
 ```
-shell creates AppViewModel(NavigationManager)
-  -> init(): HSKAppServices.init(PartialApp)
+shell creates AppViewModel()   // owns its own NavigationManager
+  -> init() (idempotent): onInit() [platform hook], HSKAppServices.init(PartialApp)
   -> status=Ready(Partial): readyUp() [isReady=true], then finishInitialization()
       -> HSKAppServices.init(FullApp)
       -> handleDbOperations() [cleanTemp + disk backup]
       -> if didUpdateApp(): handleAppUpdate() [prefs migration, staged DB update trigger]
       -> executePendingActions()
-AppIntentBus intents arriving before isReady are queued via executeWhenReady{}
+Intents arriving before isReady are queued via executeWhenReady{}
 ```
 
 Consequence for E2E/tests: anything touching `HSKAppServices.database/appPreferences/ankiStore` before `Ready(Partial)` throws. The seam is `HSKAppServices` — fake it there, not in each ViewModel.
 
-## 3. Navigation + intents (two buses, two truths)
+## 3. Navigation + intents (one host, per-VM state)
 
-- `ui/navigation/NavigationManager.kt` is a singleton event bus: `navigate(Screen)` emits on `navigationEvents: SharedFlow(replay=1)`; `currentScreen: StateFlow` + `stackScreen: ArrayDeque` (cap 20) are analytics/backstack mirrors.
-- `ui/navigation/AppNavHost.kt` owns the real backstack (`NavController`, start = `Screen.Dictionary`). It collects `navigationEvents` and forwards to `navController.navigate(route)`. Each `composable<Screen.*>` calls `registerScreenVisit()` to mirror state back into `NavigationManager`.
+- `ui/navigation/NavigationManager.kt` is **per-`AppViewModel`** (a plain class, not a singleton): `navigate(Screen)` emits one-shot commands on a `Channel` (no replay); `currentScreen: StateFlow` + `stackScreen: ArrayDeque` (cap 20) are analytics/backstack mirrors. A second Android activity (e.g. widget configuration) therefore gets its own manager and cannot steal the other host's commands.
+- `ui/navigation/AppNavHost.kt` owns the real backstack (`NavHostController` created in `AppView`, start = `Screen.Dictionary`). It collects `navigationEvents` and forwards to `navController.navigate(route)`. Each `composable<Screen.*>` calls `registerScreenVisit()` to mirror state back into `NavigationManager`.
 - `ui/navigation/Screen.kt` is the route contract: `Dictionary(search?)`, `Lists`, `Annotate(word)`, `Widgets(id?, expectsActivityResult)`, `Config`, `About`, `Support`, `OCRCapture`, `OCRDisplay`. Navigation between features is always via these types (e.g. Lists→Dictionary with `SearchQuery(inListName)`, Dictionary→Annotate, Capture→Display→Annotate).
-- `ui/application/AppIntent.kt + AppIntentBus.kt` is the *external* bus: deep-links, share sheet, widget taps, TTS (`Search, SearchTTS, WidgetConfiguration, ImageOCR, OCRCapture`). `AppViewModel.handleAppIntent` translates them into `Screen` navigations. This is what `hskwidget://search?q=` (iOS) and `PROCESS_TEXT/SEND` (Android) emit into.
+- `ui/application/AppIntent.kt + AppIntentBus.kt` is the *external* entry point: deep-links, share sheet, widget taps, TTS (`Search, SearchTTS, WidgetConfiguration, ImageOCR, OCRCapture`). `AppViewModel.handleAppIntent` translates them into `Screen` navigations. On Android `MainActivity` calls `viewModel.handleAppIntent(...)` directly (launch intent only when `savedInstanceState == null`, plus `onNewIntent`); on iOS the URL handler emits on `AppIntentBus`, whose non-replaying `Channel` is collected by the single iOS `AppViewModel`.
 
 Mental model: **OS → AppIntent → Screen → NavController**. Tests should inject at the `AppIntent` or `Screen` level, not by tapping through drawers.
 
