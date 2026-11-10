@@ -50,7 +50,9 @@ import kotlinx.coroutines.sync.withLock
 
 expect class AppViewModel: CommonAppViewModel
 
-open class CommonAppViewModel(val navigationManager: NavigationManager): ViewModel() {
+open class CommonAppViewModel(
+    val navigationManager: NavigationManager = NavigationManager()
+): ViewModel() {
     var _appConfig: AppPreferencesStore? = null
     val appConfig
         get() = _appConfig!!
@@ -66,7 +68,17 @@ open class CommonAppViewModel(val navigationManager: NavigationManager): ViewMod
     private val pendingActions = mutableListOf<() -> Unit>()
 	private val pendingActionsMutex = Mutex()
 
+    private var initialized = false
+
+    /**
+     * Idempotent: iOS calls this from composition and Android from `onCreate`,
+     * both of which can run more than once per process.
+     */
     open fun init() {
+        if (initialized) return
+        initialized = true
+
+        onInit()
         Logging.setupFileLogging()
         HSKAppServices.init(HSKAppServicesPriority.PartialApp)
         // Launch a coroutine that reacts to changes
@@ -91,14 +103,14 @@ open class CommonAppViewModel(val navigationManager: NavigationManager): ViewMod
                 }
             }
         }
-
-        // Collect intents from the bus
-        viewModelScope.launch {
-            AppIntentBus.intents.collect { intent ->
-                handleAppIntent(intent)
-            }
-        }
     }
+
+    /**
+     * Platform hook for extra initialization that must run exactly once.
+     * iOS subscribes to [AppIntentBus] here; Android receives intents directly
+     * from its activity and does not use the bus.
+     */
+    protected open fun onInit() {}
 
     private fun readyUp() {
         _appConfig = HSKAppServices.appPreferences

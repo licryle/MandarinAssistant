@@ -26,9 +26,7 @@ import kotlinx.coroutines.launch
 import fr.berliat.hskwidget.data.model.AnnotatedChineseWord
 import fr.berliat.hskwidget.data.store.AppPreferencesStore
 import fr.berliat.hskwidget.domain.SearchQuery
-import fr.berliat.hskwidget.ui.theme.AppTypographies
 import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
-import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.withContext
 
 
@@ -83,32 +81,6 @@ class DictionarySearchViewModel(private val prefsStore: AppPreferencesStore = HS
      * page cursor) of the search that replaced it.
      */
     private var searchGeneration = 0
-
-    fun toggleHasAnnotation(value: Boolean) {
-        prefsStore.searchFilterHasAnnotation.value = value
-
-        Logging.logAnalyticsEvent(if (value) Logging.ANALYTICS_EVENTS.DICT_ANNOTATION_ON else Logging.ANALYTICS_EVENTS.DICT_ANNOTATION_OFF)
-    }
-
-    fun updateTextSize(increment: Float) {
-        val newSize = (prefsStore.dictionaryTextSize.value.value + increment).coerceAtLeast(
-            AppTypographies.smallestHanziFontSize.value)
-        prefsStore.dictionaryTextSize.value = newSize.sp
-
-        Logging.logAnalyticsEvent(Logging.ANALYTICS_EVENTS.DICT_TEXT_SIZE_CHANGE)
-    }
-
-    fun updateDictionaryLocale(locale: Locale?) {
-        val from = prefsStore.dictionaryLocale.value?.code ?: "app"
-        prefsStore.dictionaryLocale.value = locale
-        performSearch(IntentSources.IN_APP)
-        widgetProvider.redrawAllFlashCardWidgets()
-
-        Logging.logAnalyticsEvent(
-            Logging.ANALYTICS_EVENTS.DICT_CHANGE_LANG,
-            mapOf("FROM" to from, "TO" to (locale?.code ?: "app"))
-        )
-    }
 
     fun performSearch(source: IntentSources) {
         // Snapshot everything the query needs *now*. The DAO call must not read

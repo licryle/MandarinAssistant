@@ -20,20 +20,16 @@ import fr.berliat.hskwidget.data.store.PrefCompat.PrefCompatMigration
 import fr.berliat.hskwidget.data.store.SupportDevStore
 import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
 import fr.berliat.hskwidget.domain.SearchQuery
-import fr.berliat.hskwidget.ui.navigation.NavigationManager
 
 import io.github.vinceglb.filekit.PlatformFile
 
-actual class AppViewModel(navigationManager: NavigationManager)
-    : CommonAppViewModel(navigationManager) {
+actual class AppViewModel : CommonAppViewModel() {
 
-    override fun init() {
+    override fun onInit() {
         // Enable StrictMode in Debug mode
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             StrictModeManager.init()
         }
-
-        super.init()
     }
 
     override suspend fun finishInitialization() {

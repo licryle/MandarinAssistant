@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 
 import fr.berliat.hskwidget.core.SnackbarManager
 import fr.berliat.hskwidget.domain.SearchQuery
@@ -44,6 +45,9 @@ fun AppView(
     viewModel: AppViewModel
 ) {
     val isReady = viewModel.isReady.collectAsState(false)
+    // The single source of truth for the back stack lives here, above the
+    // Scaffold/drawer, and is handed to AppNavHost.
+    val navController = rememberNavController()
     val drawerIsOpen = remember { mutableStateOf(false) }
     val drawerState = rememberDrawerState(if (drawerIsOpen.value) DrawerValue.Open else DrawerValue.Closed)
     val snackbarHostState = remember { SnackbarHostState() }
@@ -147,7 +151,7 @@ fun AppView(
                         )
 
                         // Screen
-                        AppNavHost(viewModel = viewModel)
+                        AppNavHost(viewModel = viewModel, navController = navController)
                     }
                 }
             )

@@ -22,7 +22,16 @@ sealed interface NavigationEvent {
     data class Back(val previous: Screen?) : NavigationEvent
 }
 
-object NavigationManager {
+/**
+ * Per-[fr.berliat.hskwidget.ui.application.AppViewModel] navigation state.
+ *
+ * Deliberately not a singleton: when Android starts a second activity for a
+ * widget configuration, that activity gets its own manager (and therefore its
+ * own event channel), so one host can no longer consume the other host's
+ * navigation commands. Callers that need to reach the host go through the
+ * `AppViewModel` they already own.
+ */
+class NavigationManager {
     /**
      * One-shot navigation commands. A channel (rather than a replaying shared
      * flow) so a command that was already handled is not replayed to a new
@@ -31,7 +40,9 @@ object NavigationManager {
     private val _navigationEvents = Channel<NavigationEvent>(Channel.BUFFERED)
     val navigationEvents: Flow<NavigationEvent> = _navigationEvents.receiveAsFlow()
 
-    const val STACK_SCREEN_DEPTH = 20
+    companion object {
+        const val STACK_SCREEN_DEPTH = 20
+    }
 
     /** The app's start destination, always kept at the bottom of the mirror. */
     private val ROOT_SCREEN = Screen.Dictionary("")
