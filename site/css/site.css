@@ -1,3 +1,8 @@
+@font-face { font-family: "Geist"; src: url("../fonts/geist-400.woff2") format("woff2"); font-display: swap; font-style: normal; font-weight: 400 }
+@font-face { font-family: "Geist"; src: url("../fonts/geist-500.woff2") format("woff2"); font-display: swap; font-style: normal; font-weight: 500 }
+@font-face { font-family: "Geist"; src: url("../fonts/geist-600.woff2") format("woff2"); font-display: swap; font-style: normal; font-weight: 600 }
+@font-face { font-family: "Geist Placeholder"; src: local("Arial"); ascent-override: 94.56%; descent-override: 27.76%; line-gap-override: 0.00%; size-adjust: 106.28% }
+html body { background: rgb(255, 255, 255); }
 html,
 body,
 #main {
