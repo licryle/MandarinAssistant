@@ -6745,7 +6745,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   height:588px;
   overflow:var(--overflow-clip-fallback,clip);
   width:344px;
-  position:relative
+  position:relative;
+  overflow:visible;
 }
 
 .framer-7Gcnt .framer-168es9-container {
@@ -6759,7 +6760,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 
 .framer-7Gcnt .framer-bzyzqh,
 .framer-7Gcnt .framer-1w6rf2q {
-  max-width:344px;
+  min-width:320px;
+  max-width:320px;
   height:min-content;
   min-height:110px;
   overflow:var(--overflow-clip-fallback,clip);
@@ -6770,12 +6772,12 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   place-content:flex-start center;
   align-items:flex-start;
   gap:10px;
-  width:75%;
   padding:12px 17px;
   display:flex;
   position:absolute;
   bottom:113px;
-  left:50%
+  left:50%;
+  margin-left: min(calc(-40vw + 172px), 0px);
 }
 
 .framer-7Gcnt .framer-1pd37n2,
@@ -6791,7 +6793,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 .framer-7Gcnt .framer-1wgrjuy {
-  max-width:344px;
+  min-width:320px;
+  max-width:320px;
   height:min-content;
   min-height:110px;
   overflow:var(--overflow-clip-fallback,clip);
@@ -6802,12 +6805,12 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   place-content:flex-start center;
   align-items:flex-start;
   gap:10px;
-  width:75%;
   padding:12px 17px;
   display:flex;
   position:absolute;
   bottom:462px;
-  left:50%
+  left:50%;
+  margin-left: max(calc(+40vw - 172px), 0px);
 }
 
 .framer-7Gcnt.framer-v-17813hn .framer-bzyzqh {
