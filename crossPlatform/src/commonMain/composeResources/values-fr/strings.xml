@@ -166,8 +166,8 @@ Nous vous recommandons de choisir le niveau où vous en êtes plus celui du dess
     <string name="wordlist_select_lists">Sélectionner la ou les listes personnelles</string>
     <string name="wordlist_list_none">Vous n'avez pas de listes personnelles pour ajouter ce mot, créez d'abord une liste personnelle.</string>
     <string name="wordlist_lists_updated_toast">Listes personnelles mises à jour avec succès</string>
-    <string name="wordlist_createddate">Créé le : %1$s</string>
-    <string name="wordlist_editeddate" >Modifié le : %1$s</string>
+    <string name="wordlist_createddate">Créée le : %1$s</string>
+    <string name="wordlist_editeddate" >Modifiée le : %1$s</string>
     <string name="wordlist_rename_button">Renommer la liste</string>
     <string name="wordlist_list_name_dupe">Ce nom de liste existe déjà, utilisez-en un autre.</string>
 
