@@ -1,0 +1,36 @@
+# Mandarin Assistant HSK
+
+> Mandarin Assistant HSK est une application Android et iOS pour apprendre le mandarin : dictionnaire chinois-français, listes HSK 3.0, OCR, widget d'écran d'accueil et synchronisation Anki. Elle fonctionne hors ligne, sans compte, et est gratuite sur Android.
+
+## Faits clés
+
+- Éditeur : vertex8.net
+- Plateformes : Android (gratuit), iOS (environ 2 USD)
+- Dictionnaire : chinois-français et chinois-anglais
+- Sources des définitions : CC-CEDICT (anglais) ; CFDICT et génération par LLM (français)
+- Fonctions : dictionnaire, listes HSK et listes personnalisées, OCR, widget d'écran d'accueil, synchronisation AnkiDroid, sauvegarde locale ou Google Drive
+- Confidentialité : fonctionnement 100 % local, sauf la sauvegarde Google Drive optionnelle
+- Compte requis : non
+
+## Pages
+
+- [Accueil](https://mandarinassistant.com/) : présentation de l'application, captures d'écran, avis et FAQ.
+- [Télécharger](https://mandarinassistant.com/download.html) : redirection vers Google Play ou l'App Store selon la plateforme.
+
+## Liens officiels
+
+- [Google Play](https://play.google.com/store/apps/details?id=fr.berliat.hskwidget)
+- [App Store](https://apps.apple.com/us/app/mandarin-assistant-hsk-widget/id6801617407)
+- [Code source (GPLv3)](https://github.com/licryle/MandarinAssistant)
+- [Communauté Reddit](https://www.reddit.com/r/MandarinAssistant/)
+- [Politique de confidentialité](https://vertex8.net/mandarin-assistant.html)
+
+## FAQ
+
+- **L'application fonctionne-t-elle hors ligne ?** Oui, sauf la sauvegarde optionnelle sur Google Drive.
+- **Faut-il créer un compte ?** Non.
+- **Combien coûte l'application ?** Gratuite sur Android ; environ 2 USD sur iOS pour couvrir les frais annuels Apple.
+- **Comment transférer ses listes sur un nouveau téléphone ?** Via la sauvegarde locale ou Google Drive.
+- **D'où viennent les définitions ?** CC-CEDICT pour l'anglais ; CFDICT et génération par LLM pour le français ; définitions HSK 3, collocations, exemples et synonymes générés localement.
+- **L'application est-elle disponible sur ordinateur ?** Non, Android et iOS uniquement.
+- **Comment contacter le support ?** support@vertex8.net.
