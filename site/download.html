@@ -1,11 +1,47 @@
-<script>
-const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Télécharger Mandarin Assistant HSK — Android et iOS</title>
+  <meta name="description" content="Téléchargez Mandarin Assistant HSK sur Google Play ou l'App Store : dictionnaire chinois-français, listes HSK, OCR, widget et Anki, hors ligne.">
+  <link rel="canonical" href="https://mandarinassistant.com/download.html">
+  <meta name="robots" content="noindex,follow">
 
-if (/android/i.test(userAgent)) {
-  window.location.href = "https://play.google.com/store/apps/details?id=fr.berliat.hskwidget&hl=en";
-} else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-  window.location.href = "https://apps.apple.com/us/app/mandarin-assistant-hsk-widget/id6801617407";
-} else {
-  window.location.href = "http://mandarinassistant.com/";
-}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mandarinassistant.com/download.html">
+  <meta property="og:site_name" content="Mandarin Assistant HSK">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Télécharger Mandarin Assistant HSK — Android et iOS">
+  <meta property="og:description" content="Disponible sur Google Play et l'App Store : dictionnaire chinois-français, listes HSK, OCR, widget et Anki, hors ligne.">
+  <meta property="og:image" content="https://framerusercontent.com/assets/EYZnYeCYWO40S7HFa0GwDis28.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Télécharger Mandarin Assistant HSK — Android et iOS">
+  <meta name="twitter:description" content="Disponible sur Google Play et l'App Store : dictionnaire chinois-français, listes HSK, OCR, widget et Anki, hors ligne.">
+  <meta name="twitter:image" content="https://framerusercontent.com/assets/EYZnYeCYWO40S7HFa0GwDis28.png">
+</head>
+<body>
+<script>
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  const playStore = "https://play.google.com/store/apps/details?id=fr.berliat.hskwidget&hl=en";
+  const appStore = "https://apps.apple.com/us/app/mandarin-assistant-hsk-widget/id6801617407";
+  const home = "https://mandarinassistant.com/";
+
+  if (/android/i.test(userAgent)) {
+    window.location.replace(playStore);
+  } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+    window.location.replace(appStore);
+  } else {
+    window.location.replace(home);
+  }
 </script>
+<noscript>
+  <p>Choisissez votre plateforme :</p>
+  <p>
+    <a href="https://play.google.com/store/apps/details?id=fr.berliat.hskwidget&amp;hl=en">Google Play</a><br>
+    <a href="https://apps.apple.com/us/app/mandarin-assistant-hsk-widget/id6801617407">App Store</a>
+  </p>
+</noscript>
+</body>
+</html>
