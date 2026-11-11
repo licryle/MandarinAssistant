@@ -3067,12 +3067,12 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 .framer-GX8Xm .framer-181xjy1-container {
+  top:128px;
   z-index:3;
   flex:none;
   width:auto;
   height:auto;
   position:absolute;
-  top:118px;
   left:48%;
   transform:translate(-50%)
 }
@@ -5861,9 +5861,6 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
     right:unset;
     top:calc(64.3087% - 107.5px)
   }
-  .framer-GX8Xm .framer-181xjy1-container {
-    left:47%
-  }
   .framer-GX8Xm .framer-1943b9x,.framer-GX8Xm .framer-10rsqry {
     padding:120px 32px
   }
@@ -6035,10 +6032,6 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .framer-nqqvuq {
     bottom:44px;
     right:-240px
-  }
-  .framer-GX8Xm .framer-181xjy1-container {
-    top:128px;
-    left:46%
   }
   .framer-GX8Xm .framer-1943b9x {
     padding:120px 18px 30px
