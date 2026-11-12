@@ -471,6 +471,44 @@
       });
     });
   }
+function setupVideoSync() {
+  var video = document.querySelector('.framer-168es9-container video');
+  if (!video) return;
+
+  var timings = [
+    { id: '1', start: 1, end: 5 },
+    { id: '2', start: 7, end: 14 },
+    { id: '3', start: 18, end: 24 }
+  ];
+
+  var containers = timings.map(function (t) {
+    return {
+      el: document.querySelector('[data-video-sync="' + t.id + '"]'),
+      start: t.start,
+      end: t.end
+    };
+  }).filter(function (item) {
+    return item.el;
+  });
+
+  function update() {
+    var time = video.currentTime;
+
+    containers.forEach(function (item) {
+      item.el.classList.toggle(
+        'video-sync-visible',
+        time >= item.start && time < item.end
+      );
+    });
+  }
+
+  video.addEventListener('timeupdate', update);
+  video.addEventListener('seeked', update);
+
+  update();
+
+  setInterval(update, 50);
+}
 
   function revealAppearFallback() {
     setTimeout(function () {
@@ -495,6 +533,7 @@
     setupMenu();
     setupHoverCss();
     setupBreathing();
+    setupVideoSync();
     revealAppearFallback();
   }
 
