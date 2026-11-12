@@ -7943,9 +7943,28 @@ nav.framer-v-1op6k05 {
     opacity 500ms ease-in-out,
     filter 500ms ease-in-out !important;
 }
+/* Tablet: two columns */
+@media (min-width: 810px) and (max-width: 1024px) {
+  .framer-2uoigz-container {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
 
+  .framer-b6ncE {
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .framer-b6ncE > .framer-tf9nyb,
+  .framer-b6ncE > .framer-18wgvxt {
+    flex: 1 0 0px !important;
+    min-width: 0 !important;
+  }
+}
+
+/* Mobile: stacked columns */
 @media (max-width: 809px) {
-  .framer-GX8Xm .framer-2uoigz-container {
+  .framer-2uoigz-container {
     width: 100% !important;
   }
 
@@ -7965,6 +7984,7 @@ nav.framer-v-1op6k05 {
 
   .framer-b6ncE .framer-tf9nyb {
     order: 2;
+    width: 100% !important;
     height: 300px !important;
   }
 }
