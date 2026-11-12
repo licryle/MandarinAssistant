@@ -39225,7 +39225,7 @@ ${um(e2)}`);
                                         pixelHeight: 2632,
                                         pixelWidth: 2720,
                                         sizes: `340px`,
-                                        src: `images/background-2.png?width=2720&height=2632`,
+                                        src: `images/background-2.png`,
                                     },
                                     className: `framer-18cazwu`,
                                     "data-border": true,
@@ -39264,7 +39264,7 @@ ${um(e2)}`);
                                                     autoplay: true,
                                                     controls: false,
                                                     fit: `cover`,
-                                                    frame: `images/fr/video-poster-2.png?width=1728&height=3524`,
+                                                    frame: `images/fr/video-poster-2.png`,
                                                     height: `100%`,
                                                     id: `RppcYU42B`,
                                                     island: true,
@@ -39300,7 +39300,7 @@ ${um(e2)}`);
                                                     autoplay: true,
                                                     controls: false,
                                                     fit: `cover`,
-                                                    frame: `images/fr/video-poster-2.png?width=1728&height=3524`,
+                                                    frame: `images/fr/video-poster-2.png`,
                                                     height: `100%`,
                                                     id: `h2S1tk25H`,
                                                     island: true,
@@ -39336,7 +39336,7 @@ ${um(e2)}`);
                                                     autoplay: true,
                                                     controls: false,
                                                     fit: `cover`,
-                                                    frame: `images/fr/video-poster-2.png?width=1728&height=3524`,
+                                                    frame: `images/fr/video-poster-2.png`,
                                                     height: `100%`,
                                                     id: `gn1nJYOnI`,
                                                     island: true,
@@ -39738,7 +39738,7 @@ ${um(e2)}`);
                                             autoplay: true,
                                             controls: false,
                                             fit: `cover`,
-                                            frame: `images/fr/video-poster-2.png?width=1728&height=3524`,
+                                            frame: `images/fr/video-poster-2.png`,
                                             height: `100%`,
                                             id: `HQTn38Lv_`,
                                             island: true,
@@ -40800,10 +40800,10 @@ ${um(e2)}`);
                     type: Zb.Enum
                 },
                 WFHe6GCny: {
-                    __defaultAssetReference: `data:framer/asset-reference,0Ei0UlZljgGV5OBFlK8gCNEjvU.png?width=340&height=348`,
+                    __defaultAssetReference: `data:framer/asset-reference,0Ei0UlZljgGV5OBFlK8gCNEjvU.png`,
                     __vekterDefault: {
                         alt: ``,
-                        assetReference: `data:framer/asset-reference,0Ei0UlZljgGV5OBFlK8gCNEjvU.png?width=340&height=348`
+                        assetReference: `data:framer/asset-reference,0Ei0UlZljgGV5OBFlK8gCNEjvU.png`
                     },
                     title: `Image`,
                     type: Zb.ResponsiveImage
@@ -41279,7 +41279,7 @@ ${um(e2)}`);
                                         pixelHeight: 2632,
                                         pixelWidth: 2720,
                                         sizes: `520px`,
-                                        src: `images/background-2.png?width=2720&height=2632`,
+                                        src: `images/background-2.png`,
                                     },
                                     className: `framer-18wgvxt`,
                                     "data-border": true,
@@ -41318,7 +41318,7 @@ ${um(e2)}`);
                                                     autoplay: true,
                                                     controls: false,
                                                     fit: `cover`,
-                                                    frame: `images/fr/video-poster-2.png?width=1728&height=3524`,
+                                                    frame: `images/fr/video-poster-2.png`,
                                                     height: `100%`,
                                                     id: `IVFw79F7R`,
                                                     island: true,
@@ -41354,7 +41354,7 @@ ${um(e2)}`);
                                                     autoplay: true,
                                                     controls: false,
                                                     fit: `cover`,
-                                                    frame: `images/fr/video-poster-2.png?width=1728&height=3524`,
+                                                    frame: `images/fr/video-poster-2.png`,
                                                     height: `100%`,
                                                     id: `nY_CmjFwn`,
                                                     island: true,
@@ -41390,7 +41390,7 @@ ${um(e2)}`);
                                                     autoplay: true,
                                                     controls: false,
                                                     fit: `cover`,
-                                                    frame: `images/fr/video-poster-2.png?width=1728&height=3524`,
+                                                    frame: `images/fr/video-poster-2.png`,
                                                     height: `100%`,
                                                     id: `K40bTuxk8`,
                                                     island: true,
@@ -41605,7 +41605,7 @@ ${um(e2)}`);
                                         pixelHeight: 2632,
                                         pixelWidth: 2720,
                                         sizes: `340px`,
-                                        src: `images/background-2.png?width=2720&height=2632`,
+                                        src: `images/background-2.png`,
                                     },
                                     className: `framer-15fj8et`,
                                     "data-border": true,
@@ -41644,7 +41644,7 @@ ${um(e2)}`);
                                                     autoplay: true,
                                                     controls: false,
                                                     fit: `cover`,
-                                                    frame: `images/fr/video-poster-2.png?width=1728&height=3524`,
+                                                    frame: `images/fr/video-poster-2.png`,
                                                     height: `100%`,
                                                     id: `zz5D5fxXx`,
                                                     island: true,
@@ -41680,7 +41680,7 @@ ${um(e2)}`);
                                                     autoplay: true,
                                                     controls: false,
                                                     fit: `cover`,
-                                                    frame: `images/fr/video-poster-2.png?width=1728&height=3524`,
+                                                    frame: `images/fr/video-poster-2.png`,
                                                     height: `100%`,
                                                     id: `K2VaamDs9`,
                                                     island: true,
@@ -41716,7 +41716,7 @@ ${um(e2)}`);
                                                     autoplay: true,
                                                     controls: false,
                                                     fit: `cover`,
-                                                    frame: `images/fr/video-poster-2.png?width=1728&height=3524`,
+                                                    frame: `images/fr/video-poster-2.png`,
                                                     height: `100%`,
                                                     id: `NOdJbFBTF`,
                                                     island: true,
@@ -43572,7 +43572,7 @@ ${um(e2)}`);
                                             autoplay: true,
                                             controls: false,
                                             fit: `cover`,
-                                            frame: `images/fr/video-poster-2.png?width=1728&height=3524`,
+                                            frame: `images/fr/video-poster-2.png`,
                                             height: `100%`,
                                             id: `xiKHm_yF8`,
                                             island: true,
@@ -45221,7 +45221,7 @@ ${um(e2)}`);
                                                 pixelHeight: 512,
                                                 pixelWidth: 510,
                                                 sizes: `16px`,
-                                                src: `images/reviews/review-8.webp?width=510&height=512`
+                                                src: `images/reviews/review-8.webp`
                                             },
                                             className: `framer-sgojms`,
                                             "data-border": true
@@ -45235,7 +45235,7 @@ ${um(e2)}`);
                                                 pixelHeight: 510,
                                                 pixelWidth: 512,
                                                 sizes: `16px`,
-                                                src: `images/reviews/review-3.jpg?width=512&height=510`
+                                                src: `images/reviews/review-3.jpg`
                                             },
                                             className: `framer-1pr48y7`,
                                             "data-border": true
@@ -45249,7 +45249,7 @@ ${um(e2)}`);
                                                 pixelHeight: 511,
                                                 pixelWidth: 512,
                                                 sizes: `16px`,
-                                                src: `images/reviews/review-6.webp?width=512&height=511`
+                                                src: `images/reviews/review-6.webp`
                                             },
                                             className: `framer-1ia9w9j`,
                                             "data-border": true
@@ -45263,7 +45263,7 @@ ${um(e2)}`);
                                                 pixelHeight: 512,
                                                 pixelWidth: 512,
                                                 sizes: `16px`,
-                                                src: `images/reviews/review-7.png?width=512&height=512`
+                                                src: `images/reviews/review-7.png`
                                             },
                                             className: `framer-1qj9lyu`,
                                             "data-border": true
@@ -45923,7 +45923,7 @@ ${um(e2)}`);
                                                 pixelHeight: 3304,
                                                 pixelWidth: 2452,
                                                 sizes: `524px`,
-                                                src: `images/fr/screenshot-2.png?width=2452&height=3304`,
+                                                src: `images/fr/screenshot-2.png`,
                                             }
                                         }
                                     },
@@ -45937,7 +45937,7 @@ ${um(e2)}`);
                                             pixelHeight: 3304,
                                             pixelWidth: 2452,
                                             sizes: `524px`,
-                                            src: `images/fr/screenshot-2.png?width=2452&height=3304`,
+                                            src: `images/fr/screenshot-2.png`,
                                         },
                                         className: `framer-ygg96y`,
                                         "data-framer-name": `Mockup Phone`
@@ -46331,7 +46331,7 @@ ${um(e2)}`);
                                                                 positionX: `center`,
                                                                 positionY: `center`,
                                                                 sizes: `min(${m2?.width || `100vw`} - 36px, 1200px)`,
-                                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                                src: `images/background-2.png`,
                                                             }
                                                         },
                                                         QmiSzAVF7: {
@@ -46344,7 +46344,7 @@ ${um(e2)}`);
                                                                 positionX: `center`,
                                                                 positionY: `center`,
                                                                 sizes: `429px`,
-                                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                                src: `images/background-2.png`,
                                                             }
                                                         }
                                                     },
@@ -46358,7 +46358,7 @@ ${um(e2)}`);
                                                             positionX: `center`,
                                                             positionY: `center`,
                                                             sizes: `max((min(${m2?.width || `100vw`} - 60px, 1200px) - 40px) / 3, 1px)`,
-                                                            src: `images/background-2.png?width=2720&height=2632`,
+                                                            src: `images/background-2.png`,
                                                         },
                                                         className: `framer-1hl6a7z`,
                                                         "data-border": true,
@@ -46610,7 +46610,7 @@ ${um(e2)}`);
                                                                 positionX: `center`,
                                                                 positionY: `center`,
                                                                 sizes: `min(${m2?.width || `100vw`} - 36px, 1200px)`,
-                                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                                src: `images/background-2.png`,
                                                             }
                                                         },
                                                         QmiSzAVF7: {
@@ -46623,7 +46623,7 @@ ${um(e2)}`);
                                                                 positionX: `center`,
                                                                 positionY: `center`,
                                                                 sizes: `429px`,
-                                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                                src: `images/background-2.png`,
                                                             }
                                                         }
                                                     },
@@ -46637,7 +46637,7 @@ ${um(e2)}`);
                                                             positionX: `center`,
                                                             positionY: `center`,
                                                             sizes: `max((min(${m2?.width || `100vw`} - 60px, 1200px) - 40px) / 3, 1px)`,
-                                                            src: `images/background-2.png?width=2720&height=2632`,
+                                                            src: `images/background-2.png`,
                                                         },
                                                         className: `framer-1l6bz6l`,
                                                         "data-border": true,
@@ -46813,7 +46813,7 @@ ${um(e2)}`);
                                                                 positionX: `center`,
                                                                 positionY: `center`,
                                                                 sizes: `min(${m2?.width || `100vw`} - 36px, 1200px)`,
-                                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                                src: `images/background-2.png`,
                                                             }
                                                         },
                                                         QmiSzAVF7: {
@@ -46826,7 +46826,7 @@ ${um(e2)}`);
                                                                 positionX: `center`,
                                                                 positionY: `center`,
                                                                 sizes: `429px`,
-                                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                                src: `images/background-2.png`,
                                                             }
                                                         }
                                                     },
@@ -46840,7 +46840,7 @@ ${um(e2)}`);
                                                             positionX: `center`,
                                                             positionY: `center`,
                                                             sizes: `max((min(${m2?.width || `100vw`} - 60px, 1200px) - 40px) / 3, 1px)`,
-                                                            src: `images/background-2.png?width=2720&height=2632`,
+                                                            src: `images/background-2.png`,
                                                         },
                                                         className: `framer-90f3fq`,
                                                         "data-border": true,
@@ -48097,7 +48097,7 @@ ${um(e2)}`);
                                                     positionX: `center`,
                                                     positionY: `center`,
                                                     sizes: `min(${m2?.width || `100vw`} - 36px, 1200px)`,
-                                                    src: `images/background-2.png?width=2720&height=2632`,
+                                                    src: `images/background-2.png`,
                                                 }
                                             },
                                             QmiSzAVF7: {
@@ -48110,7 +48110,7 @@ ${um(e2)}`);
                                                     positionX: `center`,
                                                     positionY: `center`,
                                                     sizes: `max((min(${m2?.width || `100vw`} - 64px, 1200px) - 10px) / 2, 1px)`,
-                                                    src: `images/background-2.png?width=2720&height=2632`,
+                                                    src: `images/background-2.png`,
                                                 }
                                             }
                                         },
@@ -48123,7 +48123,7 @@ ${um(e2)}`);
                                                 pixelWidth: 2720,
                                                 positionX: `center`,
                                                 positionY: `center`,
-                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                src: `images/background-2.png`,
                                             },
                                             className: `framer-1hpc6g7`,
                                             "data-border": true,
@@ -48140,7 +48140,7 @@ ${um(e2)}`);
                                                         autoplay: true,
                                                         controls: false,
                                                         fit: `cover`,
-                                                        frame: `images/fr/video-poster-1.webp?width=1728&height=3524`,
+                                                        frame: `images/fr/video-poster-1.webp`,
                                                         height: `100%`,
                                                         id: `u2uocz8ma`,
                                                         island: true,
@@ -48434,7 +48434,7 @@ ${um(e2)}`);
                                                     positionX: `center`,
                                                     positionY: `center`,
                                                     sizes: `min(${m2?.width || `100vw`} - 36px, 1200px)`,
-                                                    src: `images/background-2.png?width=2720&height=2632`,
+                                                    src: `images/background-2.png`,
                                                 }
                                             },
                                             QmiSzAVF7: {
@@ -48447,7 +48447,7 @@ ${um(e2)}`);
                                                     positionX: `center`,
                                                     positionY: `center`,
                                                     sizes: `max((min(${m2?.width || `100vw`} - 64px, 1200px) - 10px) / 2, 1px)`,
-                                                    src: `images/background-2.png?width=2720&height=2632`,
+                                                    src: `images/background-2.png`,
                                                 }
                                             }
                                         },
@@ -48461,7 +48461,7 @@ ${um(e2)}`);
                                                 positionX: `center`,
                                                 positionY: `center`,
                                                 sizes: `max((min(${m2?.width || `100vw`} - 60px, 1200px) - 10px) / 2, 1px)`,
-                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                src: `images/background-2.png`,
                                             },
                                             className: `framer-1jgheq3`,
                                             "data-border": true,
@@ -49715,7 +49715,7 @@ ${um(e2)}`);
                                                                 WFHe6GCny: la4({
                                                                     pixelHeight: 510,
                                                                     pixelWidth: 512,
-                                                                    src: `images/reviews/review-3.jpg?width=512&height=510`
+                                                                    src: `images/reviews/review-3.jpg`
                                                                 }, ``),
                                                                 width: `100%`,
                                                                 Z3NSqjGIW: `Tajana`
@@ -49862,7 +49862,7 @@ ${um(e2)}`);
                                                                 WFHe6GCny: la4({
                                                                     pixelHeight: 511,
                                                                     pixelWidth: 512,
-                                                                    src: `images/reviews/review-6.webp?width=512&height=511`
+                                                                    src: `images/reviews/review-6.webp`
                                                                 }, ``),
                                                                 width: `100%`,
                                                                 Z3NSqjGIW: `Dani`
@@ -49911,7 +49911,7 @@ ${um(e2)}`);
                                                                 WFHe6GCny: la4({
                                                                     pixelHeight: 512,
                                                                     pixelWidth: 512,
-                                                                    src: `images/reviews/review-7.png?width=512&height=512`
+                                                                    src: `images/reviews/review-7.png`
                                                                 }, ``),
                                                                 width: `100%`,
                                                                 Z3NSqjGIW: `Leo`
@@ -49960,7 +49960,7 @@ ${um(e2)}`);
                                                                 WFHe6GCny: la4({
                                                                     pixelHeight: 512,
                                                                     pixelWidth: 510,
-                                                                    src: `images/reviews/review-8.webp?width=510&height=512`
+                                                                    src: `images/reviews/review-8.webp`
                                                                 }, ``),
                                                                 width: `100%`,
                                                                 Z3NSqjGIW: `Chiao`
@@ -50022,7 +50022,7 @@ ${um(e2)}`);
                                                                 WFHe6GCny: la4({
                                                                     pixelHeight: 512,
                                                                     pixelWidth: 510,
-                                                                    src: `images/reviews/review-8.webp?width=510&height=512`
+                                                                    src: `images/reviews/review-8.webp`
                                                                 }, ``),
                                                                 width: `100%`,
                                                                 Z3NSqjGIW: `Chiao`
@@ -50071,7 +50071,7 @@ ${um(e2)}`);
                                                                 WFHe6GCny: la4({
                                                                     pixelHeight: 511,
                                                                     pixelWidth: 512,
-                                                                    src: `images/reviews/review-6.webp?width=512&height=511`
+                                                                    src: `images/reviews/review-6.webp`
                                                                 }, ``),
                                                                 width: `100%`,
                                                                 Z3NSqjGIW: `Dani`
@@ -50169,7 +50169,7 @@ ${um(e2)}`);
                                                                 WFHe6GCny: la4({
                                                                     pixelHeight: 512,
                                                                     pixelWidth: 512,
-                                                                    src: `images/reviews/review-7.png?width=512&height=512`
+                                                                    src: `images/reviews/review-7.png`
                                                                 }, ``),
                                                                 width: `100%`,
                                                                 Z3NSqjGIW: `Leo`
@@ -50262,7 +50262,7 @@ ${um(e2)}`);
                                                                 WFHe6GCny: la4({
                                                                     pixelHeight: 510,
                                                                     pixelWidth: 512,
-                                                                    src: `images/reviews/review-3.jpg?width=512&height=510`
+                                                                    src: `images/reviews/review-3.jpg`
                                                                 }, ``),
                                                                 width: `100%`,
                                                                 Z3NSqjGIW: `Tajana`
@@ -50610,7 +50610,7 @@ Pour plus d\u2019informations, vous pouvez consulter notre politique de confiden
                                                                 positionX: `center`,
                                                                 positionY: `center`,
                                                                 sizes: `min(${m2?.width || `100vw`} - 36px, 1200px)`,
-                                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                                src: `images/background-2.png`,
                                                             }
                                                         },
                                                         QmiSzAVF7: {
@@ -50623,7 +50623,7 @@ Pour plus d\u2019informations, vous pouvez consulter notre politique de confiden
                                                                 positionX: `center`,
                                                                 positionY: `center`,
                                                                 sizes: `429px`,
-                                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                                src: `images/background-2.png`,
                                                             }
                                                         }
                                                     },
@@ -50637,7 +50637,7 @@ Pour plus d\u2019informations, vous pouvez consulter notre politique de confiden
                                                             positionX: `center`,
                                                             positionY: `center`,
                                                             sizes: `max((min(${m2?.width || `100vw`} - 60px, 1200px) - 40px) / 3, 1px)`,
-                                                            src: `images/background-2.png?width=2720&height=2632`,
+                                                            src: `images/background-2.png`,
                                                         },
                                                         className: `framer-jf4cta`,
                                                         "data-border": true,
@@ -50902,7 +50902,7 @@ Pour plus d\u2019informations, vous pouvez consulter notre politique de confiden
                                                                 positionX: `center`,
                                                                 positionY: `center`,
                                                                 sizes: `min(${m2?.width || `100vw`} - 36px, 1200px)`,
-                                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                                src: `images/background-2.png`,
                                                             }
                                                         },
                                                         QmiSzAVF7: {
@@ -50915,7 +50915,7 @@ Pour plus d\u2019informations, vous pouvez consulter notre politique de confiden
                                                                 positionX: `center`,
                                                                 positionY: `center`,
                                                                 sizes: `429px`,
-                                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                                src: `images/background-2.png`,
                                                             }
                                                         }
                                                     },
@@ -50929,7 +50929,7 @@ Pour plus d\u2019informations, vous pouvez consulter notre politique de confiden
                                                             positionX: `center`,
                                                             positionY: `center`,
                                                             sizes: `max((min(${m2?.width || `100vw`} - 60px, 1200px) - 40px) / 3, 1px)`,
-                                                            src: `images/background-2.png?width=2720&height=2632`,
+                                                            src: `images/background-2.png`,
                                                         },
                                                         className: `framer-1nktii4`,
                                                         "data-border": true,
@@ -51106,7 +51106,7 @@ Pour plus d\u2019informations, vous pouvez consulter notre politique de confiden
                                                                 positionX: `center`,
                                                                 positionY: `center`,
                                                                 sizes: `min(${m2?.width || `100vw`} - 36px, 1200px)`,
-                                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                                src: `images/background-2.png`,
                                                             }
                                                         },
                                                         QmiSzAVF7: {
@@ -51119,7 +51119,7 @@ Pour plus d\u2019informations, vous pouvez consulter notre politique de confiden
                                                                 positionX: `center`,
                                                                 positionY: `center`,
                                                                 sizes: `429px`,
-                                                                src: `images/background-2.png?width=2720&height=2632`,
+                                                                src: `images/background-2.png`,
                                                             }
                                                         }
                                                     },
@@ -51133,7 +51133,7 @@ Pour plus d\u2019informations, vous pouvez consulter notre politique de confiden
                                                             positionX: `center`,
                                                             positionY: `center`,
                                                             sizes: `max((min(${m2?.width || `100vw`} - 60px, 1200px) - 40px) / 3, 1px)`,
-                                                            src: `images/background-2.png?width=2720&height=2632`,
+                                                            src: `images/background-2.png`,
                                                         },
                                                         className: `framer-k1bkwu`,
                                                         "data-border": true,
