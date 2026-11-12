@@ -6356,7 +6356,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 
     .framer-hgR8u .framer-j891ej-container,
     .framer-hgR8u .framer-rzmpnq-container {
-        width: 100%;
+        width: 100% !important;
         min-width: 0;
         flex: none;
     }
