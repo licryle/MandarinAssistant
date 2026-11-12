@@ -1342,7 +1342,6 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   word-break:break-word;
   word-wrap:break-word;
   flex:none;
-  width:362px;
   height:auto;
   position:relative
 }
@@ -7998,4 +7997,11 @@ nav.framer-v-1op6k05 {
     padding: 15px !important;
     padding-top: 35px !important;
   }
+}
+
+.reveal-word {
+  display: inline-block;
+  opacity: 0.001;
+  filter: blur(10px);
+  transition: opacity 0.4s ease, filter 0.4s ease;
 }

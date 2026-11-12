@@ -15,52 +15,42 @@
     });
   }
 
-  function setupReveal() {
-    var spans = Array.prototype.slice.call(document.querySelectorAll('span')).filter(function (s) {
-      return /opacity:\s*0\.001/.test(s.getAttribute('style') || '');
-    });
-    var groups = new Map();
-    spans.forEach(function (sp) {
-      var p = sp.closest('p, h1, h2, h3, h4, h5, h6');
-      if (!p) return;
-      if (!groups.has(p)) groups.set(p, []);
-      groups.get(p).push(sp);
-    });
-    if (groups.size === 0) return;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        var p = e.target;
-        var toks = groups.get(p);
-        if (!toks) { io.unobserve(p); return; }
-        if (prefersReduced) {
-          toks.forEach(function (sp) {
-            sp.style.opacity = '1';
-            sp.style.filter = 'blur(0px)';
-            sp.style.transform = 'translateX(0px) translateY(0px) scale(1)';
-            sp.style.transition = 'opacity 0.26s, transform 0.26s, filter 0.26s';
-          });
-          io.unobserve(p);
-          return;
-        }
-        toks.forEach(function (sp, i) {
-          var anim = sp.animate([
-            { opacity: 0.001, filter: 'blur(10px)', transform: 'translateX(0px) translateY(10px) scale(1)' },
-            { opacity: 1, filter: 'blur(0px)', transform: 'translateX(0px) translateY(0px) scale(1)' }
-          ], { duration: 800, delay: i * 50, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' });
-          anim.onfinish = function () {
-            sp.style.opacity = '1';
-            sp.style.filter = 'blur(0px)';
-            sp.style.transform = 'translateX(0px) translateY(0px) scale(1)';
-            sp.style.transition = 'opacity 0.26s, transform 0.26s, filter 0.26s';
-          };
-        });
-        io.unobserve(p);
-      });
-    }, { threshold: 0, rootMargin: '0px' });
-    groups.forEach(function (v, p) { io.observe(p); });
-  }
+function setupReveal() {
+  var roots = document.querySelectorAll(
+    '[data-framer-component-type="RichTextContainer"]'
+  );
 
+  roots.forEach(function (root) {
+    var words = Array.from(root.querySelectorAll('.framer-text span'));
+
+    if (!words.length) return;
+
+    var started = false;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting || started) return;
+
+        started = true;
+        observer.disconnect();
+
+        words.forEach(function (word, i) {
+          word.style.transition = 'none';
+          word.style.opacity = '0.001';
+          word.style.filter = 'blur(10px)';
+
+          setTimeout(function () {
+            word.style.transition = 'opacity 0.4s ease, filter 0.4s ease';
+            word.style.opacity = '1';
+            word.style.filter = 'blur(0px)';
+          }, i * 20);
+        });
+      });
+    }, { threshold: 0 });
+
+    observer.observe(root);
+  });
+}
   function setupTicker() {
     var uls = Array.prototype.slice.call(document.querySelectorAll('ul')).filter(function (ul) {
       return ul.querySelector('.ticker-item');
