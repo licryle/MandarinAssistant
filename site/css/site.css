@@ -7927,3 +7927,33 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 nav.framer-v-1op6k05 {
     transition: height 0.35s ease !important;
 }
+
+
+/* Animate the complete phone stack */
+.framer-b6ncE .framer-qnki50 {
+  transition: top 700ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* Animate the three text groups */
+.framer-b6ncE .framer-1mc7as6,
+.framer-b6ncE .framer-7sgqzy,
+.framer-b6ncE .framer-17beb7s {
+  top: 0 !important;
+  transition:
+    opacity 500ms ease-in-out,
+    filter 500ms ease-in-out !important;
+}
+
+
+/* Tobbalet, mobile */
+.framer-9gPJy .framer-1hket34,
+.framer-9gPJy .framer-1qn75jl,
+.framer-9gPJy .framer-dt3puz,
+.framer-wTPp6 .framer-163s6zg,
+.framer-wTPp6 .framer-js44y4,
+.framer-wTPp6 .framer-1yp5k9k {
+  top: 0 !important;
+  transition:
+    opacity 500ms ease-in-out,
+    filter 500ms ease-in-out !important;
+}

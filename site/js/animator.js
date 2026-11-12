@@ -621,6 +621,129 @@
     window.addEventListener('scroll', update, { passive: true });
   }
 
+  function setupPhoneSequence() {
+    const layouts = [
+      {
+        selector: '.framer-b6ncE',
+        states: ['framer-v-12ruknm', 'framer-v-trghup']
+      },
+      {
+        selector: '.framer-wTPp6',
+        states: ['framer-v-x49ss7', 'framer-v-1etvmuz']
+      },
+      {
+        selector: '.framer-9gPJy',
+        states: ['framer-v-130x99o', 'framer-v-1yv7as6']
+      }
+    ];
+
+    const step2 = document.getElementById('step-2');
+    const step3 = document.getElementById('step-3');
+
+    if (!step2 || !step3) {
+      console.error('[Phone sequence] Missing #step-2 or #step-3');
+      return;
+    }
+
+    const roots = layouts.flatMap(layout =>
+      [...document.querySelectorAll(layout.selector)].map(element => ({
+        element,
+        states: layout.states
+      }))
+    );
+
+    if (!roots.length) {
+      console.error('[Phone sequence] No layout elements found');
+      return;
+    }
+
+    let currentState = -1;
+    let ticking = false;
+
+    function update() {
+      ticking = false;
+
+      const triggerLine = window.innerHeight * 0.5;
+
+      let state = 0;
+
+      if (step2.getBoundingClientRect().top <= triggerLine) {
+        state = 1;
+      }
+
+      if (step3.getBoundingClientRect().top <= triggerLine) {
+        state = 2;
+      }
+
+      if (state === currentState) return;
+
+      currentState = state;
+
+      roots.forEach(({ element, states }) => {
+        states.forEach((className, index) => {
+          element.classList.toggle(className, state === index + 1);
+        });
+      });
+
+      const textLayouts = [
+        {
+          root: '.framer-b6ncE',
+          groups: [
+            '.framer-1mc7as6',
+            '.framer-7sgqzy',
+            '.framer-17beb7s'
+          ]
+        },
+        {
+          root: '.framer-9gPJy',
+          groups: [
+            '.framer-1hket34',
+            '.framer-1qn75jl',
+            '.framer-dt3puz'
+          ]
+        },
+        {
+          root: '.framer-wTPp6',
+          groups: [
+            '.framer-163s6zg',
+            '.framer-js44y4',
+            '.framer-1yp5k9k'
+          ]
+        }
+      ];
+
+      textLayouts.forEach(({ root, groups }) => {
+        const layout = document.querySelector(root);
+        if (!layout) return;
+
+        groups.forEach((selector, index) => {
+          const el = layout.querySelector(selector);
+          if (!el) return;
+
+          const active = index === state;
+
+          el.style.opacity = active ? '1' : '0';
+          el.style.filter = active ? 'blur(0px)' : 'blur(6px)';
+          el.style.webkitFilter = active ? 'blur(0px)' : 'blur(6px)';
+        });
+      });
+
+      console.log('[Phone sequence] State:', state);
+    }
+
+    function requestUpdate() {
+      if (ticking) return;
+
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+
+    update();
+  }
+
   function revealAppearFallback() {
     setTimeout(function () {
       document.querySelectorAll('[data-framer-appear-id]').forEach(function (el) {
@@ -639,6 +762,7 @@
     setupTicker();
     setupFaq();
     setupCards();
+    setupPhoneSequence();
     setupFlashes();
     setupNavIndicators();
     setupMenu();
