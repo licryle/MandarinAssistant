@@ -232,11 +232,11 @@
 
   var DEFAULT_WORDS = [
     { pinyin: 'n\u01D0 h\u01CEo', hanzi: '\u4F60\u597D', translation: 'Bonjour', level: 'HSK 1', audio: 'audio/ni-hao.webm' },
-    { pinyin: 'c\u01CEo m\xE9i', hanzi: '\u8349\u8393', translation: 'Fraise', level: 'HSK 3', audio: '' },
-    { pinyin: 'gu\u0101n xi', hanzi: '\u5173\u7CFB', translation: 'Relation', level: 'HSK 3', audio: '' },
-    { pinyin: 'ji\u0101 t\xEDng', hanzi: '\u5BB6\u5EAD', translation: 'Famille', level: 'HSK 3', audio: '' },
-    { pinyin: 'ji\xE0n sh\xE8', hanzi: '\u5EFA\u8BBE', translation: 'Construction', level: 'HSK 5', audio: '' },
-    { pinyin: 'li\xE0n x\xED', hanzi: '\u7EC3\u4E60', translation: 'Exercice', level: 'HSK 3', audio: '' }
+    { pinyin: 'c\u01CEo m\xE9i', hanzi: '\u8349\u8393', translation: 'Fraise', level: 'HSK 3', audio: 'audio/cao-mei.webm' },
+    { pinyin: 'gu\u0101n xi', hanzi: '\u5173\u7CFB', translation: 'Relation', level: 'HSK 3', audio: 'audio/guan-xi.webm' },
+    { pinyin: 'ji\u0101 t\xEDng', hanzi: '\u5BB6\u5EAD', translation: 'Famille', level: 'HSK 3', audio: 'audio/jia-ting.webm' },
+    { pinyin: 'ji\xE0n sh\xE8', hanzi: '\u5EFA\u8BBE', translation: 'Construction', level: 'HSK 5', audio: 'audio/jian-she.webm' },
+    { pinyin: 'li\xE0n x\xED', hanzi: '\u7EC3\u4E60', translation: 'Exercice', level: 'HSK 3', audio: 'audio/lian-xi.webm' }
   ];
   var SET2_WORDS = [
     { pinyin: 'x\u01D0 ji\u01CEn chu\u012B', hanzi: '\u6D17\u526A\u5439', translation: 'Shampoing, coiffure, et s\\u00E8che-cheveux', level: '', audio: 'audio/xi-jian-chui.webm' },
