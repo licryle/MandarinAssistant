@@ -121,38 +121,68 @@
 
       function open() {
         var closedH = card.getBoundingClientRect().height;
+
+        // Freeze current height.
+        card.style.transition = 'none';
+        card.style.height = closedH + 'px';
+        card.style.overflow = 'hidden';
+        void card.offsetHeight;
+
+        // Apply open variant.
         card.classList.remove('framer-v-fa4ci');
         card.classList.add('framer-v-rhv0dy');
         card.setAttribute('data-framer-name', 'Opened');
-        if (hBar) { hBar.style.transition = 'transform 0.3s ease'; hBar.style.transform = 'rotate(90deg)'; }
-        if (vBar) { vBar.style.transition = 'transform 0.3s ease'; vBar.style.transform = 'rotate(90deg)'; }
-        if (answerText) answerText.style.setProperty('--extracted-r6o4lv', 'var(--token-1e3ba35f-81ae-45f1-957d-fdbc8b701e2d, rgba(18, 19, 23, 0.58))');
+
+        // Measure natural open height without the temporary height constraint.
+        card.style.height = 'auto';
+        void card.offsetHeight;
+        var openH = card.getBoundingClientRect().height;
+
+        // Restore starting height.
+        card.style.height = closedH + 'px';
+        void card.offsetHeight;
+
+        if (hBar) {
+          hBar.style.transition = 'transform 0.3s ease';
+          hBar.style.transform = 'rotate(90deg)';
+        }
+
+        if (vBar) {
+          vBar.style.transition = 'transform 0.3s ease';
+          vBar.style.transform = 'rotate(90deg)';
+        }
+
+        if (answerText) {
+          answerText.style.setProperty(
+            '--extracted-r6o4lv',
+            'var(--token-1e3ba35f-81ae-45f1-957d-fdbc8b701e2d, rgba(18, 19, 23, 0.58))'
+          );
+        }
+
         if (answer) {
           answer.style.transition = 'none';
           answer.style.opacity = '0';
           answer.style.transform = 'translateY(32px)';
-          requestAnimationFrame(function () {
+        }
+
+        requestAnimationFrame(function () {
+          card.style.transition = 'height 0.4s ease';
+          card.style.height = openH + 'px';
+
+          if (answer) {
             answer.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
             answer.style.opacity = '1';
             answer.style.transform = 'none';
-          });
-        }
-        void card.offsetHeight;
-        var openH = card.scrollHeight;
-        requestAnimationFrame(function () {
-          card.style.height = closedH + 'px';
-          card.style.overflow = 'hidden';
-          requestAnimationFrame(function () {
-            card.style.transition = 'height 0.4s ease';
-            card.style.height = openH + 'px';
-            setTimeout(function () {
-              card.style.height = '';
-              card.style.transition = '';
-              card.style.overflow = '';
-            }, 420);
-          });
+          }
+
+          setTimeout(function () {
+            card.style.height = '';
+            card.style.transition = '';
+            card.style.overflow = '';
+          }, 420);
         });
       }
+
       function close() {
         var openH = card.getBoundingClientRect().height;
         card.classList.remove('framer-v-rhv0dy');
