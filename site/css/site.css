@@ -8005,3 +8005,10 @@ nav.framer-v-1op6k05 {
   filter: blur(10px);
   transition: opacity 0.4s ease, filter 0.4s ease;
 }
+
+.framer-181xjy1-container .ma-card {
+  left: -12.5cqw !important;
+}
+.framer-181xjy1-container {
+  left: calc(50%) !important;
+}
