@@ -4116,7 +4116,6 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 
 .framer-GX8Xm .framer-1893vlq {
   aspect-ratio:1;
-  will-change:var(--framer-will-change-effect-override,transform);
   background:linear-gradient(#f4473a 0%,#c93c32 100%);
   border-radius:14px;
   flex-flow:row;
@@ -7856,4 +7855,9 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:absolute;
   top:0;
   left:0
+}
+
+.icon-hover:hover {
+  transform: scale(1.05) rotate(-9deg);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
