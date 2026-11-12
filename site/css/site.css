@@ -7945,6 +7945,10 @@ nav.framer-v-1op6k05 {
 }
 
 @media (max-width: 809px) {
+  .framer-GX8Xm .framer-2uoigz-container {
+    width: 100% !important;
+  }
+
   .framer-b6ncE {
     display: flex !important;
     flex-direction: column !important;
