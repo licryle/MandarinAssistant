@@ -416,30 +416,48 @@
     if (document.getElementById('ma-breathing-css')) return;
     var style = document.createElement('style');
     style.id = 'ma-breathing-css';
-    style.textContent = '@keyframes ma-breathe-y { 0% { transform: translateY(0px); } 50% { transform: translateY(var(--ma-breath-amp, 4px)); } 100% { transform: translateY(0px); } }';
+    style.textContent = '@keyframes ma-breathe-y {  0%, 100% {   translate: 0 0;  } 50% {    translate: 0 var(--ma-breath-amp, -4px); animation-duration: 3s;}}';
     document.head.appendChild(style);
     var tiles = [
-      { cls: 'framer-1yen8o5', amp: 4 },
-      { cls: 'framer-5e2vyk', amp: -4 },
-      { cls: 'framer-1egbxet', amp: -4 },
-      { cls: 'framer-d9w2d0', amp: -10 },
-      { cls: 'framer-v87vfg', amp: 14 },
-      { cls: 'framer-1runhuz', amp: -18 },
-      { cls: 'framer-tx9kaq', amp: 15 },
-      { cls: 'framer-3ywdal', amp: -13 },
-      { cls: 'framer-f84yoq', amp: -7 },
-      { cls: 'framer-idns6', amp: 9 },
-      { cls: 'framer-lif6oc', amp: -11 },
-      { cls: 'framer-gndi3q', amp: 7 },
-      { cls: 'framer-bkqdsd', amp: -9 },
-      { cls: 'framer-lwrkmq', amp: 11 },
-      { cls: 'framer-1xlop28', amp: -7 },
-      { cls: 'framer-rn8fgf', amp: -7 },
-      { cls: 'framer-1irvkpk', amp: 9 },
-      { cls: 'framer-1krawhs', amp: -11 },
-      { cls: 'framer-1n5jnov', amp: 7 },
-      { cls: 'framer-1ntp5dl', amp: -9 },
-      { cls: 'framer-bcwkdy', amp: 11 },
+      /** Hero */
+      { cls: 'framer-1srmklb', amp: -4 },
+      { cls: 'framer-15u0sjo', amp: -5 },
+      { cls: 'framer-1tzcm02', amp: -1 },
+      { cls: 'framer-1pqgq3w', amp: 5 },
+      { cls: 'framer-197nmll', amp: 3 },
+      { cls: 'framer-ugovxm', amp: -3 },
+      { cls: 'framer-1hfvizv', amp: 1 },
+      { cls: 'framer-107r3zv', amp: 2 },
+      /** Revise */
+      { cls: 'framer-yoyvz9', amp: -4 },
+      { cls: 'framer-dr02yz', amp: -5 },
+      { cls: 'framer-15vlru6', amp: -1 },
+      { cls: 'framer-zx43nw', amp: 5 },
+      { cls: 'framer-27p5zf', amp: 3 },
+      /** Footer */
+      { cls: 'framer-lekqks', amp: -7 },
+      { cls: 'framer-11iry6f', amp: -7 },
+      { cls: 'framer-1ycfkgx', amp: 9 },
+      { cls: 'framer-1wvkp5p', amp: -11 },
+      { cls: 'framer-tusu5h', amp: 7 },
+      { cls: 'framer-l24oz2', amp: -9 },
+      { cls: 'framer-1ow1247', amp: 11 },
+
+      { cls: 'framer-h0e3', amp: -4 },
+      { cls: 'framer-q2kkja', amp: -5 },
+      { cls: 'framer-ft4ft1', amp: -1 },
+      { cls: 'framer-130mkzc', amp: 5 },
+      { cls: 'framer-1p0dpw9', amp: 3 },
+      { cls: 'framer-1j264d1', amp: -3 },
+      { cls: 'framer-1uyskhb', amp: 1 },
+      { cls: 'framer-1gux3ff', amp: 2 },
+
+      { cls: 'framer-1rwwqd5', amp: -4 },
+      { cls: 'framer-go210', amp: -5 },
+      { cls: 'framer-1gjouq8', amp: -1 },
+      { cls: 'framer-1un0fmi', amp: 5 },
+      { cls: 'framer-av5cln', amp: 3 },
+      { cls: 'framer-llu32x', amp: -3 },
     ];
     var i = 0;
     tiles.forEach(function (t) {
