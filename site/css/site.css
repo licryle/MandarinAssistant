@@ -7506,7 +7506,6 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   word-break:break-word;
   word-wrap:break-word;
   flex:1 0 0;
-  width:317px;
   height:1px;
   position:relative
 }
@@ -7986,5 +7985,17 @@ nav.framer-v-1op6k05 {
     order: 2;
     width: 100% !important;
     height: 300px !important;
+  }
+}
+
+@media (max-width: 809px) {
+  .ticker-item, .clone-item {
+    width: 247px !important;
+    height: 283px !important;
+  }
+
+  .framer-nqRUu.framer-w2gcov {
+    padding: 15px !important;
+    padding-top: 35px !important;
   }
 }
