@@ -7870,3 +7870,23 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 [data-video-sync].video-sync-visible {
   opacity: 1;
 }
+
+.framer-8xjv6s {
+  width: auto !important;
+  max-width: 0;
+  min-width: 0;
+  overflow: hidden !important;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: max-width 0.35s ease, opacity 0.35s ease;
+}
+
+.framer-8xjv6s.logo-visible {
+  max-width: 300px;
+  opacity: 1;
+}
+
+.framer-64jcle {
+  margin-left: 10px;
+  transition: transform 0.35s ease, margin-left 0.35s ease;
+}
