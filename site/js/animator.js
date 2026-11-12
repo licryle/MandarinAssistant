@@ -693,22 +693,6 @@
             '.framer-7sgqzy',
             '.framer-17beb7s'
           ]
-        },
-        {
-          root: '.framer-9gPJy',
-          groups: [
-            '.framer-1hket34',
-            '.framer-1qn75jl',
-            '.framer-dt3puz'
-          ]
-        },
-        {
-          root: '.framer-wTPp6',
-          groups: [
-            '.framer-163s6zg',
-            '.framer-js44y4',
-            '.framer-1yp5k9k'
-          ]
         }
       ];
 

@@ -7944,16 +7944,23 @@ nav.framer-v-1op6k05 {
     filter 500ms ease-in-out !important;
 }
 
+@media (max-width: 809px) {
+  .framer-b6ncE {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: auto !important;
+  }
 
-/* Tobbalet, mobile */
-.framer-9gPJy .framer-1hket34,
-.framer-9gPJy .framer-1qn75jl,
-.framer-9gPJy .framer-dt3puz,
-.framer-wTPp6 .framer-163s6zg,
-.framer-wTPp6 .framer-js44y4,
-.framer-wTPp6 .framer-1yp5k9k {
-  top: 0 !important;
-  transition:
-    opacity 500ms ease-in-out,
-    filter 500ms ease-in-out !important;
+  .framer-b6ncE .framer-18wgvxt {
+    order: 1;
+    width: 100% !important;
+    height: 528px !important;
+  }
+
+  .framer-b6ncE .framer-tf9nyb {
+    order: 2;
+    height: 300px !important;
+  }
 }
