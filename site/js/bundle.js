@@ -627,7 +627,12 @@
         })))();
     }
 
-    function w(e2) {
+    /**
+     * formatReactError(e2) - Build the minified React error message.
+     * @param {number} e2 Numeric React error code.
+     * @returns {string} Human-readable message with the decoder URL.
+     */
+    function formatReactError(e2) {
         for (var t2 = `https://reactjs.org/docs/error-decoder.html?invariant=` + e2, n3 = 1; n3 < arguments.length; n3++) t2 += `&args[]=` + encodeURIComponent(arguments[n3]);
         return `Minified React error #` + e2 + `; visit ` + t2 + ` for the full message or use the non-minified dev environment for full errors and additional helpful warnings.`;
     }
@@ -1011,7 +1016,7 @@
     }
 
     function Kn(e2, t2) {
-        if (t2.dangerouslySetInnerHTML != null) throw Error(w(91));
+        if (t2.dangerouslySetInnerHTML != null) throw Error(formatReactError(91));
         return F({}, t2, {
             value: void 0,
             defaultValue: void 0,
@@ -1023,9 +1028,9 @@
         var n3 = t2.value;
         if (n3 == null) {
             if (n3 = t2.children, t2 = t2.defaultValue, n3 != null) {
-                if (t2 != null) throw Error(w(92));
+                if (t2 != null) throw Error(formatReactError(92));
                 if (gl(n3)) {
-                    if (1 < n3.length) throw Error(w(93));
+                    if (1 < n3.length) throw Error(formatReactError(93));
                     n3 = n3[0];
                 }
                 t2 = n3;
@@ -1089,12 +1094,12 @@
 
     function tr(e2, t2) {
         if (t2) {
-            if (xl[e2] && (t2.children != null || t2.dangerouslySetInnerHTML != null)) throw Error(w(137, e2));
+            if (xl[e2] && (t2.children != null || t2.dangerouslySetInnerHTML != null)) throw Error(formatReactError(137, e2));
             if (t2.dangerouslySetInnerHTML != null) {
-                if (t2.children != null) throw Error(w(60));
-                if (typeof t2.dangerouslySetInnerHTML != `object` || !(`__html` in t2.dangerouslySetInnerHTML)) throw Error(w(61));
+                if (t2.children != null) throw Error(formatReactError(60));
+                if (typeof t2.dangerouslySetInnerHTML != `object` || !(`__html` in t2.dangerouslySetInnerHTML)) throw Error(formatReactError(61));
             }
-            if (t2.style != null && typeof t2.style != `object`) throw Error(w(62));
+            if (t2.style != null && typeof t2.style != `object`) throw Error(formatReactError(62));
         }
     }
 
@@ -1121,7 +1126,7 @@
 
     function ir(e2) {
         if (e2 = Ki(e2)) {
-            if (typeof Cl != `function`) throw Error(w(280));
+            if (typeof Cl != `function`) throw Error(formatReactError(280));
             var t2 = e2.stateNode;
             t2 && (t2 = Ji(t2), Cl(e2.stateNode, e2.type, t2));
         }
@@ -1180,7 +1185,7 @@
                 e2 = false;
         }
         if (e2) return null;
-        if (n3 && typeof n3 != `function`) throw Error(w(231, t2, typeof n3));
+        if (n3 && typeof n3 != `function`) throw Error(formatReactError(231, t2, typeof n3));
         return n3;
     }
 
@@ -1199,7 +1204,7 @@
 
     function pr(e2, t2, n3, r2, i2, a2, o2, s2, c2) {
         if (fr.apply(this, arguments), kl) {
-            if (!kl) throw Error(w(198));
+            if (!kl) throw Error(formatReactError(198));
             var l2 = Al;
             kl = false, Al = null, jl || (jl = true, Ml = l2);
         }
@@ -1228,13 +1233,13 @@
     }
 
     function gr(e2) {
-        if (mr(e2) !== e2) throw Error(w(188));
+        if (mr(e2) !== e2) throw Error(formatReactError(188));
     }
 
     function _r(e2) {
         var t2 = e2.alternate;
         if (!t2) {
-            if (t2 = mr(e2), t2 === null) throw Error(w(188));
+            if (t2 = mr(e2), t2 === null) throw Error(formatReactError(188));
             return t2 === e2 ? e2 : null;
         }
         for (var n3 = e2, r2 = t2;;) {
@@ -1254,7 +1259,7 @@
                     if (a2 === r2) return gr(i2), t2;
                     a2 = a2.sibling;
                 }
-                throw Error(w(188));
+                throw Error(formatReactError(188));
             }
             if (n3.return !== r2.return) n3 = i2, r2 = a2;
             else {
@@ -1281,12 +1286,12 @@
                         }
                         s2 = s2.sibling;
                     }
-                    if (!o2) throw Error(w(189));
+                    if (!o2) throw Error(formatReactError(189));
                 }
             }
-            if (n3.alternate !== r2) throw Error(w(190));
+            if (n3.alternate !== r2) throw Error(formatReactError(190));
         }
-        if (n3.tag !== 3) throw Error(w(188));
+        if (n3.tag !== 3) throw Error(formatReactError(188));
         return n3.stateNode.current === n3 ? e2 : t2;
     }
 
@@ -2057,7 +2062,11 @@
         t2 && (r2 |= 4), ji(n3, e2, r2, t2);
     }
 
-    function Ai(e2) {
+    /**
+     * listenToAllSupportedEvents(e2) - Attach React event listeners to a root container.
+     * @param {Node} e2 Root container element.
+     */
+    function listenToAllSupportedEvents(e2) {
         if (!e2[yd]) {
             e2[yd] = true, Gc.forEach((function(t3) {
                 t3 !== `selectionchange` && (vd.has(t3) || ki(t3, false, e2), ki(t3, true, e2));
@@ -2330,12 +2339,18 @@
     }
 
     function Ri(e2, t2, n3) {
-        if (t2 = Li(t2), Li(e2) !== t2 && n3) throw Error(w(425));
+        if (t2 = Li(t2), Li(e2) !== t2 && n3) throw Error(formatReactError(425));
     }
 
     function zi() {}
 
-    function Bi(e2, t2) {
+    /**
+     * shouldSetTextContent(e2, t2) - Whether a host element's children are plain text.
+     * @param {string} e2 Host element name.
+     * @param {object} t2 Props of the host element.
+     * @returns {boolean} true when React must write children via textContent.
+     */
+    function shouldSetTextContent(e2, t2) {
         return e2 === `textarea` || e2 === `noscript` || typeof t2.children == `string` || typeof t2.children == `number` || typeof t2.dangerouslySetInnerHTML == `object` && t2.dangerouslySetInnerHTML !== null && t2.dangerouslySetInnerHTML.__html != null;
     }
 
@@ -2364,7 +2379,13 @@
         Vr(t2);
     }
 
-    function Ui(e2) {
+    /**
+     * getNextHydrationNode(e2) - Advance to the next hydratable DOM node.
+     * Skips comment nodes and nodes React cannot hydrate.
+     * @param {Node|null} e2 Starting DOM node.
+     * @returns {Node|null} Next element/text node, or null at the end.
+     */
+    function getNextHydrationNode(e2) {
         for (; e2 != null; e2 = e2.nextSibling) {
             var t2 = e2.nodeType;
             if (t2 === 1 || t2 === 3) break;
@@ -2414,7 +2435,7 @@
 
     function qi(e2) {
         if (e2.tag === 5 || e2.tag === 6) return e2.stateNode;
-        throw Error(w(33));
+        throw Error(formatReactError(33));
     }
 
     function Ji(e2) {
@@ -2454,7 +2475,7 @@
     }
 
     function $i(e2, t2, n3) {
-        if (R.current !== Ld) throw Error(w(168));
+        if (R.current !== Ld) throw Error(formatReactError(168));
         O(R, t2), O(z, n3);
     }
 
@@ -2462,7 +2483,7 @@
         var r2 = e2.stateNode;
         if (t2 = t2.childContextTypes, typeof r2.getChildContext != `function`) return n3;
         for (var i2 in r2 = r2.getChildContext(), r2)
-            if (!(i2 in t2)) throw Error(w(108, Mn(e2) || `Unknown`, i2));
+            if (!(i2 in t2)) throw Error(formatReactError(108, Mn(e2) || `Unknown`, i2));
         return F({}, n3, r2);
     }
 
@@ -2472,7 +2493,7 @@
 
     function na(e2, t2, n3) {
         var r2 = e2.stateNode;
-        if (!r2) throw Error(w(169));
+        if (!r2) throw Error(formatReactError(169));
         n3 ? (e2 = ea(e2, t2, Rd), r2.__reactInternalMemoizedMergedChildContext = e2, D(z), D(R), O(R, e2)) : D(z), O(z, n3);
     }
 
@@ -2533,16 +2554,27 @@
         for (; e2 === Jd;) Jd = Kd[--qd], Kd[qd] = null, Xd = Kd[--qd], Kd[qd] = null, Yd = Kd[--qd], Kd[qd] = null;
     }
 
-    function ua(e2, t2) {
-        var n3 = pc(5, null, null, 0);
+    /**
+     * appendDeletionNode(e2, t2) - Register a DOM node for deletion on its parent fiber.
+     * @param {object} e2 Parent fiber that owns the deletion list.
+     * @param {Node} t2 DOM node that could not be hydrated.
+     */
+    function appendDeletionNode(e2, t2) {
+        var n3 = createFiber(5, null, null, 0);
         n3.elementType = `DELETED`, n3.stateNode = t2, n3.return = e2, t2 = e2.deletions, t2 === null ? (e2.deletions = [n3], e2.flags |= 16) : t2.push(n3);
     }
 
-    function da(e2, t2) {
+    /**
+     * hydrateElement(e2, t2) - Hydrate one fiber node against a DOM node.
+     * @param {object} e2 Fiber being hydrated (host component, text, or Suspense boundary).
+     * @param {Node} t2 DOM node produced by the server render.
+     * @returns {boolean} true when the DOM node matched and hydration was recorded.
+     */
+    function hydrateElement(e2, t2) {
         switch (e2.tag) {
             case 5:
                 var n3 = e2.type;
-                return t2 = t2.nodeType !== 1 || n3.toLowerCase() !== t2.nodeName.toLowerCase() ? null : t2, t2 !== null && (e2.stateNode = t2, Zd = e2, Qd = Ui(t2.firstChild), true);
+                return t2 = t2.nodeType !== 1 || n3.toLowerCase() !== t2.nodeName.toLowerCase() ? null : t2, t2 !== null && (e2.stateNode = t2, Zd = e2, Qd = getNextHydrationNode(t2.firstChild), true);
             case 6:
                 return t2 = e2.pendingProps === `` || t2.nodeType !== 3 ? null : t2, t2 !== null && (e2.stateNode = t2, Zd = e2, Qd = null, true);
             case 13:
@@ -2553,56 +2585,77 @@
                     dehydrated: t2,
                     treeContext: n3,
                     retryLane: 1073741824
-                }, n3 = pc(18, null, null, 0), n3.stateNode = t2, n3.return = e2, e2.child = n3, Zd = e2, Qd = null, true);
+                }, n3 = createFiber(18, null, null, 0), n3.stateNode = t2, n3.return = e2, e2.child = n3, Zd = e2, Qd = null, true);
             default:
                 return false;
         }
     }
 
-    function fa(e2) {
+    /**
+     * isFastMode(e2) - Whether the fiber renders in concurrent mode.
+     * @param {object} e2 Fiber to inspect.
+     * @returns {boolean} true when the concurrent-mode bit is set and the fiber is not a Suspense boundary.
+     */
+    function isFastMode(e2) {
         return !!(e2.mode & 1) && !(e2.flags & 128);
     }
 
-    function pa(e2) {
+    /**
+     * performHydrationReplace(e2) - Try to hydrate a fiber's children from the DOM cursor.
+     * Falls back to client rendering (sets the placement flag) when the server markup does not match.
+     * @param {object} e2 Fiber whose children are being hydrated.
+     */
+    function performHydrationReplace(e2) {
         if (B) {
             var t2 = Qd;
             if (t2) {
                 var n3 = t2;
-                if (!da(e2, t2)) {
-                    if (fa(e2)) throw Error(w(418));
-                    t2 = Ui(n3.nextSibling);
+                if (!hydrateElement(e2, t2)) {
+                    if (isFastMode(e2)) throw Error(formatReactError(418));
+                    t2 = getNextHydrationNode(n3.nextSibling);
                     var r2 = Zd;
-                    t2 && da(e2, t2) ? ua(r2, n3) : (e2.flags = e2.flags & -4097 | 2, B = false, Zd = e2);
+                    t2 && hydrateElement(e2, t2) ? appendDeletionNode(r2, n3) : (e2.flags = e2.flags & -4097 | 2, B = false, Zd = e2);
                 }
             } else {
-                if (fa(e2)) throw Error(w(418));
+                if (isFastMode(e2)) throw Error(formatReactError(418));
                 e2.flags = e2.flags & -4097 | 2, B = false, Zd = e2;
             }
         }
     }
 
-    function ma(e2) {
+    /**
+     * findHydrationParent(e2) - Walk up to the nearest host/root/Suspense fiber.
+     * The result is stored in the module-level hydration parent (Zd).
+     * @param {object} e2 Fiber to start from.
+     */
+    function findHydrationParent(e2) {
         for (e2 = e2.return; e2 !== null && e2.tag !== 5 && e2.tag !== 3 && e2.tag !== 13;) e2 = e2.return;
         Zd = e2;
     }
 
-    function ha(e2) {
+    /**
+     * checkHydration(e2) - Check whether a fiber can be hydrated from the current DOM cursor.
+     * Advances the hydration cursor (Qd) and validates Suspense boundary markers.
+     * @param {object} e2 Fiber being examined.
+     * @returns {boolean} true when the fiber belongs to the current hydration pass.
+     */
+    function checkHydration(e2) {
         if (e2 !== Zd) return false;
-        if (!B) return ma(e2), B = true, false;
+        if (!B) return findHydrationParent(e2), B = true, false;
         var t2;
-        if ((t2 = e2.tag !== 3) && !(t2 = e2.tag !== 5) && (t2 = e2.type, t2 = t2 !== `head` && t2 !== `body` && !Bi(e2.type, e2.memoizedProps)), t2 && (t2 = Qd)) {
-            if (fa(e2)) throw ga(), Error(w(418));
-            for (; t2;) ua(e2, t2), t2 = Ui(t2.nextSibling);
+        if ((t2 = e2.tag !== 3) && !(t2 = e2.tag !== 5) && (t2 = e2.type, t2 = t2 !== `head` && t2 !== `body` && !shouldSetTextContent(e2.type, e2.memoizedProps)), t2 && (t2 = Qd)) {
+            if (isFastMode(e2)) throw clearHydrationMarkers(), Error(formatReactError(418));
+            for (; t2;) appendDeletionNode(e2, t2), t2 = getNextHydrationNode(t2.nextSibling);
         }
-        if (ma(e2), e2.tag === 13) {
-            if (e2 = e2.memoizedState, e2 = e2 === null ? null : e2.dehydrated, !e2) throw Error(w(317));
+        if (findHydrationParent(e2), e2.tag === 13) {
+            if (e2 = e2.memoizedState, e2 = e2 === null ? null : e2.dehydrated, !e2) throw Error(formatReactError(317));
             e: {
                 for (e2 = e2.nextSibling, t2 = 0; e2;) {
                     if (e2.nodeType === 8) {
                         var n3 = e2.data;
                         if (n3 === `/$`) {
                             if (t2 === 0) {
-                                Qd = Ui(e2.nextSibling);
+                                Qd = getNextHydrationNode(e2.nextSibling);
                                 break e;
                             }
                             t2--;
@@ -2612,30 +2665,48 @@
                 }
                 Qd = null;
             }
-        } else Qd = Zd ? Ui(e2.stateNode.nextSibling) : null;
+        } else Qd = Zd ? getNextHydrationNode(e2.stateNode.nextSibling) : null;
         return true;
     }
 
-    function ga() {
-        for (var e2 = Qd; e2;) e2 = Ui(e2.nextSibling);
+    /**
+     * clearHydrationMarkers() - Drop every remaining node in the hydration cursor.
+     * The skipped server nodes are later deleted from the DOM.
+     */
+    function clearHydrationMarkers() {
+        for (var e2 = Qd; e2;) e2 = getNextHydrationNode(e2.nextSibling);
     }
 
-    function _a() {
+    /**
+     * resetHydrationState() - Reset the module-level hydration globals (Qd, Zd, B).
+     */
+    function resetHydrationState() {
         Qd = Zd = null, B = false;
     }
 
-    function va(e2) {
+    /**
+     * queueForHydration(e2) - Queue a fiber for post-hydration cleanup.
+     * @param {object} e2 Fiber to append to the pending deletion queue ($d).
+     */
+    function queueForHydration(e2) {
         $d === null ? $d = [e2] : $d.push(e2);
     }
 
-    function ya(e2, t2, n3) {
+    /**
+     * processStringRef(e2, t2, n3) - Resolve a legacy string ref into a ref callback.
+     * @param {string} e2 Ref name.
+     * @param {object|null} t2 Previously rendered fiber, used to reuse the callback.
+     * @param {object} n3 Element that declares the ref.
+     * @returns {string|Function} The ref value or a callback that updates the owner's refs map.
+     */
+    function processStringRef(e2, t2, n3) {
         if (e2 = n3.ref, e2 !== null && typeof e2 != `function` && typeof e2 != `object`) {
             if (n3._owner) {
                 if (n3 = n3._owner, n3) {
-                    if (n3.tag !== 1) throw Error(w(309));
+                    if (n3.tag !== 1) throw Error(formatReactError(309));
                     var r2 = n3.stateNode;
                 }
-                if (!r2) throw Error(w(147, e2));
+                if (!r2) throw Error(formatReactError(147, e2));
                 var i2 = r2,
                     a2 = `` + e2;
                 return t2 !== null && t2.ref !== null && typeof t2.ref == `function` && t2.ref._stringRef === a2 ? t2.ref : (t2 = function(e3) {
@@ -2643,14 +2714,14 @@
                     e3 === null ? delete t3[a2] : t3[a2] = e3;
                 }, t2._stringRef = a2, t2);
             }
-            if (typeof e2 != `string`) throw Error(w(284));
-            if (!n3._owner) throw Error(w(290, e2));
+            if (typeof e2 != `string`) throw Error(formatReactError(284));
+            if (!n3._owner) throw Error(formatReactError(290, e2));
         }
         return e2;
     }
 
     function ba(e2, t2) {
-        throw e2 = Object.prototype.toString.call(t2), Error(w(31, e2 === `[object Object]` ? `object with keys {` + Object.keys(t2).join(`, `) + `}` : e2));
+        throw e2 = Object.prototype.toString.call(t2), Error(formatReactError(31, e2 === `[object Object]` ? `object with keys {` + Object.keys(t2).join(`, `) + `}` : e2));
     }
 
     function xa(e2) {
@@ -2695,7 +2766,7 @@
 
         function c2(e3, t3, n4, r3) {
             var a3 = n4.type;
-            return a3 === nl ? u2(e3, t3, n4.props.children, r3, n4.key) : t3 !== null && (t3.elementType === a3 || typeof a3 == `object` && a3 && a3.$$typeof === dl && xa(a3) === t3.type) ? (r3 = i2(t3, n4.props), r3.ref = ya(e3, t3, n4), r3.return = e3, r3) : (r3 = _c(n4.type, n4.key, n4.props, null, e3.mode, r3), r3.ref = ya(e3, t3, n4), r3.return = e3, r3);
+            return a3 === nl ? u2(e3, t3, n4.props.children, r3, n4.key) : t3 !== null && (t3.elementType === a3 || typeof a3 == `object` && a3 && a3.$$typeof === dl && xa(a3) === t3.type) ? (r3 = i2(t3, n4.props), r3.ref = processStringRef(e3, t3, n4), r3.return = e3, r3) : (r3 = _c(n4.type, n4.key, n4.props, null, e3.mode, r3), r3.ref = processStringRef(e3, t3, n4), r3.return = e3, r3);
         }
 
         function l2(e3, t3, n4, r3) {
@@ -2711,7 +2782,7 @@
             if (typeof t3 == `object` && t3) {
                 switch (t3.$$typeof) {
                     case el:
-                        return n4 = _c(t3.type, t3.key, t3.props, null, e3.mode, n4), n4.ref = ya(e3, null, t3), n4.return = e3, n4;
+                        return n4 = _c(t3.type, t3.key, t3.props, null, e3.mode, n4), n4.ref = processStringRef(e3, null, t3), n4.return = e3, n4;
                     case tl:
                         return t3 = xc(t3, e3.mode, n4), t3.return = e3, t3;
                     case dl:
@@ -2783,8 +2854,8 @@
 
         function h2(i3, o3, s3, c3) {
             var l3 = Dn(s3);
-            if (typeof l3 != `function`) throw Error(w(150));
-            if (s3 = l3.call(s3), s3 == null) throw Error(w(151));
+            if (typeof l3 != `function`) throw Error(formatReactError(150));
+            if (s3 = l3.call(s3), s3 == null) throw Error(formatReactError(151));
             for (var u3 = l3 = null, m3 = o3, h3 = o3 = 0, g3 = null, _2 = s3.next(); m3 !== null && !_2.done; h3++, _2 = s3.next()) {
                 m3.index > h3 ? (g3 = m3, m3 = null) : g3 = m3.sibling;
                 var v2 = f2(i3, m3, _2.value, c3);
@@ -2818,7 +2889,7 @@
                                             break e;
                                         }
                                     } else if (l3.elementType === c3 || typeof c3 == `object` && c3 && c3.$$typeof === dl && xa(c3) === l3.type) {
-                                        n3(e3, l3.sibling), r3 = i2(l3, a3.props), r3.ref = ya(e3, l3, a3), r3.return = e3, e3 = r3;
+                                        n3(e3, l3.sibling), r3 = i2(l3, a3.props), r3.ref = processStringRef(e3, l3, a3), r3.return = e3, e3 = r3;
                                         break e;
                                     }
                                     n3(e3, l3);
@@ -2826,7 +2897,7 @@
                                 }
                                 t2(e3, l3), l3 = l3.sibling;
                             }
-                            a3.type === nl ? (r3 = vc(a3.props.children, e3.mode, s3, a3.key), r3.return = e3, e3 = r3) : (s3 = _c(a3.type, a3.key, a3.props, null, e3.mode, s3), s3.ref = ya(e3, r3, a3), s3.return = e3, e3 = s3);
+                            a3.type === nl ? (r3 = vc(a3.props.children, e3.mode, s3, a3.key), r3.return = e3, e3 = r3) : (s3 = _c(a3.type, a3.key, a3.props, null, e3.mode, s3), s3.ref = processStringRef(e3, r3, a3), s3.return = e3, e3 = s3);
                         }
                         return o2(e3);
                     case tl:
@@ -2888,7 +2959,7 @@
                     memoizedValue: t2,
                     next: null
                 }, of === null) {
-                if (af === null) throw Error(w(308));
+                if (af === null) throw Error(formatReactError(308));
                 of = e2, af.dependencies = {
                     lanes: 0,
                     firstContext: e2
@@ -3077,14 +3148,14 @@
                 var r2 = e2[t2],
                     i2 = r2.callback;
                 if (i2 !== null) {
-                    if (r2.callback = null, r2 = n3, typeof i2 != `function`) throw Error(w(191, i2));
+                    if (r2.callback = null, r2 = n3, typeof i2 != `function`) throw Error(formatReactError(191, i2));
                     i2.call(r2);
                 }
             }
     }
 
     function za(e2) {
-        if (e2 === uf) throw Error(w(174));
+        if (e2 === uf) throw Error(formatReactError(174));
         return e2;
     }
 
@@ -3142,7 +3213,7 @@
     }
 
     function k() {
-        throw Error(w(321));
+        throw Error(formatReactError(321));
     }
 
     function Ka(e2, t2) {
@@ -3156,11 +3227,11 @@
         if (_f = a2, H = t2, t2.memoizedState = null, t2.updateQueue = null, t2.lanes = 0, hf.current = e2 === null || e2.memoizedState === null ? Cf : wf, e2 = n3(r2, i2), yf) {
             a2 = 0;
             do {
-                if (yf = false, bf = 0, 25 <= a2) throw Error(w(301));
+                if (yf = false, bf = 0, 25 <= a2) throw Error(formatReactError(301));
                 a2 += 1, W = U = null, t2.updateQueue = null, hf.current = Tf, e2 = n3(r2, i2);
             } while (yf);
         }
-        if (hf.current = Sf, t2 = U !== null && U.next !== null, _f = 0, W = U = H = null, vf = false, t2) throw Error(w(300));
+        if (hf.current = Sf, t2 = U !== null && U.next !== null, _f = 0, W = U = H = null, vf = false, t2) throw Error(formatReactError(300));
         return e2;
     }
 
@@ -3188,7 +3259,7 @@
         var t2 = W === null ? H.memoizedState : W.next;
         if (t2 !== null) W = t2, U = e2;
         else {
-            if (e2 === null) throw Error(w(310));
+            if (e2 === null) throw Error(formatReactError(310));
             U = e2, e2 = {
                 memoizedState: U.memoizedState,
                 baseState: U.baseState,
@@ -3207,7 +3278,7 @@
     function Qa(e2) {
         var t2 = Xa(),
             n3 = t2.queue;
-        if (n3 === null) throw Error(w(311));
+        if (n3 === null) throw Error(formatReactError(311));
         n3.lastRenderedReducer = e2;
         var r2 = U,
             i2 = r2.baseQueue,
@@ -3259,7 +3330,7 @@
     function $a(e2) {
         var t2 = Xa(),
             n3 = t2.queue;
-        if (n3 === null) throw Error(w(311));
+        if (n3 === null) throw Error(formatReactError(311));
         n3.lastRenderedReducer = e2;
         var r2 = n3.dispatch,
             i2 = n3.pending,
@@ -3283,7 +3354,7 @@
             i2 = t2(),
             a2 = !ed(r2.memoizedState, i2);
         if (a2 && (r2.memoizedState = i2, G = true), r2 = r2.queue, mo(io.bind(null, n3, r2, e2), [e2]), r2.getSnapshot !== t2 || a2 || W !== null && W.memoizedState.tag & 1) {
-            if (n3.flags |= 2048, co(9, ro.bind(null, n3, r2, i2, t2), void 0, null), X === null) throw Error(w(349));
+            if (n3.flags |= 2048, co(9, ro.bind(null, n3, r2, i2, t2), void 0, null), X === null) throw Error(formatReactError(349));
             _f & 30 || no(n3, t2, i2);
         }
         return i2;
@@ -3735,7 +3806,7 @@ Error generating stack: ` + e3.message + `
     }
 
     function $o(e2, t2, n3, r2, i2) {
-        return _a(), va(i2), t2.flags |= 256, A(e2, t2, n3, r2), t2.child;
+        return resetHydrationState(), queueForHydration(i2), t2.flags |= 256, A(e2, t2, n3, r2), t2.child;
     }
 
     function es(e2) {
@@ -3751,7 +3822,7 @@ Error generating stack: ` + e3.message + `
             a2 = V.current,
             o2 = false,
             s2 = !!(t2.flags & 128);
-        if ((r2 = s2) || (r2 = (e2 === null || e2.memoizedState !== null) && !!(a2 & 2)), r2 ? (o2 = true, t2.flags &= -129) : e2 !== null && e2.memoizedState === null || (a2 |= 1), O(V, a2 & 1), e2 === null) return pa(t2), e2 = t2.memoizedState, e2 !== null && (e2 = e2.dehydrated, e2 !== null) ? (t2.lanes = t2.mode & 1 ? e2.data === `$!` ? 8 : 1073741824 : 1, null) : (s2 = i2.children, e2 = i2.fallback, o2 ? (i2 = t2.mode, o2 = t2.child, s2 = {
+        if ((r2 = s2) || (r2 = (e2 === null || e2.memoizedState !== null) && !!(a2 & 2)), r2 ? (o2 = true, t2.flags &= -129) : e2 !== null && e2.memoizedState === null || (a2 |= 1), O(V, a2 & 1), e2 === null) return performHydrationReplace(t2), e2 = t2.memoizedState, e2 !== null && (e2 = e2.dehydrated, e2 !== null) ? (t2.lanes = t2.mode & 1 ? e2.data === `$!` ? 8 : 1073741824 : 1, null) : (s2 = i2.children, e2 = i2.fallback, o2 ? (i2 = t2.mode, o2 = t2.child, s2 = {
             mode: `hidden`,
             children: s2
         }, !(i2 & 1) && o2 !== null ? (o2.childLanes = 0, o2.pendingProps = s2) : o2 = yc(s2, i2, 0, null), e2 = vc(e2, i2, n3, null), o2.return = t2, e2.return = t2, o2.sibling = e2, t2.child = o2, t2.child.memoizedState = es(n3), t2.memoizedState = kf, e2) : ns(t2, s2));
@@ -3782,18 +3853,18 @@ Error generating stack: ` + e3.message + `
     }
 
     function rs(e2, t2, n3, r2) {
-        return r2 !== null && va(r2), tf(t2, e2.child, null, n3), e2 = ns(t2, t2.pendingProps.children), e2.flags |= 2, t2.memoizedState = null, e2;
+        return r2 !== null && queueForHydration(r2), tf(t2, e2.child, null, n3), e2 = ns(t2, t2.pendingProps.children), e2.flags |= 2, t2.memoizedState = null, e2;
     }
 
     function is(e2, t2, n3, r2, i2, a2, o2) {
-        if (n3) return t2.flags & 256 ? (t2.flags &= -257, r2 = Lo(Error(w(422))), rs(e2, t2, o2, r2)) : t2.memoizedState === null ? (a2 = r2.fallback, i2 = t2.mode, r2 = yc({
+        if (n3) return t2.flags & 256 ? (t2.flags &= -257, r2 = Lo(Error(formatReactError(422))), rs(e2, t2, o2, r2)) : t2.memoizedState === null ? (a2 = r2.fallback, i2 = t2.mode, r2 = yc({
             mode: `visible`,
             children: r2.children
         }, i2, 0, null), a2 = vc(a2, i2, o2, null), a2.flags |= 2, r2.return = t2, a2.return = t2, r2.sibling = a2, t2.child = r2, t2.mode & 1 && tf(t2, e2.child, null, o2), t2.child.memoizedState = es(o2), t2.memoizedState = kf, a2) : (t2.child = e2.child, t2.flags |= 128, null);
         if (!(t2.mode & 1)) return rs(e2, t2, o2, null);
         if (i2.data === `$!`) {
             if (r2 = i2.nextSibling && i2.nextSibling.dataset, r2) var s2 = r2.dgst;
-            return r2 = s2, a2 = Error(w(419)), r2 = Lo(a2, r2, void 0), rs(e2, t2, o2, r2);
+            return r2 = s2, a2 = Error(formatReactError(419)), r2 = Lo(a2, r2, void 0), rs(e2, t2, o2, r2);
         }
         if (s2 = (o2 & e2.childLanes) !== 0, G || s2) {
             if (r2 = X, r2 !== null) {
@@ -3835,9 +3906,9 @@ Error generating stack: ` + e3.message + `
                 }
                 i2 = (i2 & (r2.suspendedLanes | o2)) === 0 ? i2 : 0, i2 !== 0 && i2 !== a2.retryLane && (a2.retryLane = i2, Aa(e2, i2), Ls(r2, e2, i2, -1));
             }
-            return Zs(), r2 = Lo(Error(w(421))), rs(e2, t2, o2, r2);
+            return Zs(), r2 = Lo(Error(formatReactError(421))), rs(e2, t2, o2, r2);
         }
-        return i2.data === `$?` ? (t2.flags |= 128, t2.child = e2.child, t2 = lc.bind(null, e2), i2._reactRetry = t2, null) : (e2 = a2.treeContext, Qd = Ui(i2.nextSibling), Zd = t2, B = true, $d = null, e2 !== null && (Kd[qd++] = Yd, Kd[qd++] = Xd, Kd[qd++] = Jd, Yd = e2.id, Xd = e2.overflow, Jd = t2), t2 = ns(t2, r2.children), t2.flags |= 4096, t2);
+        return i2.data === `$?` ? (t2.flags |= 128, t2.child = e2.child, t2 = lc.bind(null, e2), i2._reactRetry = t2, null) : (e2 = a2.treeContext, Qd = getNextHydrationNode(i2.nextSibling), Zd = t2, B = true, $d = null, e2 !== null && (Kd[qd++] = Yd, Kd[qd++] = Xd, Kd[qd++] = Jd, Yd = e2.id, Xd = e2.overflow, Jd = t2), t2 = ns(t2, r2.children), t2.flags |= 4096, t2);
     }
 
     function as(e2, t2, n3) {
@@ -3911,7 +3982,7 @@ Error generating stack: ` + e3.message + `
 
     function ls(e2, t2, n3) {
         if (e2 !== null && (t2.dependencies = e2.dependencies), Wf |= t2.lanes, (n3 & t2.childLanes) === 0) return null;
-        if (e2 !== null && t2.child !== e2.child) throw Error(w(153));
+        if (e2 !== null && t2.child !== e2.child) throw Error(formatReactError(153));
         if (t2.child !== null) {
             for (e2 = t2.child, n3 = gc(e2, e2.pendingProps), t2.child = n3, n3.return = t2; e2.sibling !== null;) e2 = e2.sibling, n3 = n3.sibling = gc(e2, e2.pendingProps), n3.return = t2;
             n3.sibling = null;
@@ -3922,7 +3993,7 @@ Error generating stack: ` + e3.message + `
     function us(e2, t2, n3) {
         switch (t2.tag) {
             case 3:
-                Qo(t2), _a();
+                Qo(t2), resetHydrationState();
                 break;
             case 5:
                 Ha(t2);
@@ -3970,7 +4041,11 @@ Error generating stack: ` + e3.message + `
         }
     }
 
-    function j(e2) {
+    /**
+     * bubbleProperties(e2) - Propagate child flags/lanes up to the completed fiber.
+     * @param {object} e2 Fiber that was just completed.
+     */
+    function bubbleProperties(e2) {
         var t2 = e2.alternate !== null && e2.alternate.child === e2.child,
             n3 = 0,
             r2 = 0;
@@ -3994,21 +4069,21 @@ Error generating stack: ` + e3.message + `
             case 12:
             case 9:
             case 14:
-                return j(t2), null;
+                return bubbleProperties(t2), null;
             case 1:
-                return Zi(t2.type) && Qi(), j(t2), null;
+                return Zi(t2.type) && Qi(), bubbleProperties(t2), null;
             case 3:
-                return r2 = t2.stateNode, Va(), D(z), D(R), Ga(), r2.pendingContext && (r2.context = r2.pendingContext, r2.pendingContext = null), e2 !== null && e2.child !== null || (ha(t2) ? t2.flags |= 4 : e2 === null || e2.memoizedState.isDehydrated && !(t2.flags & 256) || (t2.flags |= 1024, $d !== null && (Vs($d), $d = null))), j(t2), null;
+                return r2 = t2.stateNode, Va(), D(z), D(R), Ga(), r2.pendingContext && (r2.context = r2.pendingContext, r2.pendingContext = null), e2 !== null && e2.child !== null || (checkHydration(t2) ? t2.flags |= 4 : e2 === null || e2.memoizedState.isDehydrated && !(t2.flags & 256) || (t2.flags |= 1024, $d !== null && (Vs($d), $d = null))), bubbleProperties(t2), null;
             case 5:
                 Ua(t2);
                 var i2 = za(pf.current);
                 if (n3 = t2.type, e2 !== null && t2.stateNode != null) jf(e2, t2, n3, r2, i2), e2.ref !== t2.ref && (t2.flags |= 512, t2.flags |= 2097152);
                 else {
                     if (!r2) {
-                        if (t2.stateNode === null) throw Error(w(166));
-                        return j(t2), null;
+                        if (t2.stateNode === null) throw Error(formatReactError(166));
+                        return bubbleProperties(t2), null;
                     }
-                    if (e2 = za(df.current), ha(t2)) {
+                    if (e2 = za(df.current), checkHydration(t2)) {
                         r2 = t2.stateNode, n3 = t2.type;
                         var a2 = t2.memoizedProps;
                         switch (r2[kd] = t2, r2[Ad] = a2, e2 = !!(t2.mode & 1), n3) {
@@ -4153,12 +4228,12 @@ Error generating stack: ` + e3.message + `
                     }
                     t2.ref !== null && (t2.flags |= 512, t2.flags |= 2097152);
                 }
-                return j(t2), null;
+                return bubbleProperties(t2), null;
             case 6:
                 if (e2 && t2.stateNode != null) Mf(e2, t2, e2.memoizedProps, r2);
                 else {
-                    if (typeof r2 != `string` && t2.stateNode === null) throw Error(w(166));
-                    if (n3 = za(pf.current), za(df.current), ha(t2)) {
+                    if (typeof r2 != `string` && t2.stateNode === null) throw Error(formatReactError(166));
+                    if (n3 = za(pf.current), za(df.current), checkHydration(t2)) {
                         if (r2 = t2.stateNode, n3 = t2.memoizedProps, r2[kd] = t2, (a2 = r2.nodeValue !== n3) && (e2 = Zd, e2 !== null)) switch (e2.tag) {
                             case 3:
                                 Ri(r2.nodeValue, n3, !!(e2.mode & 1));
@@ -4169,29 +4244,29 @@ Error generating stack: ` + e3.message + `
                         a2 && (t2.flags |= 4);
                     } else r2 = (n3.nodeType === 9 ? n3 : n3.ownerDocument).createTextNode(r2), r2[kd] = t2, t2.stateNode = r2;
                 }
-                return j(t2), null;
+                return bubbleProperties(t2), null;
             case 13:
                 if (D(V), r2 = t2.memoizedState, e2 === null || e2.memoizedState !== null && e2.memoizedState.dehydrated !== null) {
-                    if (B && Qd !== null && t2.mode & 1 && !(t2.flags & 128)) ga(), _a(), t2.flags |= 98560, a2 = false;
-                    else if (a2 = ha(t2), r2 !== null && r2.dehydrated !== null) {
+                    if (B && Qd !== null && t2.mode & 1 && !(t2.flags & 128)) clearHydrationMarkers(), resetHydrationState(), t2.flags |= 98560, a2 = false;
+                    else if (a2 = checkHydration(t2), r2 !== null && r2.dehydrated !== null) {
                         if (e2 === null) {
-                            if (!a2) throw Error(w(318));
-                            if (a2 = t2.memoizedState, a2 = a2 === null ? null : a2.dehydrated, !a2) throw Error(w(317));
+                            if (!a2) throw Error(formatReactError(318));
+                            if (a2 = t2.memoizedState, a2 = a2 === null ? null : a2.dehydrated, !a2) throw Error(formatReactError(317));
                             a2[kd] = t2;
-                        } else _a(), !(t2.flags & 128) && (t2.memoizedState = null), t2.flags |= 4;
-                        j(t2), a2 = false;
+                        } else resetHydrationState(), !(t2.flags & 128) && (t2.memoizedState = null), t2.flags |= 4;
+                        bubbleProperties(t2), a2 = false;
                     } else $d !== null && (Vs($d), $d = null), a2 = true;
                     if (!a2) return t2.flags & 65536 ? t2 : null;
                 }
-                return t2.flags & 128 ? (t2.lanes = n3, t2) : (r2 = r2 !== null, r2 !== (e2 !== null && e2.memoizedState !== null) && r2 && (t2.child.flags |= 8192, t2.mode & 1 && (e2 === null || V.current & 1 ? $ === 0 && ($ = 3) : Zs())), t2.updateQueue !== null && (t2.flags |= 4), j(t2), null);
+                return t2.flags & 128 ? (t2.lanes = n3, t2) : (r2 = r2 !== null, r2 !== (e2 !== null && e2.memoizedState !== null) && r2 && (t2.child.flags |= 8192, t2.mode & 1 && (e2 === null || V.current & 1 ? $ === 0 && ($ = 3) : Zs())), t2.updateQueue !== null && (t2.flags |= 4), bubbleProperties(t2), null);
             case 4:
-                return Va(), e2 === null && Ai(t2.stateNode.containerInfo), j(t2), null;
+                return Va(), e2 === null && listenToAllSupportedEvents(t2.stateNode.containerInfo), bubbleProperties(t2), null;
             case 10:
-                return wa(t2.type._context), j(t2), null;
+                return wa(t2.type._context), bubbleProperties(t2), null;
             case 17:
-                return Zi(t2.type) && Qi(), j(t2), null;
+                return Zi(t2.type) && Qi(), bubbleProperties(t2), null;
             case 19:
-                if (D(V), a2 = t2.memoizedState, a2 === null) return j(t2), null;
+                if (D(V), a2 = t2.memoizedState, a2 === null) return bubbleProperties(t2), null;
                 if (r2 = !!(t2.flags & 128), o2 = a2.rendering, o2 === null) {
                     if (r2) ds(a2, false);
                     else {
@@ -4211,21 +4286,21 @@ Error generating stack: ` + e3.message + `
                 } else {
                     if (!r2) {
                         if (e2 = Wa(o2), e2 !== null) {
-                            if (t2.flags |= 128, r2 = true, n3 = e2.updateQueue, n3 !== null && (t2.updateQueue = n3, t2.flags |= 4), ds(a2, true), a2.tail === null && a2.tailMode === `hidden` && !o2.alternate && !B) return j(t2), null;
+                            if (t2.flags |= 128, r2 = true, n3 = e2.updateQueue, n3 !== null && (t2.updateQueue = n3, t2.flags |= 4), ds(a2, true), a2.tail === null && a2.tailMode === `hidden` && !o2.alternate && !B) return bubbleProperties(t2), null;
                         } else 2 * I() - a2.renderingStartTime > Xf && n3 !== 1073741824 && (t2.flags |= 128, r2 = true, ds(a2, false), t2.lanes = 4194304);
                     }
                     a2.isBackwards ? (o2.sibling = t2.child, t2.child = o2) : (n3 = a2.last, n3 === null ? t2.child = o2 : n3.sibling = o2, a2.last = o2);
                 }
-                return a2.tail === null ? (j(t2), null) : (t2 = a2.tail, a2.rendering = t2, a2.tail = t2.sibling, a2.renderingStartTime = I(), t2.sibling = null, n3 = V.current, O(V, r2 ? n3 & 1 | 2 : n3 & 1), t2);
+                return a2.tail === null ? (bubbleProperties(t2), null) : (t2 = a2.tail, a2.rendering = t2, a2.tail = t2.sibling, a2.renderingStartTime = I(), t2.sibling = null, n3 = V.current, O(V, r2 ? n3 & 1 | 2 : n3 & 1), t2);
             case 22:
             case 23:
-                return qs(), r2 = t2.memoizedState !== null, e2 !== null && e2.memoizedState !== null !== r2 && (t2.flags |= 8192), r2 && t2.mode & 1 ? Vf & 1073741824 && (j(t2), t2.subtreeFlags & 6 && (t2.flags |= 8192)) : j(t2), null;
+                return qs(), r2 = t2.memoizedState !== null, e2 !== null && e2.memoizedState !== null !== r2 && (t2.flags |= 8192), r2 && t2.mode & 1 ? Vf & 1073741824 && (bubbleProperties(t2), t2.subtreeFlags & 6 && (t2.flags |= 8192)) : bubbleProperties(t2), null;
             case 24:
                 return null;
             case 25:
                 return null;
         }
-        throw Error(w(156, t2.tag));
+        throw Error(formatReactError(156, t2.tag));
     }
 
     function ps(e2, t2) {
@@ -4238,8 +4313,8 @@ Error generating stack: ` + e3.message + `
                 return Ua(t2), null;
             case 13:
                 if (D(V), e2 = t2.memoizedState, e2 !== null && e2.dehydrated !== null) {
-                    if (t2.alternate === null) throw Error(w(340));
-                    _a();
+                    if (t2.alternate === null) throw Error(formatReactError(340));
+                    resetHydrationState();
                 }
                 return e2 = t2.flags, e2 & 65536 ? (t2.flags = e2 & -65537 | 128, t2) : null;
             case 19:
@@ -4358,7 +4433,7 @@ Error generating stack: ` + e3.message + `
                             case 17:
                                 break;
                             default:
-                                throw Error(w(163));
+                                throw Error(formatReactError(163));
                         }
                     } catch (e3) {
                         N(t2, t2.return, e3);
@@ -4541,7 +4616,7 @@ Error generating stack: ` + e3.message + `
                         }
                         s2 = s2.return;
                     }
-                    if (J === null) throw Error(w(160));
+                    if (J === null) throw Error(formatReactError(160));
                     Es(a2, o2, i2), J = null, If = false;
                     var c2 = i2.alternate;
                     c2 !== null && (c2.return = null), i2.return = null;
@@ -4620,7 +4695,7 @@ Error generating stack: ` + e3.message + `
                 break;
             case 6:
                 if (Os(t2, e2), As(e2), r2 & 4) {
-                    if (e2.stateNode === null) throw Error(w(162));
+                    if (e2.stateNode === null) throw Error(formatReactError(162));
                     i2 = e2.stateNode, a2 = e2.memoizedProps;
                     try {
                         i2.nodeValue = a2;
@@ -4730,7 +4805,7 @@ Error generating stack: ` + e3.message + `
                         }
                         n3 = n3.return;
                     }
-                    throw Error(w(160));
+                    throw Error(formatReactError(160));
                 }
                 switch (r2.tag) {
                     case 5:
@@ -4743,7 +4818,7 @@ Error generating stack: ` + e3.message + `
                         Cs(e2, Ss(e2), a2);
                         break;
                     default:
-                        throw Error(w(161));
+                        throw Error(formatReactError(161));
                 }
             }
             catch (t3) {
@@ -4859,7 +4934,7 @@ Error generating stack: ` + e3.message + `
                         case 25:
                             break;
                         default:
-                            throw Error(w(163));
+                            throw Error(formatReactError(163));
                     }
                     K || t2.flags & 512 && ys(t2);
                 } catch (e3) {
@@ -4959,7 +5034,7 @@ Error generating stack: ` + e3.message + `
     }
 
     function Ls(e2, t2, n3, r2) {
-        if (50 < ip) throw ip = 0, ap = null, Error(w(185));
+        if (50 < ip) throw ip = 0, ap = null, Error(formatReactError(185));
         kr(e2, n3, r2), Y & 2 && e2 === X || (e2 === X && (!(Y & 2) && (Gf |= n3), $ === 4 && Us(e2, Q)), Rs(e2, r2), n3 === 1 && Y === 0 && !(t2.mode & 1) && (Xf = I() + 500, Bd && aa()));
     }
 
@@ -4996,7 +5071,7 @@ Error generating stack: ` + e3.message + `
     }
 
     function zs(e2, t2) {
-        if (op = -1, sp = 0, Y & 6) throw Error(w(327));
+        if (op = -1, sp = 0, Y & 6) throw Error(formatReactError(327));
         var n3 = e2.callbackNode;
         if (ac() && e2.callbackNode !== n3) return null;
         var r2 = Cr(e2, e2 === X ? Q : 0);
@@ -5026,7 +5101,7 @@ Error generating stack: ` + e3.message + `
                 switch (e2.finishedWork = i2, e2.finishedLanes = r2, t2) {
                     case 0:
                     case 1:
-                        throw Error(w(345));
+                        throw Error(formatReactError(345));
                     case 2:
                         rc(e2, Jf, Zf);
                         break;
@@ -5058,7 +5133,7 @@ Error generating stack: ` + e3.message + `
                         rc(e2, Jf, Zf);
                         break;
                     default:
-                        throw Error(w(329));
+                        throw Error(formatReactError(329));
                 }
             }
         }
@@ -5112,7 +5187,7 @@ Error generating stack: ` + e3.message + `
     }
 
     function Ws(e2) {
-        if (Y & 6) throw Error(w(327));
+        if (Y & 6) throw Error(formatReactError(327));
         ac();
         var t2 = Cr(e2, 0);
         if (!(t2 & 1)) return Rs(e2, I()), null;
@@ -5122,7 +5197,7 @@ Error generating stack: ` + e3.message + `
             r2 !== 0 && (t2 = r2, n3 = Bs(e2, r2));
         }
         if (n3 === 1) throw n3 = Uf, Js(e2, 0), Us(e2, t2), Rs(e2, I()), n3;
-        if (n3 === 6) throw Error(w(345));
+        if (n3 === 6) throw Error(formatReactError(345));
         return e2.finishedWork = e2.current.alternate, e2.finishedLanes = t2, rc(e2, Jf, Zf), Rs(e2, I()), null;
     }
 
@@ -5246,11 +5321,11 @@ Error generating stack: ` + e3.message + `
                             Vo(a2, l2, t2), Zs();
                             break e;
                         }
-                        c2 = Error(w(426));
+                        c2 = Error(formatReactError(426));
                     } else if (B && s2.mode & 1) {
                         var g2 = Ho(o2);
                         if (g2 !== null) {
-                            !(g2.flags & 65536) && (g2.flags |= 256), Uo(g2, o2, s2, a2, t2), va(Io(c2, s2));
+                            !(g2.flags & 65536) && (g2.flags |= 256), Uo(g2, o2, s2, a2, t2), queueForHydration(Io(c2, s2));
                             break e;
                         }
                     }
@@ -5310,7 +5385,7 @@ Error generating stack: ` + e3.message + `
                 Ys(e2, t3);
             }
         while (1);
-        if (Ca(), Y = n3, Rf.current = r2, Z !== null) throw Error(w(261));
+        if (Ca(), Y = n3, Rf.current = r2, Z !== null) throw Error(formatReactError(261));
         return X = null, Q = 0, $;
     }
 
@@ -5369,11 +5444,11 @@ Error generating stack: ` + e3.message + `
         do
             ac();
         while (np !== null);
-        if (Y & 6) throw Error(w(327));
+        if (Y & 6) throw Error(formatReactError(327));
         n3 = e2.finishedWork;
         var i2 = e2.finishedLanes;
         if (n3 === null) return null;
-        if (e2.finishedWork = null, e2.finishedLanes = 0, n3 === e2.current) throw Error(w(177));
+        if (e2.finishedWork = null, e2.finishedLanes = 0, n3 === e2.current) throw Error(formatReactError(177));
         e2.callbackNode = null, e2.callbackPriority = 0;
         var a2 = n3.lanes | n3.childLanes;
         if (Ar(e2, a2), e2 === X && (Z = X = null, Q = 0), !(n3.subtreeFlags & 2064) && !(n3.flags & 2064) || tp || (tp = true, dc(Vl, (function() {
@@ -5402,7 +5477,7 @@ Error generating stack: ` + e3.message + `
             try {
                 if (Bf.transition = null, L = 16 > e2 ? 16 : e2, np === null) var r2 = false;
                 else {
-                    if (e2 = np, np = null, rp = 0, Y & 6) throw Error(w(331));
+                    if (e2 = np, np = null, rp = 0, Y & 6) throw Error(formatReactError(331));
                     var i2 = Y;
                     for (Y |= 4, q = e2.current; q !== null;) {
                         var a2 = q,
@@ -5562,7 +5637,7 @@ Error generating stack: ` + e3.message + `
                 r2 = e2.stateNode;
                 break;
             default:
-                throw Error(w(314));
+                throw Error(formatReactError(314));
         }
         r2 !== null && r2.delete(t2), cc(e2, n3);
     }
@@ -5575,7 +5650,15 @@ Error generating stack: ` + e3.message + `
         this.tag = e2, this.key = n3, this.sibling = this.child = this.return = this.stateNode = this.type = this.elementType = null, this.index = 0, this.ref = null, this.pendingProps = t2, this.dependencies = this.memoizedState = this.updateQueue = this.memoizedProps = null, this.mode = r2, this.subtreeFlags = this.flags = 0, this.deletions = null, this.childLanes = this.lanes = 0, this.alternate = null;
     }
 
-    function pc(e2, t2, n3, r2) {
+    /**
+     * createFiber(e2, t2, n3, r2) - Allocate a Fiber node.
+     * @param {number} e2 Fiber tag (3 root, 5 host, 6 text, 13 Suspense, ...).
+     * @param {*} t2 Pending props, key, or children depending on the tag.
+     * @param {string|null} n3 Key used during list reconciliation.
+     * @param {number} r2 Mode flags (bit 1 = concurrent mode).
+     * @returns {object} The new Fiber.
+     */
+    function createFiber(e2, t2, n3, r2) {
         return new fc(e2, t2, n3, r2);
     }
 
@@ -5594,7 +5677,7 @@ Error generating stack: ` + e3.message + `
 
     function gc(e2, t2) {
         var n3 = e2.alternate;
-        return n3 === null ? (n3 = pc(e2.tag, t2, e2.key, e2.mode), n3.elementType = e2.elementType, n3.type = e2.type, n3.stateNode = e2.stateNode, n3.alternate = e2, e2.alternate = n3) : (n3.pendingProps = t2, n3.type = e2.type, n3.flags = 0, n3.subtreeFlags = 0, n3.deletions = null), n3.flags = e2.flags & 14680064, n3.childLanes = e2.childLanes, n3.lanes = e2.lanes, n3.child = e2.child, n3.memoizedProps = e2.memoizedProps, n3.memoizedState = e2.memoizedState, n3.updateQueue = e2.updateQueue, t2 = e2.dependencies, n3.dependencies = t2 === null ? null : {
+        return n3 === null ? (n3 = createFiber(e2.tag, t2, e2.key, e2.mode), n3.elementType = e2.elementType, n3.type = e2.type, n3.stateNode = e2.stateNode, n3.alternate = e2, e2.alternate = n3) : (n3.pendingProps = t2, n3.type = e2.type, n3.flags = 0, n3.subtreeFlags = 0, n3.deletions = null), n3.flags = e2.flags & 14680064, n3.childLanes = e2.childLanes, n3.lanes = e2.lanes, n3.child = e2.child, n3.memoizedProps = e2.memoizedProps, n3.memoizedState = e2.memoizedState, n3.updateQueue = e2.updateQueue, t2 = e2.dependencies, n3.dependencies = t2 === null ? null : {
             lanes: t2.lanes,
             firstContext: t2.firstContext
         }, n3.sibling = e2.sibling, n3.index = e2.index, n3.ref = e2.ref, n3;
@@ -5611,11 +5694,11 @@ Error generating stack: ` + e3.message + `
                 o2 = 8, i2 |= 8;
                 break;
             case il:
-                return e2 = pc(12, n3, t2, i2 | 2), e2.elementType = il, e2.lanes = a2, e2;
+                return e2 = createFiber(12, n3, t2, i2 | 2), e2.elementType = il, e2.lanes = a2, e2;
             case cl:
-                return e2 = pc(13, n3, t2, i2), e2.elementType = cl, e2.lanes = a2, e2;
+                return e2 = createFiber(13, n3, t2, i2), e2.elementType = cl, e2.lanes = a2, e2;
             case ll:
-                return e2 = pc(19, n3, t2, i2), e2.elementType = ll, e2.lanes = a2, e2;
+                return e2 = createFiber(19, n3, t2, i2), e2.elementType = ll, e2.lanes = a2, e2;
             case fl:
                 return yc(n3, i2, a2, t2);
             default:
@@ -5636,27 +5719,27 @@ Error generating stack: ` + e3.message + `
                         o2 = 16, r2 = null;
                         break e;
                 }
-                throw Error(w(130, e2 == null ? e2 : typeof e2, ``));
+                throw Error(formatReactError(130, e2 == null ? e2 : typeof e2, ``));
         }
-        return t2 = pc(o2, n3, t2, i2), t2.elementType = e2, t2.type = r2, t2.lanes = a2, t2;
+        return t2 = createFiber(o2, n3, t2, i2), t2.elementType = e2, t2.type = r2, t2.lanes = a2, t2;
     }
 
     function vc(e2, t2, n3, r2) {
-        return e2 = pc(7, e2, r2, t2), e2.lanes = n3, e2;
+        return e2 = createFiber(7, e2, r2, t2), e2.lanes = n3, e2;
     }
 
     function yc(e2, t2, n3, r2) {
-        return e2 = pc(22, e2, r2, t2), e2.elementType = fl, e2.lanes = n3, e2.stateNode = {
+        return e2 = createFiber(22, e2, r2, t2), e2.elementType = fl, e2.lanes = n3, e2.stateNode = {
             isHidden: false
         }, e2;
     }
 
     function bc(e2, t2, n3) {
-        return e2 = pc(6, e2, null, t2), e2.lanes = n3, e2;
+        return e2 = createFiber(6, e2, null, t2), e2.lanes = n3, e2;
     }
 
     function xc(e2, t2, n3) {
-        return t2 = pc(4, e2.children === null ? [] : e2.children, e2.key, t2), t2.lanes = n3, t2.stateNode = {
+        return t2 = createFiber(4, e2.children === null ? [] : e2.children, e2.key, t2), t2.lanes = n3, t2.stateNode = {
             containerInfo: e2.containerInfo,
             pendingChildren: null,
             implementation: e2.implementation
@@ -5668,7 +5751,7 @@ Error generating stack: ` + e3.message + `
     }
 
     function Cc(e2, t2, n3, r2, i2, a2, o2, s2, c2) {
-        return e2 = new Sc(e2, t2, n3, s2, c2), t2 === 1 ? (t2 = 1, true === a2 && (t2 |= 8)) : t2 = 0, a2 = pc(3, null, null, t2), e2.current = a2, a2.stateNode = e2, a2.memoizedState = {
+        return e2 = new Sc(e2, t2, n3, s2, c2), t2 === 1 ? (t2 = 1, true === a2 && (t2 |= 8)) : t2 = 0, a2 = createFiber(3, null, null, t2), e2.current = a2, a2.stateNode = e2, a2.memoizedState = {
             element: r2,
             isDehydrated: n3,
             cache: null,
@@ -5692,7 +5775,7 @@ Error generating stack: ` + e3.message + `
         if (!e2) return Ld;
         e2 = e2._reactInternals;
         e: {
-            if (mr(e2) !== e2 || e2.tag !== 1) throw Error(w(170));
+            if (mr(e2) !== e2 || e2.tag !== 1) throw Error(formatReactError(170));
             var t2 = e2;
             do {
                 switch (t2.tag) {
@@ -5707,7 +5790,7 @@ Error generating stack: ` + e3.message + `
                 }
                 t2 = t2.return;
             } while (t2 !== null);
-            throw Error(w(171));
+            throw Error(formatReactError(171));
         }
         if (e2.tag === 1) {
             var n3 = e2.type;
@@ -5782,7 +5865,7 @@ Error generating stack: ` + e3.message + `
                 };
             }
             var o2 = Ec(t2, r2, e2, 0, null, false, false, ``, Ic);
-            return e2._reactRootContainer = o2, e2[jd] = o2.current, Ai(e2.nodeType === 8 ? e2.parentNode : e2), Ks(), o2;
+            return e2._reactRootContainer = o2, e2[jd] = o2.current, listenToAllSupportedEvents(e2.nodeType === 8 ? e2.parentNode : e2), Ks(), o2;
         }
         for (; i2 = e2.lastChild;) e2.removeChild(i2);
         if (typeof r2 == `function`) {
@@ -5793,7 +5876,7 @@ Error generating stack: ` + e3.message + `
             };
         }
         var c2 = Cc(e2, 0, false, null, null, false, false, ``, Ic);
-        return e2._reactRootContainer = c2, e2[jd] = c2.current, Ai(e2.nodeType === 8 ? e2.parentNode : e2), Ks((function() {
+        return e2._reactRootContainer = c2, e2[jd] = c2.current, listenToAllSupportedEvents(e2.nodeType === 8 ? e2.parentNode : e2), Ks((function() {
             Dc(t2, c2, n3, r2);
         })), c2;
     }
@@ -6218,10 +6301,10 @@ Error generating stack: ` + e3.message + `
                         var r2 = H,
                             i2 = Ya();
                         if (B) {
-                            if (n3 === void 0) throw Error(w(407));
+                            if (n3 === void 0) throw Error(formatReactError(407));
                             n3 = n3();
                         } else {
-                            if (n3 = t2(), X === null) throw Error(w(349));
+                            if (n3 = t2(), X === null) throw Error(formatReactError(349));
                             _f & 30 || no(r2, t2, n3);
                         }
                         i2.memoizedState = n3;
@@ -6417,7 +6500,7 @@ Error generating stack: ` + e3.message + `
                                         t2 = Go(null, t2, r2, Ao(r2.type, e2), n3);
                                         break e;
                                 }
-                                throw Error(w(306, r2, ``));
+                                throw Error(formatReactError(306, r2, ``));
                             }
                             return t2;
                         case 0:
@@ -6426,7 +6509,7 @@ Error generating stack: ` + e3.message + `
                             return r2 = t2.type, i2 = t2.pendingProps, i2 = t2.elementType === r2 ? i2 : Ao(r2, i2), Xo(e2, t2, r2, i2, n3);
                         case 3:
                             e: {
-                                if (Qo(t2), e2 === null) throw Error(w(387));
+                                if (Qo(t2), e2 === null) throw Error(formatReactError(387));
                                 r2 = t2.pendingProps,
                                 a2 = t2.memoizedState,
                                 i2 = a2.element,
@@ -6441,16 +6524,16 @@ Error generating stack: ` + e3.message + `
                                             pendingSuspenseBoundaries: o2.pendingSuspenseBoundaries,
                                             transitions: o2.transitions
                                         }, t2.updateQueue.baseState = a2, t2.memoizedState = a2, t2.flags & 256) {
-                                        i2 = Io(Error(w(423)), t2), t2 = $o(e2, t2, r2, n3, i2);
+                                        i2 = Io(Error(formatReactError(423)), t2), t2 = $o(e2, t2, r2, n3, i2);
                                         break e;
                                     }
                                     if (r2 !== i2) {
-                                        i2 = Io(Error(w(424)), t2), t2 = $o(e2, t2, r2, n3, i2);
+                                        i2 = Io(Error(formatReactError(424)), t2), t2 = $o(e2, t2, r2, n3, i2);
                                         break e;
                                     }
-                                    for (Qd = Ui(t2.stateNode.containerInfo.firstChild), Zd = t2, B = true, $d = null, n3 = nf(t2, null, r2, n3), t2.child = n3; n3;) n3.flags = n3.flags & -3 | 4096, n3 = n3.sibling;
+                                    for (Qd = getNextHydrationNode(t2.stateNode.containerInfo.firstChild), Zd = t2, B = true, $d = null, n3 = nf(t2, null, r2, n3), t2.child = n3; n3;) n3.flags = n3.flags & -3 | 4096, n3 = n3.sibling;
                                 } else {
-                                    if (_a(), r2 === i2) {
+                                    if (resetHydrationState(), r2 === i2) {
                                         t2 = ls(e2, t2, n3);
                                         break e;
                                     }
@@ -6460,9 +6543,9 @@ Error generating stack: ` + e3.message + `
                             }
                             return t2;
                         case 5:
-                            return Ha(t2), e2 === null && pa(t2), r2 = t2.type, i2 = t2.pendingProps, a2 = e2 === null ? null : e2.memoizedProps, o2 = i2.children, Bi(r2, i2) ? o2 = null : a2 !== null && Bi(r2, a2) && (t2.flags |= 32), Jo(e2, t2), A(e2, t2, o2, n3), t2.child;
+                            return Ha(t2), e2 === null && performHydrationReplace(t2), r2 = t2.type, i2 = t2.pendingProps, a2 = e2 === null ? null : e2.memoizedProps, o2 = i2.children, shouldSetTextContent(r2, i2) ? o2 = null : a2 !== null && shouldSetTextContent(r2, a2) && (t2.flags |= 32), Jo(e2, t2), A(e2, t2, o2, n3), t2.child;
                         case 6:
-                            return e2 === null && pa(t2), null;
+                            return e2 === null && performHydrationReplace(t2), null;
                         case 13:
                             return ts(e2, t2, n3);
                         case 4:
@@ -6506,7 +6589,7 @@ Error generating stack: ` + e3.message + `
                                                 }
                                             } else if (a2.tag === 10) o2 = a2.type === t2.type ? null : a2.child;
                                             else if (a2.tag === 18) {
-                                                if (o2 = a2.return, o2 === null) throw Error(w(341));
+                                                if (o2 = a2.return, o2 === null) throw Error(formatReactError(341));
                                                 o2.lanes |= n3, s2 = o2.alternate, s2 !== null && (s2.lanes |= n3), Ta(o2, n3, t2), o2 = a2.sibling;
                                             } else o2 = a2.child;
                                             if (o2 !== null) o2.return = a2;
@@ -6542,12 +6625,12 @@ Error generating stack: ` + e3.message + `
                         case 22:
                             return qo(e2, t2, n3);
                     }
-                    throw Error(w(156, t2.tag));
+                    throw Error(formatReactError(156, t2.tag));
                 }, lp = typeof reportError == `function` ? reportError : function(e2) {
                     console.error(e2);
                 }, Nc.prototype.render = Mc.prototype.render = function(e2) {
                     var t2 = this._internalRoot;
-                    if (t2 === null) throw Error(w(409));
+                    if (t2 === null) throw Error(formatReactError(409));
                     Dc(e2, t2, null, null);
                 }, Nc.prototype.unmount = Mc.prototype.unmount = function() {
                     var e2 = this._internalRoot;
@@ -6613,7 +6696,7 @@ Error generating stack: ` + e3.message + `
                                     var r2 = n3[t2];
                                     if (r2 !== e2 && r2.form === e2.form) {
                                         var i2 = Ji(r2);
-                                        if (!i2) throw Error(w(90));
+                                        if (!i2) throw Error(formatReactError(90));
                                         Ln(r2), Hn(r2, i2);
                                     }
                                 }
@@ -6663,47 +6746,47 @@ Error generating stack: ` + e3.message + `
             } catch {}
             Hc.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = up, Hc.createPortal = function(e2, t2) {
                 var n3 = 2 < arguments.length && arguments[2] !== void 0 ? arguments[2] : null;
-                if (!Pc(t2)) throw Error(w(200));
+                if (!Pc(t2)) throw Error(formatReactError(200));
                 return wc(e2, t2, null, n3);
             }, Hc.createRoot = function(e2, t2) {
-                if (!Pc(e2)) throw Error(w(299));
+                if (!Pc(e2)) throw Error(formatReactError(299));
                 var n3 = false,
                     r2 = ``,
                     i2 = lp;
-                return t2 != null && (true === t2.unstable_strictMode && (n3 = true), t2.identifierPrefix !== void 0 && (r2 = t2.identifierPrefix), t2.onRecoverableError !== void 0 && (i2 = t2.onRecoverableError)), t2 = Cc(e2, 1, false, null, null, n3, false, r2, i2), e2[jd] = t2.current, Ai(e2.nodeType === 8 ? e2.parentNode : e2), new Mc(t2);
+                return t2 != null && (true === t2.unstable_strictMode && (n3 = true), t2.identifierPrefix !== void 0 && (r2 = t2.identifierPrefix), t2.onRecoverableError !== void 0 && (i2 = t2.onRecoverableError)), t2 = Cc(e2, 1, false, null, null, n3, false, r2, i2), e2[jd] = t2.current, listenToAllSupportedEvents(e2.nodeType === 8 ? e2.parentNode : e2), new Mc(t2);
             }, Hc.findDOMNode = function(e2) {
                 if (e2 == null) return null;
                 if (e2.nodeType === 1) return e2;
                 var t2 = e2._reactInternals;
-                if (t2 === void 0) throw typeof e2.render == `function` ? Error(w(188)) : (e2 = Object.keys(e2).join(`,`), Error(w(268, e2)));
+                if (t2 === void 0) throw typeof e2.render == `function` ? Error(formatReactError(188)) : (e2 = Object.keys(e2).join(`,`), Error(formatReactError(268, e2)));
                 return e2 = vr(t2), e2 = e2 === null ? null : e2.stateNode, e2;
             }, Hc.flushSync = function(e2) {
                 return Ks(e2);
             }, Hc.hydrate = function(e2, t2, n3) {
-                if (!Fc(t2)) throw Error(w(200));
+                if (!Fc(t2)) throw Error(formatReactError(200));
                 return Rc(null, e2, t2, true, n3);
             }, Hc.hydrateRoot = function(e2, t2, n3) {
-                if (!Pc(e2)) throw Error(w(405));
+                if (!Pc(e2)) throw Error(formatReactError(405));
                 var r2 = n3 != null && n3.hydratedSources || null,
                     i2 = false,
                     a2 = ``,
                     o2 = lp;
-                if (n3 != null && (true === n3.unstable_strictMode && (i2 = true), n3.identifierPrefix !== void 0 && (a2 = n3.identifierPrefix), n3.onRecoverableError !== void 0 && (o2 = n3.onRecoverableError)), t2 = Ec(t2, null, e2, 1, n3 ?? null, i2, false, a2, o2), e2[jd] = t2.current, Ai(e2), r2)
+                if (n3 != null && (true === n3.unstable_strictMode && (i2 = true), n3.identifierPrefix !== void 0 && (a2 = n3.identifierPrefix), n3.onRecoverableError !== void 0 && (o2 = n3.onRecoverableError)), t2 = Ec(t2, null, e2, 1, n3 ?? null, i2, false, a2, o2), e2[jd] = t2.current, listenToAllSupportedEvents(e2), r2)
                     for (e2 = 0; e2 < r2.length; e2++) n3 = r2[e2], i2 = n3._getVersion, i2 = i2(n3._source), t2.mutableSourceEagerHydrationData == null ? t2.mutableSourceEagerHydrationData = [n3, i2] : t2.mutableSourceEagerHydrationData.push(n3, i2);
                 return new Nc(t2);
             }, Hc.render = function(e2, t2, n3) {
-                if (!Fc(t2)) throw Error(w(200));
+                if (!Fc(t2)) throw Error(formatReactError(200));
                 return Rc(null, e2, t2, false, n3);
             }, Hc.unmountComponentAtNode = function(e2) {
-                if (!Fc(e2)) throw Error(w(40));
+                if (!Fc(e2)) throw Error(formatReactError(40));
                 return !!e2._reactRootContainer && (Ks((function() {
                     Rc(null, null, e2, false, (function() {
                         e2._reactRootContainer = null, e2[jd] = null;
                     }));
                 })), true);
             }, Hc.unstable_batchedUpdates = Gs, Hc.unstable_renderSubtreeIntoContainer = function(e2, t2, n3, r2) {
-                if (!Fc(n3)) throw Error(w(200));
-                if (e2 == null || e2._reactInternals === void 0) throw Error(w(38));
+                if (!Fc(n3)) throw Error(formatReactError(200));
+                if (e2 == null || e2._reactInternals === void 0) throw Error(formatReactError(38));
                 return Rc(e2, t2, n3, false, r2);
             }, Hc.version = `18.3.1-next-f1338f8080-20240426`, zc(), mp = Hc, hp = mp, gp = mp.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, _p = mp.createPortal, vp = mp.createRoot, yp = mp.findDOMNode, bp = mp.flushSync, xp = mp.hydrate, Sp = mp.hydrateRoot, Cp = mp.render, wp = mp.unmountComponentAtNode, Tp = mp.unstable_batchedUpdates, Ep = mp.unstable_renderSubtreeIntoContainer, Dp = mp.version;
         })))();
@@ -43174,7 +43257,8 @@ ${um(e2)}`);
                 });
             }), [`.framer-gIZPH.framer-6aojen, .framer-gIZPH .framer-6aojen { display: block; }`, `.framer-gIZPH.framer-1h15zsv { align-content: center; align-items: center; display: flex; flex-direction: column; flex-wrap: nowrap; gap: 24px; height: min-content; justify-content: center; overflow: hidden; padding: 4px; position: relative; width: 800px; will-change: var(--framer-will-change-override, transform); }`, `.framer-gIZPH .framer-kz1y1v-container, .framer-gIZPH .framer-1avwenx-container, .framer-gIZPH .framer-1x2ylrl-container, .framer-gIZPH .framer-1mu02is-container, .framer-gIZPH .framer-o8b6fo-container, .framer-gIZPH .framer-15ocsrw-container, .framer-gIZPH .framer-1ndj14l-container { flex: none; height: auto; position: relative; width: 100%; }`, `.framer-gIZPH .framer-1boee5y-container { flex: none; height: auto; left: 50%; position: absolute; top: 0px; width: auto; z-index: 1; }`], `framer-gIZPH`), sr4.displayName = `FAQs`, sr4.defaultProps = {
                 height: 684,
-                width: 800
+                width: 800,
+                suppressHydrationWarning: true
             }, Wc3(sr4, {
                 variant: {
                     options: [`VCzlUXnGr`, `pIq85iOzi`, `w56Zp_ncS`, `YwP5s2k2X`, `CJXIl4Xj7`, `miYo_G71x`, `sxpLapBGg`, `Hf8eHpTye`],
