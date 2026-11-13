@@ -10,6 +10,7 @@ import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
@@ -40,16 +41,21 @@ import fr.berliat.hskwidget.ui.components.Error
 import fr.berliat.hskwidget.ui.components.ErrorView
 import fr.berliat.hskwidget.ui.components.LoadingProgressView
 import fr.berliat.hskwidget.ui.components.AppSnackbar
+import fr.berliat.hskwidget.ui.components.IconButton
 
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.core.SnackbarType
 import fr.berliat.hskwidget.ic_launcher
 import fr.berliat.hskwidget.pinch_zoom_out_24px
+import fr.berliat.hskwidget.folder_open_24px
 import fr.berliat.hskwidget.ocr_capture_btn
+import fr.berliat.hskwidget.ocr_select_image_btn
 import fr.berliat.hskwidget.ocr_capture_permission_denied
 import fr.berliat.hskwidget.ocr_capture_pinch_hint
 
 import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.dialogs.FileKitType
+import io.github.vinceglb.filekit.dialogs.compose.rememberFilePickerLauncher
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 
@@ -68,6 +74,15 @@ fun CaptureImageScreen(
     LaunchedEffect(Unit) {
         focusManager.clearFocus()
     }
+
+    val launcher = rememberFilePickerLauncher(
+        type = FileKitType.Image,
+        onResult = { platformFile ->
+            if (platformFile != null) {
+                onImageReady(platformFile)
+            }
+        }
+    )
 
     val permissions = providePermissions()
     val cameraPermissionState = remember { mutableStateOf(permissions.hasCameraPermission()) }
@@ -95,96 +110,116 @@ fun CaptureImageScreen(
         retryPermissions.value = false
     }
 
-    if (!cameraPermissionState.value || !storagePermissionState.value) {
-        ErrorView(error = Error(
-            errorText = Res.string.ocr_capture_permission_denied,
-            onRetryClick = { retryPermissions.value = true }
-        ))
-    } else {
-        val cameraKState = rememberCameraKState(
-            config = CameraConfiguration(
-                cameraLens = CameraLens.BACK,
-                flashMode = FlashMode.OFF,
-
-                // Image output
-                imageFormat = ImageFormat.PNG,
-                directory = Directory.DOCUMENTS,
-                qualityPrioritization = QualityPrioritization.BALANCED,
-
-                // iOS only: Advanced camera device types
-                cameraDeviceType = CameraDeviceType.DEFAULT,
-                aspectRatio = AspectRatio.RATIO_16_9
+    Column(modifier = modifier.fillMaxSize().padding(0.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            IconButton(
+                text = stringResource(Res.string.ocr_select_image_btn),
+                drawable = Res.drawable.folder_open_24px,
+                onClick = { launcher.launch() },
+                modifier = Modifier.fillMaxWidth()
             )
-        )
-
-        val zoomLevel = remember { mutableStateOf(1f) }
-        val showPinchHint = remember { mutableStateOf(true) }
-        LaunchedEffect(Unit) {
-            delay(3.seconds)
-            showPinchHint.value = false
         }
 
-        CameraKScreen(
-            cameraState = cameraKState.value,
-            showPreview = true,
-            modifier = Modifier.fillMaxSize(),
-            loadingContent = {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(bottom = 50.dp)
-                            .size(110.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.background)
-                            .border(3.dp, Color.White, CircleShape),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        LoadingProgressView()
-                    }
-                }
-            },
-            errorContent = {
+        if (!cameraPermissionState.value || !storagePermissionState.value) {
+            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
                 ErrorView(error = Error(
                     errorText = Res.string.ocr_capture_permission_denied,
                     onRetryClick = { retryPermissions.value = true }
                 ))
             }
-        ) { readyState ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInput(Unit) {
-                        detectTransformGestures { _, _, zoomChange, _ ->
-                            if (zoomChange != 1f) {
-                                zoomLevel.value *= zoomChange
-                                zoomLevel.value = zoomLevel.value.coerceIn(1f, 10f)
-                                readyState.controller.setZoom(zoomLevel.value)
+        } else {
+            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                val cameraKState = rememberCameraKState(
+                    config = CameraConfiguration(
+                        cameraLens = CameraLens.BACK,
+                        flashMode = FlashMode.OFF,
+
+                        // Image output
+                        imageFormat = ImageFormat.PNG,
+                        directory = Directory.DOCUMENTS,
+                        qualityPrioritization = QualityPrioritization.BALANCED,
+
+                        // iOS only: Advanced camera device types
+                        cameraDeviceType = CameraDeviceType.DEFAULT,
+                        aspectRatio = AspectRatio.RATIO_9_16
+                    )
+                )
+
+                val zoomLevel = remember { mutableStateOf(1f) }
+                val showPinchHint = remember { mutableStateOf(true) }
+                LaunchedEffect(Unit) {
+                    delay(3.seconds)
+                    showPinchHint.value = false
+                }
+
+                CameraKScreen(
+                    cameraState = cameraKState.value,
+                    showPreview = true,
+                    modifier = Modifier.fillMaxSize().padding(0.dp),
+                    loadingContent = {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .padding(bottom = 50.dp)
+                                    .size(110.dp)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.colorScheme.background)
+                                    .border(3.dp, Color.White, CircleShape),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                LoadingProgressView()
                             }
                         }
+                    },
+                    errorContent = {
+                        ErrorView(error = Error(
+                            errorText = Res.string.ocr_capture_permission_denied,
+                            onRetryClick = { retryPermissions.value = true }
+                        ))
                     }
-            ) {
-                Column(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = 50.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    AnimatedVisibility(
-                        visible = showPinchHint.value,
-                        enter = fadeIn(),
-                        exit = fadeOut()
+                ) { readyState ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .pointerInput(Unit) {
+                                detectTransformGestures { _, _, zoomChange, _ ->
+                                    if (zoomChange != 1f) {
+                                        zoomLevel.value *= zoomChange
+                                        zoomLevel.value = zoomLevel.value.coerceIn(1f, 10f)
+                                        readyState.controller.setZoom(zoomLevel.value)
+                                    }
+                                }
+                            }
                     ) {
-                        AppSnackbar(
-                            message = stringResource(Res.string.ocr_capture_pinch_hint),
-                            type = SnackbarType.INFO,
-                            customIcon = Res.drawable.pinch_zoom_out_24px,
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
+                        Column(
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 50.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            AnimatedVisibility(
+                                visible = showPinchHint.value,
+                                enter = fadeIn(),
+                                exit = fadeOut()
+                            ) {
+                                AppSnackbar(
+                                    message = stringResource(Res.string.ocr_capture_pinch_hint),
+                                    type = SnackbarType.INFO,
+                                    customIcon = Res.drawable.pinch_zoom_out_24px,
+                                    modifier = Modifier.padding(bottom = 16.dp)
+                                )
+                            }
+                            CaptureButton(
+                                onClick = { viewModel.takePhoto(readyState.controller) }
+                            )
+                        }
                     }
-                    CaptureButton(
-                        onClick = { viewModel.takePhoto(readyState.controller) }
-                    )
                 }
             }
         }

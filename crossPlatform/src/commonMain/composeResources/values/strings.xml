@@ -172,6 +172,7 @@ We recommend to choose the level you're at plus the one below, or above dependin
     <string name="wordlist_list_name_dupe">This list name already exist, use another one.</string>
 
     <string name="ocr_capture_btn">Capture a picture for OCR</string>
+    <string name="ocr_select_image_btn">Select an image</string>
     <string name="ocr_capture_permission_denied">Please allow Camera &amp; files access</string>
     <string name="ocr_capture_error_processed">An error occurred when capturing the image</string>
     <string name="ocr_capture_pinch_hint">Pinch to zoom in/out</string>

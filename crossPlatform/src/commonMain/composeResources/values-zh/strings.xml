@@ -171,6 +171,7 @@ AI 字段覆盖率：
     <string name="wordlist_list_name_dupe">此列表名称已存在，请使用其他名称。</string>
 
     <string name="ocr_capture_btn">拍照进行 OCR</string>
+    <string name="ocr_select_image_btn">选择图片</string>
     <string name="ocr_capture_permission_denied">请允许相机和文件访问权限</string>
     <string name="ocr_capture_error_processed">拍摄图像时出错</string>
     <string name="ocr_capture_pinch_hint">捏合以放大/缩小</string>

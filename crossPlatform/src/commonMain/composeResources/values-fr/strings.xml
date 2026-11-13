@@ -172,6 +172,7 @@ Nous vous recommandons de choisir le niveau où vous en êtes plus celui du dess
     <string name="wordlist_list_name_dupe">Ce nom de liste existe déjà, utilisez-en un autre.</string>
 
     <string name="ocr_capture_btn">Capturer une image pour l'OCR</string>
+    <string name="ocr_select_image_btn">Sélectionner une image</string>
     <string name="ocr_capture_permission_denied">Veuillez autoriser l'accès à l'appareil photo et aux fichiers</string>
     <string name="ocr_capture_error_processed">Une erreur s'est produite lors de la capture de l'image</string>
     <string name="ocr_capture_pinch_hint">Pincez pour zoomer/dézoomer</string>

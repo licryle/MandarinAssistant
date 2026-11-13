@@ -172,6 +172,7 @@ Te recomendamos elegir el nivel en el que estás más uno por debajo, o por enci
     <string name="wordlist_list_name_dupe">Este nombre de lista ya existe, utiliza otro.</string>
 
     <string name="ocr_capture_btn">Capturar foto para OCR</string>
+    <string name="ocr_select_image_btn">Seleccionar una imagen</string>
     <string name="ocr_capture_permission_denied">Por favor permite el acceso a la cámara y a los archivos</string>
     <string name="ocr_capture_error_processed">Ocurrió un error al capturar la imagen</string>
     <string name="ocr_capture_pinch_hint">Pellizca para acercar/alejar</string>
