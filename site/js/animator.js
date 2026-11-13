@@ -465,7 +465,7 @@ function setupReveal() {
     if (document.getElementById('ma-hover-css')) return;
     var style = document.createElement('style');
     style.id = 'ma-hover-css';
-    style.textContent = '.framer-ddmvkx { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); } .framer-ddmvkx:hover { transform: rotate(-9deg) scale(1.05); }';
+    style.textContent = '.hero__glyph { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); } .hero__glyph:hover { transform: rotate(-9deg) scale(1.05); }';
     document.head.appendChild(style);
   }
 
@@ -477,14 +477,14 @@ function setupReveal() {
     document.head.appendChild(style);
     var tiles = [
       /** Hero */
-      { cls: 'framer-1srmklb', amp: -4 },
-      { cls: 'framer-15u0sjo', amp: -5 },
-      { cls: 'framer-1tzcm02', amp: -1 },
-      { cls: 'framer-1pqgq3w', amp: 5 },
-      { cls: 'framer-197nmll', amp: 3 },
-      { cls: 'framer-ugovxm', amp: -3 },
-      { cls: 'framer-1hfvizv', amp: 1 },
-      { cls: 'framer-107r3zv', amp: 2 },
+      { cls: 'hero__sticker--1', amp: -4 },
+      { cls: 'hero__sticker--2', amp: -5 },
+      { cls: 'hero__sticker--3', amp: -1 },
+      { cls: 'hero__sticker--4', amp: 5 },
+      { cls: 'hero__sticker--5', amp: 3 },
+      { cls: 'hero__sticker--6', amp: -3 },
+      { cls: 'hero__sticker--7', amp: 1 },
+      { cls: 'hero__sticker--8', amp: 2 },
       /** Revise */
       { cls: 'framer-yoyvz9', amp: -4 },
       { cls: 'framer-dr02yz', amp: -5 },
