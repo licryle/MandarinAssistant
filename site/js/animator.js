@@ -486,11 +486,11 @@ function setupReveal() {
       { cls: 'hero__sticker--7', amp: 1 },
       { cls: 'hero__sticker--8', amp: 2 },
       /** Revise */
-      { cls: 'framer-yoyvz9', amp: -4 },
-      { cls: 'framer-dr02yz', amp: -5 },
-      { cls: 'framer-15vlru6', amp: -1 },
-      { cls: 'framer-zx43nw', amp: 5 },
-      { cls: 'framer-27p5zf', amp: 3 },
+      { cls: 'revise__tile--1', amp: -4 },
+      { cls: 'revise__tile--2', amp: -5 },
+      { cls: 'revise__tile--3', amp: -1 },
+      { cls: 'revise__tile--4', amp: 5 },
+      { cls: 'revise__tile--5', amp: 3 },
       /** Footer */
       { cls: 'framer-lekqks', amp: -7 },
       { cls: 'framer-11iry6f', amp: -7 },
