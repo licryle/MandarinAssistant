@@ -6737,7 +6737,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:absolute;
   bottom:113px;
   left:50%;
-  margin-left: min(calc(-40vw + 172px), 0px);
+  margin-left: max(min(calc(-40vw + 172px), 0px), -1200px + 600px + 172px + 40px);
 }
 
 .analyse__phone-frame .analyse__caption-text,
@@ -6770,7 +6770,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:absolute;
   bottom:462px;
   left:50%;
-  margin-left: max(calc(+40vw - 172px), 0px);
+  margin-left: min(max(calc(+40vw - 172px), 0px), 1200px - 600px - 172px - 40px);
 }
 
 .analyse__phone-frame.framer-v-17813hn .framer-bzyzqh {
