@@ -530,7 +530,7 @@ function setupReveal() {
   }
 
   function setupVideoSync() {
-    var video = document.querySelector('.framer-168es9-container video');
+    var video = document.querySelector('.analyse__widget video');
     if (!video) return;
 
     var timings = [

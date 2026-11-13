@@ -1765,7 +1765,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 
 .framer-GX8Xm .usecase__inner,
 .framer-GX8Xm .revise__inner,
-.framer-GX8Xm .framer-rg3j76,
+.framer-GX8Xm .analyse__inner,
 .framer-GX8Xm .framer-bn4aki,
 .framer-GX8Xm .framer-1qbih7v {
   max-width:1200px;
@@ -1784,7 +1784,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 
 .framer-GX8Xm .usecase__header,
 .framer-GX8Xm .revise__header,
-.framer-GX8Xm .framer-1bjwawy,
+.framer-GX8Xm .analyse__header,
 .framer-GX8Xm .framer-12npjr7,
 .framer-GX8Xm .framer-1sdv330,
 .framer-GX8Xm .framer-l1bosm,
@@ -2263,7 +2263,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 .framer-GX8Xm .revise,
-.framer-GX8Xm .framer-misfwh {
+.framer-GX8Xm .analyse {
   background-color:var(--token-3f3bb750-47c6-48a3-96e5-720a249d9edd,#fff);
   height:min-content;
   overflow:var(--overflow-clip-fallback,clip);
@@ -3219,7 +3219,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   transform:translate(-50%)
 }
 
-.framer-GX8Xm .framer-1mpjxgy {
+.framer-GX8Xm .analyse__heading {
   --framer-link-text-color:#09f;
   --framer-link-text-decoration:underline;
   white-space:pre-wrap;
@@ -3231,7 +3231,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-le2fre {
+.framer-GX8Xm .analyse__subtitle {
   --framer-link-text-color:#09f;
   --framer-link-text-decoration:underline;
   white-space:pre-wrap;
@@ -3243,7 +3243,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-a25974 {
+.framer-GX8Xm .analyse__stage {
   --border-bottom-width:1px;
   --border-color:#00000008;
   --border-left-width:1px;
@@ -3266,7 +3266,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-1ihww5r-container {
+.framer-GX8Xm .analyse__phone {
   flex:none;
   width:344px;
   height:auto;
@@ -5772,7 +5772,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .hero__glyph {
     width:61px
   }
-  .framer-GX8Xm .hero__subtitle,.framer-GX8Xm .usecase__subtitle,.framer-GX8Xm .revise__subtitle,.framer-GX8Xm .framer-le2fre,.framer-GX8Xm .framer-1v7lqsl,.framer-GX8Xm .framer-1o1ehtu,.framer-GX8Xm .framer-1vsv5ya {
+  .framer-GX8Xm .hero__subtitle,.framer-GX8Xm .usecase__subtitle,.framer-GX8Xm .revise__subtitle,.framer-GX8Xm .analyse__subtitle,.framer-GX8Xm .framer-1v7lqsl,.framer-GX8Xm .framer-1o1ehtu,.framer-GX8Xm .framer-1vsv5ya {
     width:358px
   }
   .framer-GX8Xm .hero__stickers {
@@ -5805,7 +5805,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .usecase__text.usecase__text--fixed {
     height:auto
   }
-  .framer-GX8Xm .revise,.framer-GX8Xm .framer-misfwh {
+  .framer-GX8Xm .revise,.framer-GX8Xm .analyse {
     padding:100px 32px 120px
   }
   .framer-GX8Xm .revise__word-card--scissors {
@@ -5853,7 +5853,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
     top:88px;
     bottom:-133px
   }
-  .framer-GX8Xm .framer-a25974 {
+  .framer-GX8Xm .analyse__stage {
     padding:90px 35px 90px 25px
   }
   .framer-GX8Xm .framer-6oiu5k {
@@ -5946,7 +5946,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .usecase__inner {
     gap:55px
   }
-  .framer-GX8Xm .usecase__heading,.framer-GX8Xm .usecase__subtitle,.framer-GX8Xm .revise__heading,.framer-GX8Xm .revise__subtitle,.framer-GX8Xm .framer-16nv5fw,.framer-GX8Xm .framer-1r3oaez,.framer-GX8Xm .framer-kb9blk,.framer-GX8Xm .framer-ejq0e6,.framer-GX8Xm .framer-1seup4t,.framer-GX8Xm .framer-1mpjxgy,.framer-GX8Xm .framer-le2fre,.framer-GX8Xm .framer-1ihww5r-container,.framer-GX8Xm .framer-1xrurn1,.framer-GX8Xm .framer-1v7lqsl,.framer-GX8Xm .framer-u4go2j,.framer-GX8Xm .framer-1446jav,.framer-GX8Xm .framer-1934pf0,.framer-GX8Xm .framer-10owjpq-container,.framer-GX8Xm .framer-sjmiuh,.framer-GX8Xm .framer-1vsv5ya,.framer-GX8Xm .framer-1ux8nie {
+  .framer-GX8Xm .usecase__heading,.framer-GX8Xm .usecase__subtitle,.framer-GX8Xm .revise__heading,.framer-GX8Xm .revise__subtitle,.framer-GX8Xm .framer-16nv5fw,.framer-GX8Xm .framer-1r3oaez,.framer-GX8Xm .framer-kb9blk,.framer-GX8Xm .framer-ejq0e6,.framer-GX8Xm .framer-1seup4t,.framer-GX8Xm .analyse__heading,.framer-GX8Xm .analyse__subtitle,.framer-GX8Xm .analyse__phone,.framer-GX8Xm .framer-1xrurn1,.framer-GX8Xm .framer-1v7lqsl,.framer-GX8Xm .framer-u4go2j,.framer-GX8Xm .framer-1446jav,.framer-GX8Xm .framer-1934pf0,.framer-GX8Xm .framer-10owjpq-container,.framer-GX8Xm .framer-sjmiuh,.framer-GX8Xm .framer-1vsv5ya,.framer-GX8Xm .framer-1ux8nie {
     width:100%
   }
   .framer-GX8Xm .usecase__cards,.framer-GX8Xm .framer-1v8f1yq {
@@ -5965,7 +5965,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
     gap:20px;
     width:100%
   }
-  .framer-GX8Xm .revise,.framer-GX8Xm .framer-misfwh {
+  .framer-GX8Xm .revise,.framer-GX8Xm .analyse {
     padding:100px 18px 120px
   }
   .framer-GX8Xm .revise__phone,.framer-GX8Xm .framer-1n4ef1f {
@@ -6696,12 +6696,12 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   width:auto
 }
 
-.framer-7Gcnt.framer-1rt394g,
-.framer-7Gcnt .framer-1rt394g {
+.analyse__phone-frame.framer-1rt394g,
+.analyse__phone-frame .framer-1rt394g {
   display:block
 }
 
-.framer-7Gcnt.framer-15v1vr0 {
+.analyse__phone-frame.analyse__phone-frame--desktop {
   height:588px;
   overflow:var(--overflow-clip-fallback,clip);
   width:344px;
@@ -6709,7 +6709,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:visible;
 }
 
-.framer-7Gcnt .framer-168es9-container {
+.analyse__phone-frame .analyse__widget {
   flex:none;
   width:289px;
   height:auto;
@@ -6718,8 +6718,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:50%
 }
 
-.framer-7Gcnt .framer-bzyzqh,
-.framer-7Gcnt .framer-1w6rf2q {
+.analyse__phone-frame .framer-bzyzqh,
+.analyse__phone-frame .framer-1w6rf2q {
   min-width:320px;
   max-width:320px;
   height:min-content;
@@ -6740,9 +6740,9 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   margin-left: min(calc(-40vw + 172px), 0px);
 }
 
-.framer-7Gcnt .framer-1pd37n2,
-.framer-7Gcnt .framer-1p0np71,
-.framer-7Gcnt .framer-485lz1 {
+.analyse__phone-frame .analyse__caption-text,
+.analyse__phone-frame .analyse__caption-text,
+.analyse__phone-frame .analyse__caption-text {
   white-space:pre-wrap;
   word-break:break-word;
   word-wrap:break-word;
@@ -6752,7 +6752,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-7Gcnt .framer-1wgrjuy {
+.analyse__phone-frame .framer-1wgrjuy {
   min-width:320px;
   max-width:320px;
   height:min-content;
@@ -6773,7 +6773,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   margin-left: max(calc(+40vw - 172px), 0px);
 }
 
-.framer-7Gcnt.framer-v-17813hn .framer-bzyzqh {
+.analyse__phone-frame.framer-v-17813hn .framer-bzyzqh {
   z-index:2;
   width:75%
 }
@@ -8661,6 +8661,66 @@ nav.nav--mobile {
   /* Widget card: centred and scaled up. */
   .revise__widget {
     transform: translateX(-50%) scale(1.25);
+  }
+
+  /* ---- Analysis demo ----------------------------------------------------- */
+
+  /* Heading and subtitle reveal word by word (see animator.js setupReveal). */
+  .analyse__heading span,
+  .analyse__subtitle span {
+    display: inline-block;
+    opacity: 0.001;
+    filter: blur(10px);
+    transform: translateX(0) translateY(10px) scale(1) rotate(0deg) skewX(0deg) skewY(0deg);
+  }
+
+  .analyse__heading h2 {
+    --framer-text-alignment: center;
+    --framer-text-color: var(--token-64ff3c34-345f-43ee-baab-9a47cea3c1fc, rgb(18, 19, 23));
+  }
+
+  .analyse__subtitle p {
+    --framer-text-alignment: center;
+    --framer-text-color: var(--token-1e3ba35f-81ae-45f1-957d-fdbc8b701e2d, rgba(18, 19, 23, 0.58));
+  }
+
+  /* The demo stage is a wide card hosting the phone mockup. */
+  .analyse__image-frame {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    corner-shape: inherit;
+  }
+
+  .analyse__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    corner-shape: inherit;
+    object-position: center;
+    object-fit: fill;
+  }
+
+  /* Phone mockup fills its stage. */
+  .analyse__phone-frame {
+    width: 100%;
+  }
+
+  /* Caption text uses an extracted token from the phone frame. */
+  .analyse__caption-text {
+    --extracted-r6o4lv: var(--token-3f3bb750-47c6-48a3-96e5-720a249d9edd, rgb(255, 255, 255));
+    --framer-link-text-color: rgb(0, 153, 255);
+    --framer-link-text-decoration: underline;
+  }
+
+  .analyse__caption-text p {
+    --framer-text-color: var(--extracted-r6o4lv, var(--token-3f3bb750-47c6-48a3-96e5-720a249d9edd, rgb(255, 255, 255)));
+  }
+
+  /* Widget card: centred and scaled. */
+  .analyse__widget {
+    transform: translateX(-50%);
   }
 
   /* ---- Burger button (mobile only) --------------------------------------- */
