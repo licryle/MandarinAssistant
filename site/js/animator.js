@@ -389,36 +389,20 @@ function setupReveal() {
     });
   }
 
-  function setupNavIndicators() {
-    document.querySelectorAll('[data-framer-page-link-current="true"] .framer-8xjv6s').forEach(function (el) {
-      el.style.opacity = '1';
-    });
-  }
-
   function setupMenu() {
-    var overlays = Array.prototype.slice.call(
-        document.querySelectorAll('.framer-1nssdn1')
-    );
+    // The mobile nav is the second SSR copy; the desktop copy has no burger.
+    var nav = document.querySelector('[data-nav-mobile]');
+    if (!nav) return;
 
-    var overlay = overlays.find(function (o) {
-        var nav = o.parentElement;
-        return nav && /framer-v-(1op6k05|wxn6ma|z534k0)/.test(nav.className);
-    });
+    var overlay = nav.querySelector('[data-nav-menu]');
+    var btn = nav.querySelector('[data-nav-burger]');
+    if (!overlay || !btn) return;
 
-    if (!overlay) return;
-
-    var nav = overlay.parentElement;
-    var btn = nav.querySelector('.framer-g6dnnw');
-
-    if (!btn) return;
-
-    var nav = overlay.parentElement;
-    var menuContent = document.querySelector('.framer-dn15jj');
-    var logos = document.querySelectorAll('.framer-8xjv6s');
-
-    var topBar = btn.querySelector('.framer-1hixd9b');
-    var middleBar = btn.querySelector('.framer-16ifp3k');
-    var bottomBar = btn.querySelector('.framer-btrkqe');
+    var logos = document.querySelectorAll('[data-nav-logo]');
+    var bars = Array.prototype.slice.call(btn.querySelectorAll('[data-nav-burger-bar]'));
+    var topBar = bars[0];
+    var middleBar = bars[1];
+    var bottomBar = bars[2];
 
     var open = false;
 
@@ -426,12 +410,10 @@ function setupReveal() {
     overlay.style.pointerEvents = 'none';
     overlay.style.transition = 'opacity 0.25s ease';
 
-    if (nav) nav.style.overflow = 'hidden';
+    nav.style.overflow = 'hidden';
 
-    [topBar, middleBar, bottomBar].forEach(function (bar) {
-      if (bar) {
-        bar.style.transition = 'transform 0.3s ease, opacity 0.2s ease';
-      }
+    bars.forEach(function (bar) {
+      bar.style.transition = 'transform 0.3s ease, opacity 0.2s ease';
     });
 
     function setOpen(value) {
@@ -441,7 +423,7 @@ function setupReveal() {
       // Logo
       logos.forEach(function (logo) {
         logo.classList.toggle(
-          'logo-visible',
+          'is-visible',
           open || window.scrollY > 160
         );
       });
@@ -449,11 +431,6 @@ function setupReveal() {
       // Menu overlay
       overlay.style.opacity = open ? '1' : '0';
       overlay.style.pointerEvents = open ? 'auto' : 'none';
-
-      // Menu content
-      if (menuContent) {
-        menuContent.classList.toggle('menu-visible', open);
-      }
 
       // Hamburger -> X
       if (topBar) {
@@ -474,10 +451,8 @@ function setupReveal() {
 
       btn.setAttribute('aria-expanded', String(open));
 
-      if (nav) {
-        nav.style.overflow = 'hidden';
-        nav.style.height = open ? nav.scrollHeight + 'px' : '64px';
-      }
+      nav.style.overflow = 'hidden';
+      nav.style.height = open ? nav.scrollHeight + 'px' : '64px';
     }
 
     btn.addEventListener('click', function (e) {
@@ -594,7 +569,7 @@ function setupReveal() {
   }
 
   function setupScrollLogo() {
-    var logos = document.querySelectorAll('.framer-8xjv6s');
+    var logos = document.querySelectorAll('[data-nav-logo]');
     if (!logos.length) return;
 
     function update() {
@@ -603,7 +578,7 @@ function setupReveal() {
       var visible = window.scrollY > 160;
 
       logos.forEach(function (logo) {
-        logo.classList.toggle('logo-visible', visible);
+        logo.classList.toggle('is-visible', visible);
       });
     }
 
@@ -612,18 +587,12 @@ function setupReveal() {
   }
 
   function setupPhoneSequence() {
+    // Only one phone stack exists in the markup. The two other entries this used
+    // to carry (.framer-wTPp6, .framer-9gPJy) matched nothing.
     const layouts = [
       {
         selector: '.framer-b6ncE',
         states: ['framer-v-12ruknm', 'framer-v-trghup']
-      },
-      {
-        selector: '.framer-wTPp6',
-        states: ['framer-v-x49ss7', 'framer-v-1etvmuz']
-      },
-      {
-        selector: '.framer-9gPJy',
-        states: ['framer-v-130x99o', 'framer-v-1yv7as6']
       }
     ];
 
@@ -738,7 +707,6 @@ function setupReveal() {
     setupCards();
     setupPhoneSequence();
     setupFlashes();
-    setupNavIndicators();
     setupMenu();
     setupHoverCss();
     setupBreathing();
