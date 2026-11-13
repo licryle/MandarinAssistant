@@ -101,7 +101,7 @@ fun ReaderScreen(
         HSKAppServices.snackbar.show(SnackbarType.WARNING,Res.string.ocr_display_ocr_no_text)
     }
 
-    Column (modifier = modifier) {
+    Column(modifier = modifier) {
         PrefsFilterBar(
             prefs = appConfig,
             textSizeMode = TextSizeMode.READER,
@@ -150,7 +150,7 @@ fun ReaderScreen(
 
                         if (allowPicture) {
                             OcrDisplayAdd(
-                                modifier = modifier,
+                                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
                                 onClick = { onClickOCRAdd(uiState.text) }
                             )
                         }
