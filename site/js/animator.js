@@ -591,7 +591,7 @@ function setupReveal() {
     // to carry (.framer-wTPp6, .framer-9gPJy) matched nothing.
     const layouts = [
       {
-        selector: '.framer-b6ncE',
+        selector: '.preparer__phone-frame',
         states: ['framer-v-12ruknm', 'framer-v-trghup']
       }
     ];
@@ -646,11 +646,11 @@ function setupReveal() {
 
       const textLayouts = [
         {
-          root: '.framer-b6ncE',
+          root: '.preparer__phone-frame',
           groups: [
-            '.framer-1mc7as6',
-            '.framer-7sgqzy',
-            '.framer-17beb7s'
+            '.preparer__step--1',
+            '.preparer__step--2',
+            '.preparer__step--3'
           ]
         }
       ];
