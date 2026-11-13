@@ -1,6 +1,6 @@
 [versions]
-app-versionCode = "74"
-app-versionName = "5.2.1"
+app-versionCode = "75"
+app-versionName = "5.3.0"
 ankiAndroid = "api-v1.1.0"
 appcompat = "1.8.0"
 camerak = "1.2"
