@@ -1050,8 +1050,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   pointer-events:none!important
 }
 
-.framer-GX8Xm.framer-lux5qc,
-.framer-GX8Xm .framer-lux5qc {
+.framer-GX8Xm.usecase__card,
+.framer-GX8Xm .usecase__card {
   display:block
 }
 
@@ -1345,7 +1345,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 .framer-GX8Xm .hero__cta,
-.framer-GX8Xm .framer-11rtia1-container,
+.framer-GX8Xm .usecase__cta,
 .framer-GX8Xm .framer-idbpmy-container,
 .framer-GX8Xm .framer-1tx2twm-container,
 .framer-GX8Xm .framer-sz769c-container {
@@ -1746,7 +1746,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-vgnepj,
+.framer-GX8Xm .usecase,
 .framer-GX8Xm .framer-1qgooox {
   background-color:var(--token-3f3bb750-47c6-48a3-96e5-720a249d9edd,#fff);
   height:min-content;
@@ -1763,7 +1763,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-1otijx5,
+.framer-GX8Xm .usecase__inner,
 .framer-GX8Xm .framer-112jx7c,
 .framer-GX8Xm .framer-rg3j76,
 .framer-GX8Xm .framer-bn4aki,
@@ -1782,7 +1782,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-fnvrcw,
+.framer-GX8Xm .usecase__header,
 .framer-GX8Xm .framer-pcab79,
 .framer-GX8Xm .framer-1bjwawy,
 .framer-GX8Xm .framer-12npjr7,
@@ -1803,7 +1803,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:visible
 }
 
-.framer-GX8Xm .framer-81uyaj,
+.framer-GX8Xm .usecase__heading,
 .framer-GX8Xm .framer-irbuna,
 .framer-GX8Xm .framer-u4go2j,
 .framer-GX8Xm .framer-sjmiuh {
@@ -1818,7 +1818,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-8qrxe1,
+.framer-GX8Xm .usecase__subtitle,
 .framer-GX8Xm .framer-1vsv5ya {
   --framer-link-text-color:#09f;
   --framer-link-text-decoration:underline;
@@ -1831,7 +1831,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-heuny3,
+.framer-GX8Xm .usecase__cards,
 .framer-GX8Xm .framer-1v8f1yq {
   height:min-content;
   overflow:var(--overflow-clip-fallback,clip);
@@ -1846,8 +1846,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-16rrtc,
-.framer-GX8Xm .framer-1lccl03,
+.framer-GX8Xm .usecase__card--stretch,
 .framer-GX8Xm .framer-54jyu,
 .framer-GX8Xm .framer-tntufe {
   flex-flow:column;
@@ -1865,7 +1864,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:visible
 }
 
-.framer-GX8Xm .framer-1hl6a7z,
+.framer-GX8Xm .usecase__preview.usecase__preview--stage,
 .framer-GX8Xm .framer-jf4cta {
   --border-bottom-width:1px;
   --border-color:#00000008;
@@ -1888,7 +1887,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-1hyfal,
+.framer-GX8Xm .usecase__stage,
 .framer-GX8Xm .framer-urad20 {
   flex:none;
   width:317px;
@@ -1897,7 +1896,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:visible
 }
 
-.framer-GX8Xm .framer-1puoqjk-container,
+.framer-GX8Xm .usecase__widget,
 .framer-GX8Xm .framer-588wcg-container {
   z-index:0;
   flex:none;
@@ -1908,7 +1907,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:calc(56.4669% - 35.5px)
 }
 
-.framer-GX8Xm .framer-hstwdv,
+.framer-GX8Xm .usecase__float-icon,
 .framer-GX8Xm .framer-1m1c51c {
   --border-bottom-width:1.2px;
   --border-color:#0000001f;
@@ -1931,7 +1930,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   box-shadow:0 3px 7px #00000017,0 13px 13px #00000014,0 29px 17px #0000000d,0 51px 21px #00000003,0 80px 22px #0000
 }
 
-.framer-GX8Xm .framer-kes2q4,
+.framer-GX8Xm .usecase__float-icon-art,
 .framer-GX8Xm .framer-12yh1np {
   aspect-ratio:1;
   flex:none;
@@ -1942,7 +1941,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:14px
 }
 
-.framer-GX8Xm .framer-1bmvt4s,
+.framer-GX8Xm .usecase__float-hsk,
 .framer-GX8Xm .framer-qm0rvj {
   border-radius:30px;
   flex:none;
@@ -1955,7 +1954,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   box-shadow:0 6px 14px #00000005,0 25px 25px #00000003,0 56px 34px #00000003,0 100px 40px #0000,0 156px 44px #0000,0 .602187px .843062px -.916667px #0000002b,0 2.28853px 3.20395px -1.83333px #00000029,0 10px 14px -2.75px #00000024
 }
 
-.framer-GX8Xm .framer-1we3z1y,
+.framer-GX8Xm .usecase__float-hsk-bg,
 .framer-GX8Xm .framer-1qolqi9 {
   --border-bottom-width:1.2px;
   --border-color:#0000001f;
@@ -1976,7 +1975,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:calc(50% - 113.5px)
 }
 
-.framer-GX8Xm .framer-9gxa21,
+.framer-GX8Xm .usecase__float-hsk-art,
 .framer-GX8Xm .framer-1buia8a {
   flex:none;
   width:100px;
@@ -1987,7 +1986,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:visible
 }
 
-.framer-GX8Xm .framer-13fiyuq,
+.framer-GX8Xm .usecase__float-hsk-art-glyph.usecase__icon,
 .framer-GX8Xm .framer-11wyogn {
   flex:none;
   width:100px;
@@ -1997,7 +1996,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:0
 }
 
-.framer-GX8Xm .framer-db1cqb,
+.framer-GX8Xm .usecase__float-hsk-art-text.usecase__icon,
 .framer-GX8Xm .framer-1dd524d {
   flex:none;
   width:61px;
@@ -2007,7 +2006,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:20px
 }
 
-.framer-GX8Xm .framer-1nmhjkb,
+.framer-GX8Xm .usecase__float-hsk-icon--right.usecase__icon,
 .framer-GX8Xm .framer-1pyr35k {
   flex:none;
   width:35px;
@@ -2017,7 +2016,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:177px
 }
 
-.framer-GX8Xm .framer-28vr3d,
+.framer-GX8Xm .usecase__float-hsk-icon--left.usecase__icon,
 .framer-GX8Xm .framer-foa7na {
   flex:none;
   width:35px;
@@ -2027,7 +2026,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:15px
 }
 
-.framer-GX8Xm .framer-1175cde,
+.framer-GX8Xm .usecase__float-hsk-label,
 .framer-GX8Xm .framer-1264cm6 {
   --border-bottom-width:1.2px;
   --border-color:#0000000d;
@@ -2054,7 +2053,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   transform:translate(-50%)
 }
 
-.framer-GX8Xm .framer-uw00wu,
+.framer-GX8Xm .usecase__float-hsk-label-text,
 .framer-GX8Xm .framer-1t7zd68,
 .framer-GX8Xm .framer-llwb4u,
 .framer-GX8Xm .framer-j5kyma,
@@ -2084,9 +2083,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-1ntbd1s,
-.framer-GX8Xm .framer-2jib9d,
-.framer-GX8Xm .framer-1nlhrf6,
+.framer-GX8Xm .usecase__copy,
 .framer-GX8Xm .framer-i95umq,
 .framer-GX8Xm .framer-6akaiw,
 .framer-GX8Xm .framer-o7l1uy {
@@ -2103,11 +2100,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:visible
 }
 
-.framer-GX8Xm .framer-1v9ke3a,
-.framer-GX8Xm .framer-1f8qifj,
-.framer-GX8Xm .framer-y8hdfx,
-.framer-GX8Xm .framer-jfod6m,
-.framer-GX8Xm .framer-u2ql4x,
+.framer-GX8Xm .usecase__title,
+.framer-GX8Xm .usecase__text,
 .framer-GX8Xm .framer-1gmjzim,
 .framer-GX8Xm .framer-9uauj1,
 .framer-GX8Xm .framer-2qyys8,
@@ -2127,7 +2121,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-1fmrgvc,
+.framer-GX8Xm .usecase__card--fit,
 .framer-GX8Xm .framer-ew5m38 {
   flex-flow:column;
   flex:1 0 0;
@@ -2143,8 +2137,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:visible
 }
 
-.framer-GX8Xm .framer-1l6bz6l,
-.framer-GX8Xm .framer-90f3fq,
+.framer-GX8Xm .usecase__preview,
 .framer-GX8Xm .framer-1nktii4,
 .framer-GX8Xm .framer-k1bkwu {
   --border-bottom-width:1px;
@@ -2163,7 +2156,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-15ojnny {
+.framer-GX8Xm .usecase__shot.usecase__shot--analyse {
   aspect-ratio:.490352;
   border-radius:50px;
   flex:none;
@@ -2176,7 +2169,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   box-shadow:0 11px 24px #00000014,0 43px 43px #00000012,0 98px 59px #0000000a,0 173px 69px #00000003,0 271px 76px #0000
 }
 
-.framer-GX8Xm .framer-1hbt0of {
+.framer-GX8Xm .usecase__zoom {
   --border-bottom-width:1.4px;
   --border-color:#fff;
   --border-left-width:1.4px;
@@ -2197,7 +2190,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   box-shadow:0 2px 4px #0000000f,0 8px 8px #0000000d,0 18px 11px #00000008,0 33px 13px #00000003,0 51px 14px #0000
 }
 
-.framer-GX8Xm .framer-o8geyc,
+.framer-GX8Xm .usecase__zoom-icon.usecase__icon,
 .framer-GX8Xm .framer-1xd48bm {
   flex:none;
   width:40px;
@@ -2207,7 +2200,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:calc(50% - 20px)
 }
 
-.framer-GX8Xm .framer-4hmp0n {
+.framer-GX8Xm .usecase__hint {
   height:42px;
   overflow:var(--overflow-clip-fallback,clip);
   will-change:var(--framer-will-change-override,transform);
@@ -2222,7 +2215,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   box-shadow:0 7px 15px #00000012,0 28px 28px #0000000f,0 62px 37px #0000000a,0 110px 44px #00000003,0 173px 48px #0000
 }
 
-.framer-GX8Xm .framer-1dvv8rx,
+.framer-GX8Xm .usecase__hint-text,
 .framer-GX8Xm .framer-2jfeez {
   --framer-paragraph-spacing:0px;
   white-space:pre-wrap;
@@ -2236,7 +2229,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:48px
 }
 
-.framer-GX8Xm .framer-2q4ckl,
+.framer-GX8Xm .usecase__hint-icon.usecase__icon,
 .framer-GX8Xm .framer-1we3j7v {
   flex:none;
   width:20px;
@@ -2246,7 +2239,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:14px
 }
 
-.framer-GX8Xm .framer-1avg7f7 {
+.framer-GX8Xm .usecase__text.usecase__text--fixed {
   --framer-paragraph-spacing:0px;
   white-space:pre-wrap;
   word-break:break-word;
@@ -2257,7 +2250,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-jn5ish {
+.framer-GX8Xm .usecase__shot.usecase__shot--prepare {
   aspect-ratio:.490352;
   z-index:1;
   border-radius:50px;
@@ -5790,7 +5783,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .hero__glyph {
     width:61px
   }
-  .framer-GX8Xm .hero__subtitle,.framer-GX8Xm .framer-8qrxe1,.framer-GX8Xm .framer-1lu6zcb,.framer-GX8Xm .framer-le2fre,.framer-GX8Xm .framer-1v7lqsl,.framer-GX8Xm .framer-1o1ehtu,.framer-GX8Xm .framer-1vsv5ya {
+  .framer-GX8Xm .hero__subtitle,.framer-GX8Xm .usecase__subtitle,.framer-GX8Xm .framer-1lu6zcb,.framer-GX8Xm .framer-le2fre,.framer-GX8Xm .framer-1v7lqsl,.framer-GX8Xm .framer-1o1ehtu,.framer-GX8Xm .framer-1vsv5ya {
     width:358px
   }
   .framer-GX8Xm .hero__stickers {
@@ -5800,27 +5793,27 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .features__row {
     gap:90px
   }
-  .framer-GX8Xm .framer-vgnepj,.framer-GX8Xm .framer-4uah04,.framer-GX8Xm .framer-1fevwvs,.framer-GX8Xm .framer-am86ve,.framer-GX8Xm .framer-1qgooox {
+  .framer-GX8Xm .usecase,.framer-GX8Xm .framer-4uah04,.framer-GX8Xm .framer-1fevwvs,.framer-GX8Xm .framer-am86ve,.framer-GX8Xm .framer-1qgooox {
     padding:90px 32px 120px
   }
-  .framer-GX8Xm .framer-heuny3,.framer-GX8Xm .framer-1v8f1yq {
+  .framer-GX8Xm .usecase__cards,.framer-GX8Xm .framer-1v8f1yq {
     flex-direction:column;
     gap:50px;
     width:429px
   }
-  .framer-GX8Xm .framer-16rrtc,.framer-GX8Xm .framer-1lccl03,.framer-GX8Xm .framer-54jyu,.framer-GX8Xm .framer-tntufe {
+  .framer-GX8Xm .usecase__card--stretch,.framer-GX8Xm .framer-54jyu,.framer-GX8Xm .framer-tntufe {
     align-self:unset;
     flex:none;
     gap:25px;
     width:100%;
     height:min-content
   }
-  .framer-GX8Xm .framer-1fmrgvc,.framer-GX8Xm .framer-ew5m38 {
+  .framer-GX8Xm .usecase__card--fit,.framer-GX8Xm .framer-ew5m38 {
     flex:none;
     gap:25px;
     width:100%
   }
-  .framer-GX8Xm .framer-1avg7f7 {
+  .framer-GX8Xm .usecase__text.usecase__text--fixed {
     height:auto
   }
   .framer-GX8Xm .framer-11s10hp,.framer-GX8Xm .framer-misfwh {
@@ -5958,27 +5951,27 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .features__row {
     flex-direction:column
   }
-  .framer-GX8Xm .framer-vgnepj,.framer-GX8Xm .framer-4uah04,.framer-GX8Xm .framer-1fevwvs,.framer-GX8Xm .framer-1qgooox {
+  .framer-GX8Xm .usecase,.framer-GX8Xm .framer-4uah04,.framer-GX8Xm .framer-1fevwvs,.framer-GX8Xm .framer-1qgooox {
     padding:90px 18px 120px
   }
-  .framer-GX8Xm .framer-1otijx5 {
+  .framer-GX8Xm .usecase__inner {
     gap:55px
   }
-  .framer-GX8Xm .framer-81uyaj,.framer-GX8Xm .framer-8qrxe1,.framer-GX8Xm .framer-irbuna,.framer-GX8Xm .framer-1lu6zcb,.framer-GX8Xm .framer-16nv5fw,.framer-GX8Xm .framer-1r3oaez,.framer-GX8Xm .framer-kb9blk,.framer-GX8Xm .framer-ejq0e6,.framer-GX8Xm .framer-1seup4t,.framer-GX8Xm .framer-1mpjxgy,.framer-GX8Xm .framer-le2fre,.framer-GX8Xm .framer-1ihww5r-container,.framer-GX8Xm .framer-1xrurn1,.framer-GX8Xm .framer-1v7lqsl,.framer-GX8Xm .framer-u4go2j,.framer-GX8Xm .framer-1446jav,.framer-GX8Xm .framer-1934pf0,.framer-GX8Xm .framer-10owjpq-container,.framer-GX8Xm .framer-sjmiuh,.framer-GX8Xm .framer-1vsv5ya,.framer-GX8Xm .framer-1ux8nie {
+  .framer-GX8Xm .usecase__heading,.framer-GX8Xm .usecase__subtitle,.framer-GX8Xm .framer-irbuna,.framer-GX8Xm .framer-1lu6zcb,.framer-GX8Xm .framer-16nv5fw,.framer-GX8Xm .framer-1r3oaez,.framer-GX8Xm .framer-kb9blk,.framer-GX8Xm .framer-ejq0e6,.framer-GX8Xm .framer-1seup4t,.framer-GX8Xm .framer-1mpjxgy,.framer-GX8Xm .framer-le2fre,.framer-GX8Xm .framer-1ihww5r-container,.framer-GX8Xm .framer-1xrurn1,.framer-GX8Xm .framer-1v7lqsl,.framer-GX8Xm .framer-u4go2j,.framer-GX8Xm .framer-1446jav,.framer-GX8Xm .framer-1934pf0,.framer-GX8Xm .framer-10owjpq-container,.framer-GX8Xm .framer-sjmiuh,.framer-GX8Xm .framer-1vsv5ya,.framer-GX8Xm .framer-1ux8nie {
     width:100%
   }
-  .framer-GX8Xm .framer-heuny3,.framer-GX8Xm .framer-1v8f1yq {
+  .framer-GX8Xm .usecase__cards,.framer-GX8Xm .framer-1v8f1yq {
     flex-direction:column;
     gap:80px
   }
-  .framer-GX8Xm .framer-16rrtc,.framer-GX8Xm .framer-1lccl03,.framer-GX8Xm .framer-54jyu,.framer-GX8Xm .framer-tntufe {
+  .framer-GX8Xm .usecase__card--stretch,.framer-GX8Xm .framer-54jyu,.framer-GX8Xm .framer-tntufe {
     align-self:unset;
     flex:none;
     gap:20px;
     width:100%;
     height:min-content
   }
-  .framer-GX8Xm .framer-1fmrgvc,.framer-GX8Xm .framer-ew5m38 {
+  .framer-GX8Xm .usecase__card--fit,.framer-GX8Xm .framer-ew5m38 {
     flex:none;
     gap:20px;
     width:100%
@@ -8368,6 +8361,136 @@ nav.nav--mobile {
   .features__text p {
     --framer-text-alignment: center;
     --framer-text-color: var(--token-1e3ba35f-81ae-45f1-957d-fdbc8b701e2d, rgba(18, 19, 23, 0.58));
+  }
+
+  /* ---- Use cases --------------------------------------------------------- */
+
+  /* The heading and subtitle reveal word by word: each span starts hidden and
+     blurred, and the runtime (or animator.js) animates it in. */
+  .usecase__heading span,
+  .usecase__subtitle span {
+    display: inline-block;
+    opacity: 0.001;
+    filter: blur(10px);
+    transform: translateX(0) translateY(10px) scale(1) rotate(0deg) skewX(0deg) skewY(0deg);
+  }
+
+  .usecase__heading h2 {
+    --framer-text-alignment: center;
+    --framer-text-color: var(--token-64ff3c34-345f-43ee-baab-9a47cea3c1fc, rgb(18, 19, 23));
+  }
+
+  .usecase__subtitle p {
+    --framer-text-alignment: center;
+    --framer-text-color: var(--token-1e3ba35f-81ae-45f1-957d-fdbc8b701e2d, rgba(18, 19, 23, 0.58));
+  }
+
+  /* Framer's appear animation starts the CTA hidden; the runtime animates it. */
+  .usecase__cta {
+    opacity: 0.001;
+    transform: translateY(10px);
+  }
+
+  /* The widget card wraps its preview so the 305px frame fills the card. */
+  .usecase__preview-wrap {
+    width: 100%;
+  }
+
+  /* Background and screenshot layers inside a preview frame. */
+  .usecase__image-frame {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    corner-shape: inherit;
+  }
+
+  .usecase__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    corner-shape: inherit;
+    object-position: center;
+    object-fit: fill;
+  }
+
+  .usecase__image--cover {
+    object-fit: cover;
+  }
+
+  /* Floating decorations on the widget card. */
+  .usecase__float-icon {
+    transform: scale(0.8) rotate(6deg);
+  }
+
+  .usecase__float-hsk {
+    transform: scale(0.6) rotate(-9deg);
+  }
+
+  /* Pixel-art SVG glyphs: HSK badge, zoom and hint icons. */
+  .usecase__icon {
+    image-rendering: pixelated;
+    flex-shrink: 0;
+    fill: rgba(0, 0, 0, 1);
+    color: rgba(0, 0, 0, 1);
+  }
+
+  .usecase__icon .svgContainer {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: inherit;
+  }
+
+  .usecase__icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Card copy: centred title and muted description. */
+  .usecase__title,
+  .usecase__text {
+    justify-content: center;
+  }
+
+  .usecase__text p {
+    --framer-text-color: var(--token-1e3ba35f-81ae-45f1-957d-fdbc8b701e2d, rgba(18, 19, 23, 0.58));
+  }
+
+  /* "HSK 1" caption under the badge. */
+  .usecase__float-hsk-label-text {
+    justify-content: center;
+  }
+
+  .usecase__float-hsk-label-text p {
+    --framer-font-size: 9px;
+    --framer-line-height: 28px;
+    --framer-text-alignment: center;
+  }
+
+  .usecase__float-hsk-label-text span {
+    --framer-font-family: "Geist";
+    --framer-font-size: 9px;
+    --framer-font-weight: 600;
+    --framer-letter-spacing: -0.11px;
+  }
+
+  /* Blue "pinch to zoom" hint on the Analyse card. */
+  .usecase__hint-text {
+    justify-content: center;
+  }
+
+  .usecase__hint-text p {
+    --framer-font-size: 12.5px;
+    --framer-line-height: 25px;
+    --framer-text-alignment: center;
+  }
+
+  .usecase__hint-text span {
+    --framer-font-family: "Geist";
+    --framer-font-size: 12.5px;
+    --framer-font-weight: 500;
+    --framer-letter-spacing: -0.11px;
+    --framer-text-color: rgba(255, 255, 255, 1);
   }
 
   /* ---- Burger button (mobile only) --------------------------------------- */
