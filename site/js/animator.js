@@ -260,7 +260,7 @@ function setupReveal() {
     { pinyin: 'li\xE0n x\xED', hanzi: '\u7EC3\u4E60', translation: 'Exercice', level: 'HSK 3', audio: 'audio/lian-xi.webm' }
   ];
   var SET2_WORDS = [
-    { pinyin: 'x\u01D0 ji\u01CEn chu\u012B', hanzi: '\u6D17\u526A\u5439', translation: 'Shampoing, coiffure, et s\\u00E8che-cheveux', level: '', audio: 'audio/xi-jian-chui.webm' },
+    { pinyin: 'x\u01D0 ji\u01CEn chu\u012B', hanzi: '\u6D17\u526A\u5439', translation: 'Shampoing, coiffure, et sèche-cheveux', level: '', audio: 'audio/xi-jian-chui.webm' },
     { pinyin: 'l\u01D0 f\xE0 di\xE0n', hanzi: '\u7406\u53D1\u5E97', translation: 'Salon de coiffure', level: '', audio: 'audio/li-fa-dian.webm' },
     { pinyin: 'ju\u01CEn f\xE0', hanzi: '\u5377\u53D1', translation: 'Friser les cheveux', level: '', audio: 'audio/juan-fa.webm' },
     { pinyin: 'r\u01CEn f\xE0', hanzi: '\u67D3\u53D1', translation: 'Teindre ses cheveux', level: '', audio: 'audio/ran-fa.webm' },
@@ -309,6 +309,7 @@ function setupReveal() {
           }
           var spans = Array.prototype.slice.call(card.querySelectorAll('span[style*="transition: opacity 0.26s"]'));
           var levelSpan = spans[0];
+          var levelParent = levelSpan.parentElement;
           var pinyinSpan = spans[1];
           var hanziSpan = spans[2];
           var transSpan = spans[3];
@@ -336,7 +337,15 @@ function setupReveal() {
             if (pinyinSpan) pinyinSpan.textContent = nextWord.pinyin + ' ';
             if (hanziSpan) hanziSpan.textContent = nextWord.hanzi;
             if (transSpan) transSpan.textContent = nextWord.translation;
-            if (levelSpan) levelSpan.textContent = nextWord.level;
+            if (levelSpan && levelParent) {
+              if (nextWord.level) {
+                levelSpan.textContent = nextWord.level;
+                levelParent.style.visibility = 'visible';
+              } else {
+                levelParent.style.visibility = 'hidden';
+              }
+            }
+            
             audioBtns.forEach(function (b) {
               b.setAttribute('aria-label', 'Écouter la prononciation de ' + nextWord.pinyin + ' ');
             });

@@ -3317,6 +3317,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   height: 10.510062cqw;
   font-size: 4.764575cqw;
   transform: none;
+  visibility: hidden;
 }
 
 .vocab-card--revise .vocab-card__pinyin {
