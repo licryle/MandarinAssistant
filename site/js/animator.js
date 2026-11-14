@@ -530,7 +530,7 @@ function setupReveal() {
   }
 
   function setupVideoSync() {
-    var video = document.querySelector('.analyse__widget video');
+    var video = document.querySelector('.analyse__phone-frame .widget--phone video');
     if (!video) return;
 
     var timings = [
