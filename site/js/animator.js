@@ -53,13 +53,13 @@ function setupReveal() {
 }
   function setupTicker() {
     var uls = Array.prototype.slice.call(document.querySelectorAll('ul')).filter(function (ul) {
-      return ul.querySelector('.ticker-item');
+      return ul.querySelector('.testimonials__item');
     });
     uls.forEach(function (ul, idx) {
       var items = Array.prototype.slice.call(ul.children);
       var clones = items.map(function (li) {
         var c = li.cloneNode(true);
-        c.classList.remove('ticker-item');
+        c.classList.remove('testimonials__item');
         c.classList.add('clone-item');
         c.setAttribute('aria-hidden', 'true');
         return c;
