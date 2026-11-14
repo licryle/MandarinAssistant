@@ -3170,6 +3170,168 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   mask-repeat: no-repeat;
 }
 
+/* Vocabulary Card Component */
+.vocab-card {
+  width: 100%;
+  min-width: 160px;
+  visibility: visible;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  container-type: inline-size;
+}
+
+.vocab-card--revise {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 892 / 850;
+}
+
+.vocab-card__svg {
+  position: absolute;
+  inset: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.vocab-card__inner-hero {
+  position: absolute;
+  left: -6.666667cqw;
+  top: -20cqw;
+  width: 113.333333cqw;
+  height: 80cqw;
+}
+
+.vocab-card__content-hero {
+  position: absolute;
+  inset: 0px;
+  transform-origin: 56.533333cqw 48.8cqw;
+  transform: perspective(93.333333cqw) rotateX(14deg);
+}
+
+.vocab-card__btn-left {
+  position: absolute;
+  top: 24.4cqw;
+  width: 13.333333cqw;
+  height: 8.533333cqw;
+  border-radius: 50%;
+  background: rgb(242, 242, 242);
+  border: 0px;
+  padding: 0px;
+  display: grid;
+  place-items: center;
+  color: rgb(0, 0, 0);
+  transform: perspective(46.666667cqw) rotateX(18deg);
+  left: 23.6cqw;
+}
+
+.vocab-card__btn-right {
+  position: absolute;
+  top: 24.4cqw;
+  width: 13.333333cqw;
+  height: 8.533333cqw;
+  border-radius: 50%;
+  background: rgb(242, 242, 242);
+  border: 0px;
+  padding: 0px;
+  display: grid;
+  place-items: center;
+  color: rgb(0, 0, 0);
+  transform: perspective(46.666667cqw) rotateX(18deg);
+  left: 77.466667cqw;
+}
+
+.vocab-card__badge {
+  position: absolute;
+  left: 50.8cqw;
+  top: 26.266667cqw;
+  width: 11.2cqw;
+  height: 5.066667cqw;
+  border-radius: 1.6cqw;
+  transform: perspective(46.666667cqw) rotateX(18deg);
+  background: rgb(242, 242, 242);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 2.533333cqw;
+  letter-spacing: -0.02em;
+  color: rgb(0, 0, 0);
+}
+
+.vocab-card__pinyin {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  line-height: 1;
+  top: 36cqw;
+  font-size: 5.733333cqw;
+  color: rgb(128, 128, 128);
+}
+
+.vocab-card__hanzi {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  line-height: 1;
+  top: 43cqw;
+  font-size: 16.666667cqw;
+  color: rgb(0, 0, 0);
+  font-weight: 700;
+}
+
+.vocab-card__definition {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  line-height: 1;
+  top: 63.333333cqw;
+  font-size: 5.866667cqw;
+  color: rgb(77, 77, 77);
+}
+
+.vocab-card--revise .vocab-card__btn-left {
+  top: 8.127813cqw;
+  width: 19.338563cqw;
+  height: 19.338563cqw;
+  left: 7.707375cqw;
+  transform: none;
+}
+
+.vocab-card--revise .vocab-card__btn-right {
+  top: 8.127813cqw;
+  width: 19.338563cqw;
+  height: 19.338563cqw;
+  left: 97.81375cqw;
+  transform: none;
+}
+
+.vocab-card--revise .vocab-card__badge {
+  left: 48.486563cqw;
+  top: 13.733187cqw;
+  width: 28.026875cqw;
+  height: 10.510062cqw;
+  font-size: 4.764575cqw;
+  transform: none;
+}
+
+.vocab-card--revise .vocab-card__pinyin {
+  top: 41.90025cqw;
+  font-size: 9.809437cqw;
+}
+
+.vocab-card--revise .vocab-card__hanzi {
+  top: 56.053812cqw;
+  font-size: 28.727563cqw;
+}
+
+.vocab-card--revise .vocab-card__definition {
+  top: 88.565cqw;
+  font-size: 9.529125cqw;
+}
+
 .framer-GX8Xm .showcase__copy {
   flex-flow:column;
   flex:none;
