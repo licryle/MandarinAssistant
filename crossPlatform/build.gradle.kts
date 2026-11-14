@@ -144,6 +144,7 @@ kotlin {
                 implementation(libs.kermit)
                 implementation(libs.room.runtime)
                 implementation(libs.sqlite.bundled)
+                implementation(libs.okio)
                 implementation(libs.filekit.core)
                 implementation(libs.filekit.dialogs)
                 implementation(libs.filekit.dialogs.compose)
