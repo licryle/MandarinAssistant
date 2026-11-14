@@ -31,7 +31,8 @@ fun IconButton(text: String, onClick: () -> Unit,
     ) {
         Button(onClick = onClick,
             enabled = enabled,
-            colors = btnColor
+            colors = btnColor,
+            modifier = modifier
         ) {
             drawable?.let {
                 Icon(
