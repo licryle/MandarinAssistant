@@ -3098,6 +3098,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   width:289px;
   height:auto;
   position:absolute;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
 }
 
 .framer-GX8Xm .widget--phone--raised {
@@ -6932,7 +6934,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   flex:none;
   width:229px;
   height:auto;
-  position:relative
+  position:relative;
+  align-self: flex-start;
 }
 
 .preparer__phone-frame.framer-v-12ruknm .preparer__step--1,
@@ -8180,7 +8183,7 @@ nav.nav--mobile {
      the SSR inline initial states. */
   .hero__reviews {
     opacity: 0.001;
-    transform: translateX(-50%) translateY(-20px);
+    transform: translateX(-50%) translateY(-20px) !important;
   }
 
   .hero__sticker--1,
