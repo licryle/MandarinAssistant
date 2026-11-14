@@ -28,11 +28,11 @@ class AppBarViewModel(
 
     init {
         // Sync external query changes (deep links, list consult) into the field.
-        // Skips the reset when the field already holds the same query, so
-        // in-flight typing is never clobbered by its own debounced write.
+        // Skips the reset when the field already holds the same query or when in-flight typing
+        // is active, so in-flight typing is never clobbered.
         viewModelScope.launch {
             searchQuery.collect { remote ->
-                if (SearchQuery.fromString(_localText.value.text) != remote) {
+                if (debounceJob?.isActive != true && SearchQuery.fromString(_localText.value.text) != remote) {
                     val text = remote.toString()
                     _localText.value = TextFieldValue(text, TextRange(text.length))
                 }

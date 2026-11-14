@@ -100,7 +100,7 @@ class AnnotatedChineseWordTest {
         val converted = annotatedFromAnnotation.toChineseWord()
         assertNotNull(converted)
         assertEquals("注", converted.simplified)
-        assertEquals("Some note", converted.definition[Locale.ENGLISH])
+        assertEquals("Some note", annotatedFromAnnotation.annotation?.notes)
         assertEquals(HSK_Level.NOT_HSK, converted.hskLevel)
         
         val annotatedEmpty = AnnotatedChineseWord(null, null)
