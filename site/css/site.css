@@ -1788,7 +1788,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 .framer-GX8Xm .preparer__inner,
 .framer-GX8Xm .framer-1sdv330,
 .framer-GX8Xm .testimonials__header,
-.framer-GX8Xm .framer-c4vcn4,
+.framer-GX8Xm .faq__header,
 .framer-GX8Xm .framer-10k2ffi {
   flex-flow:column;
   flex:none;
@@ -3358,7 +3358,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 .framer-GX8Xm .framer-4uah04,
-.framer-GX8Xm .framer-am86ve {
+.framer-GX8Xm .faq {
   background-color:var(--token-3f3bb750-47c6-48a3-96e5-720a249d9edd,#fff);
   height:min-content;
   overflow:var(--overflow-clip-fallback,clip);
@@ -3782,7 +3782,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 .framer-GX8Xm .testimonials__subtitle,
-.framer-GX8Xm .framer-1so87h0 {
+.framer-GX8Xm .faq__subtitle {
   --framer-link-text-color:#09f;
   --framer-link-text-decoration:underline;
   white-space:pre-wrap;
@@ -3861,7 +3861,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:0%
 }
 
-.framer-GX8Xm .framer-7p9l2i {
+.framer-GX8Xm .faq__inner {
   max-width:1200px;
   height:min-content;
   overflow:var(--overflow-clip-fallback,clip);
@@ -3876,7 +3876,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-1934pf0 {
+.framer-GX8Xm .faq__heading {
   --framer-link-text-color:#09f;
   --framer-link-text-decoration:underline;
   white-space:pre-wrap;
@@ -3888,7 +3888,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-10owjpq-container {
+.framer-GX8Xm .faq__list {
   flex:none;
   width:658px;
   height:auto;
@@ -5767,7 +5767,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .features__row {
     gap:90px
   }
-  .framer-GX8Xm .usecase,.framer-GX8Xm .framer-4uah04,.framer-GX8Xm .testimonials,.framer-GX8Xm .framer-am86ve,.framer-GX8Xm .framer-1qgooox {
+  .framer-GX8Xm .usecase,.framer-GX8Xm .framer-4uah04,.framer-GX8Xm .testimonials,.framer-GX8Xm .faq,.framer-GX8Xm .framer-1qgooox {
     padding:90px 32px 120px
   }
   .framer-GX8Xm .usecase__cards,.framer-GX8Xm .framer-1v8f1yq {
@@ -5864,13 +5864,13 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
     top:calc(93.5338% - 33px);
     left:calc(26.1394% - 33px)
   }
-  .framer-GX8Xm .testimonials__heading,.framer-GX8Xm .framer-1934pf0 {
+  .framer-GX8Xm .testimonials__heading,.framer-GX8Xm .faq__heading {
     width:450px
   }
-  .framer-GX8Xm .testimonials__subtitle,.framer-GX8Xm .framer-1so87h0 {
+  .framer-GX8Xm .testimonials__subtitle,.framer-GX8Xm .faq__subtitle {
     width:277px
   }
-  .framer-GX8Xm .framer-10owjpq-container {
+  .framer-GX8Xm .faq__list {
     width:587px
   }
   .framer-GX8Xm .framer-1ux8nie {
@@ -5931,7 +5931,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .usecase__inner {
     gap:55px
   }
-  .framer-GX8Xm .usecase__heading,.framer-GX8Xm .usecase__subtitle,.framer-GX8Xm .revise__heading,.framer-GX8Xm .revise__subtitle,.framer-GX8Xm .framer-16nv5fw,.framer-GX8Xm .framer-1r3oaez,.framer-GX8Xm .framer-kb9blk,.framer-GX8Xm .framer-ejq0e6,.framer-GX8Xm .framer-1seup4t,.framer-GX8Xm .analyse__heading,.framer-GX8Xm .analyse__subtitle,.framer-GX8Xm .analyse__phone,.framer-GX8Xm .preparer__heading,.framer-GX8Xm .preparer__subtitle,.framer-GX8Xm .framer-u4go2j,.framer-GX8Xm .testimonials__heading,.framer-GX8Xm .framer-1934pf0,.framer-GX8Xm .framer-10owjpq-container,.framer-GX8Xm .framer-sjmiuh,.framer-GX8Xm .framer-1vsv5ya,.framer-GX8Xm .framer-1ux8nie {
+  .framer-GX8Xm .usecase__heading,.framer-GX8Xm .usecase__subtitle,.framer-GX8Xm .revise__heading,.framer-GX8Xm .revise__subtitle,.framer-GX8Xm .framer-16nv5fw,.framer-GX8Xm .framer-1r3oaez,.framer-GX8Xm .framer-kb9blk,.framer-GX8Xm .framer-ejq0e6,.framer-GX8Xm .framer-1seup4t,.framer-GX8Xm .analyse__heading,.framer-GX8Xm .analyse__subtitle,.framer-GX8Xm .analyse__phone,.framer-GX8Xm .preparer__heading,.framer-GX8Xm .preparer__subtitle,.framer-GX8Xm .framer-u4go2j,.framer-GX8Xm .testimonials__heading,.framer-GX8Xm .faq__heading,.framer-GX8Xm .faq__list,.framer-GX8Xm .framer-sjmiuh,.framer-GX8Xm .framer-1vsv5ya,.framer-GX8Xm .framer-1ux8nie {
     width:100%
   }
   .framer-GX8Xm .usecase__cards,.framer-GX8Xm .framer-1v8f1yq {
@@ -6049,13 +6049,13 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
     top:calc(93.5223% - 33px);
     left:calc(9.03955% - 33px)
   }
-  .framer-GX8Xm .testimonials__subtitle,.framer-GX8Xm .framer-1so87h0 {
+  .framer-GX8Xm .testimonials__subtitle,.framer-GX8Xm .faq__subtitle {
     width:256px
   }
   .framer-GX8Xm .testimonials__card-wrap {
     width:auto
   }
-  .framer-GX8Xm .framer-am86ve {
+  .framer-GX8Xm .faq {
     padding:90px 18px
   }
   .framer-GX8Xm .framer-jciq2k {
@@ -7620,12 +7620,12 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:0
 }
 
-.framer-gIZPH.framer-6aojen,
-.framer-gIZPH .framer-6aojen {
+.faq__accordion.framer-6aojen,
+.faq__accordion .framer-6aojen {
   display:block
 }
 
-.framer-gIZPH.framer-1h15zsv {
+.faq__accordion {
   will-change:var(--framer-will-change-override,transform);
   flex-flow:column;
   place-content:center;
@@ -7639,20 +7639,14 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:hidden
 }
 
-.framer-gIZPH .framer-kz1y1v-container,
-.framer-gIZPH .framer-1avwenx-container,
-.framer-gIZPH .framer-1x2ylrl-container,
-.framer-gIZPH .framer-1mu02is-container,
-.framer-gIZPH .framer-o8b6fo-container,
-.framer-gIZPH .framer-15ocsrw-container,
-.framer-gIZPH .framer-1ndj14l-container {
+.faq__accordion .faq__item {
   flex:none;
   width:100%;
   height:auto;
   position:relative
 }
 
-.framer-gIZPH .framer-1boee5y-container {
+.faq__accordion .faq__anchor {
   z-index:1;
   flex:none;
   width:auto;
@@ -7662,12 +7656,12 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:50%
 }
 
-.framer-5dhLb.framer-1ualp7h,
-.framer-5dhLb .framer-1ualp7h {
+.faq__card.framer-1ualp7h,
+.faq__card .framer-1ualp7h {
   display:block
 }
 
-.framer-5dhLb.framer-fa4ci {
+.faq__card {
   cursor:pointer;
   will-change:var(--framer-will-change-override,transform);
   flex-flow:row;
@@ -7682,7 +7676,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:hidden
 }
 
-.framer-5dhLb .framer-1qk16d0 {
+.faq__card .faq__body {
   flex-flow:column;
   flex:1 0 0;
   place-content:center;
@@ -7696,7 +7690,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:visible
 }
 
-.framer-5dhLb .framer-1ijt81j {
+.faq__card .faq__question {
   flex-flow:row;
   flex:none;
   place-content:center;
@@ -7710,7 +7704,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:visible
 }
 
-.framer-5dhLb .framer-3896aj {
+.faq__card .faq__question-main {
   flex-flow:row;
   flex:1 0 0;
   place-content:center;
@@ -7724,8 +7718,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:visible
 }
 
-.framer-5dhLb .framer-yroa7k,
-.framer-5dhLb .framer-vtny4s {
+.faq__card .faq__question-text,
+.faq__card .faq__answer-text {
   -webkit-user-select:none;
   user-select:none;
   white-space:pre-wrap;
@@ -7737,7 +7731,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-5dhLb .framer-141qrwb {
+.faq__card .faq__toggle {
   aspect-ratio:1;
   cursor:pointer;
   will-change:var(--framer-will-change-override,transform);
@@ -7748,8 +7742,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:hidden
 }
 
-.framer-5dhLb .framer-1z6a0z,
-.framer-5dhLb .framer-1gm2mbo {
+.faq__card .faq__bar--h,
+.faq__card .faq__bar--v {
   will-change:var(--framer-will-change-override,transform);
   flex:none;
   width:2px;
@@ -7760,7 +7754,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:hidden
 }
 
-.framer-5dhLb .framer-6bywzt {
+.faq__card .faq__answer {
   pointer-events:none;
   z-index:1;
   flex-flow:row;
@@ -7778,14 +7772,14 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:hidden
 }
 
-.framer-5dhLb.framer-v-rhv0dy .framer-6bywzt {
+.faq__card.is-open .faq__answer {
   bottom:unset;
   left:unset;
   position:relative
 }
 
-.framer-5dhLb[data-border=true]:after,
-.framer-5dhLb [data-border=true]:after {
+.faq__card[data-border=true]:after,
+.faq__card [data-border=true]:after {
   content:"";
   border-width:var(--border-top-width,0) var(--border-right-width,0) var(--border-bottom-width,0) var(--border-left-width,0);
   border-color:var(--border-color,none);
@@ -8949,6 +8943,108 @@ nav.nav--mobile {
     corner-shape: inherit;
     object-position: center;
     object-fit: fill;
+  }
+
+  /* ---- FAQ --------------------------------------------------------------- */
+
+  .faq__heading span,
+  .faq__subtitle span {
+    display: inline-block;
+    opacity: 0.001;
+    filter: blur(10px);
+    transform: translateX(0) translateY(10px) scale(1) rotate(0deg) skewX(0deg) skewY(0deg);
+  }
+
+  .faq__heading h2 {
+    --framer-text-alignment: center;
+    --framer-text-color: var(--token-64ff3c34-345f-43ee-baab-9a47cea3c1fc, rgb(18, 19, 23));
+  }
+
+  .faq__subtitle p {
+    --framer-text-alignment: center;
+    --framer-text-color: var(--token-1e3ba35f-81ae-45f1-957d-fdbc8b701e2d, rgba(18, 19, 23, 0.58));
+  }
+
+  /* The accordion is a Framer component instance: the block and its default
+     variant collapse onto one class. */
+  .faq__accordion {
+    width: 100%;
+    border-radius: 26px;
+  }
+
+  /* Absolute anchor kept from the export; it only carries the centring shift. */
+  .faq__anchor {
+    transform: translateX(-50%);
+  }
+
+  .faq__card {
+    background-color: rgba(25, 25, 24, 0.05);
+    width: 100%;
+    border-radius: 24px;
+    /* 1px hairline, painted by the [data-border] ::after overlay. */
+    --border-top-width: 1px;
+    --border-right-width: 1px;
+    --border-bottom-width: 1px;
+    --border-left-width: 1px;
+    --border-style: solid;
+    --border-color: rgba(18, 19, 23, 0.03);
+  }
+
+  /* Question text: 18px medium, near-black. */
+  .faq__question-text {
+    --extracted-r6o4lv: var(--token-64ff3c34-345f-43ee-baab-9a47cea3c1fc, rgb(18, 19, 23));
+  }
+
+  .faq__question-text h3 {
+    --framer-font-size: 18px;
+    --framer-font-weight: 500;
+    --framer-letter-spacing: -0.04em;
+    --framer-line-height: 140%;
+    --framer-text-alignment: left;
+    --framer-text-color: var(--extracted-r6o4lv, var(--token-64ff3c34-345f-43ee-baab-9a47cea3c1fc, rgb(18, 19, 23)));
+  }
+
+  /* Toggle button: red tile with a white plus that turns into a minus. */
+  .faq__toggle {
+    background-color: var(--token-32b967a1-ae42-429d-a459-f45c893f81be, rgb(244, 71, 58));
+    border-radius: 5px;
+    box-shadow:
+      0 0.6021873017743928px 0.6021873017743928px -0.9166666666666666px rgba(0, 0, 0, 0.1),
+      0 2.288533303243457px 2.288533303243457px -1.8333333333333333px rgba(0, 0, 0, 0.09),
+      0 10px 10px -2.75px rgba(0, 0, 0, 0.08);
+  }
+
+  .faq__bar--h,
+  .faq__bar--v {
+    background-color: var(--token-262ecc22-57b7-472d-83d9-e78a1e1f93a7, rgb(255, 255, 255));
+    border-radius: 5px;
+  }
+
+  .faq__bar--h {
+    transform: rotate(-90deg);
+  }
+
+  .faq__bar--v {
+    transform: rotate(-180deg);
+  }
+
+  /* Answer: parked below the card until `.is-open` pulls it into flow. */
+  .faq__answer {
+    opacity: 0;
+    transform: translateX(-50%);
+  }
+
+  /* Answer copy: muted grey once the card is open (animator.js swaps the
+     custom property back to white while closing). */
+  .faq__answer-text {
+    --extracted-r6o4lv: var(--token-cc359361-be1d-443c-b3d4-114af3dda3d6, rgba(255, 255, 255, 0.8));
+  }
+
+  .faq__answer-text p {
+    --framer-letter-spacing: -0.04em;
+    --framer-line-height: 140%;
+    --framer-text-alignment: left;
+    --framer-text-color: var(--extracted-r6o4lv, var(--token-cc359361-be1d-443c-b3d4-114af3dda3d6, rgba(255, 255, 255, 0.8)));
   }
 
   /* ---- Burger button (mobile only) --------------------------------------- */

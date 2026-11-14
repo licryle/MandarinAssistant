@@ -103,12 +103,12 @@ function setupReveal() {
   function setupFaq() {
     var questions = Array.prototype.slice.call(document.querySelectorAll('[name^="Question "]'));
     questions.forEach(function (q) {
-      var card = q.querySelector('.framer-5dhLb');
+      var card = q.querySelector('.faq__card');
       if (!card) return;
-      var answer = card.querySelector('.framer-6bywzt');
-      var hBar = card.querySelector('.framer-1z6a0z');
-      var vBar = card.querySelector('.framer-1gm2mbo');
-      var answerText = card.querySelector('.framer-vtny4s');
+      var answer = card.querySelector('.faq__answer');
+      var hBar = card.querySelector('.faq__bar--h');
+      var vBar = card.querySelector('.faq__bar--v');
+      var answerText = card.querySelector('.faq__answer-text');
 
       function open() {
         var closedH = card.getBoundingClientRect().height;
@@ -120,8 +120,8 @@ function setupReveal() {
         void card.offsetHeight;
 
         // Apply open variant.
-        card.classList.remove('framer-v-fa4ci');
-        card.classList.add('framer-v-rhv0dy');
+        card.classList.remove('is-closed');
+        card.classList.add('is-open');
         card.setAttribute('data-framer-name', 'Opened');
 
         // Measure natural open height without the temporary height constraint.
@@ -176,11 +176,11 @@ function setupReveal() {
 
       function close() {
         var openH = card.getBoundingClientRect().height;
-        card.classList.remove('framer-v-rhv0dy');
-        card.classList.add('framer-v-fa4ci');
+        card.classList.remove('is-open');
+        card.classList.add('is-closed');
         var targetH = card.getBoundingClientRect().height;
-        card.classList.remove('framer-v-fa4ci');
-        card.classList.add('framer-v-rhv0dy');
+        card.classList.remove('is-closed');
+        card.classList.add('is-open');
         card.style.height = openH + 'px';
         card.style.overflow = 'hidden';
         requestAnimationFrame(function () {
@@ -195,8 +195,8 @@ function setupReveal() {
           if (vBar) { vBar.style.transition = 'transform 0.3s ease'; vBar.style.transform = 'rotate(-180deg)'; }
           if (answerText) answerText.style.setProperty('--extracted-r6o4lv', 'var(--token-cc359361-be1d-443c-b3d4-114af3dda3d6, rgba(255, 255, 255, 0.8))');
           setTimeout(function () {
-            card.classList.remove('framer-v-rhv0dy');
-            card.classList.add('framer-v-fa4ci');
+            card.classList.remove('is-open');
+            card.classList.add('is-closed');
             card.setAttribute('data-framer-name', 'Closed');
             card.style.height = '';
             card.style.transition = '';
@@ -205,22 +205,22 @@ function setupReveal() {
         });
       }
       function toggle() {
-        if (card.classList.contains('framer-v-rhv0dy')) {
+        if (card.classList.contains('is-open')) {
           close();
         } else {
           questions.forEach(function (oq) {
-            var oc = oq.querySelector('.framer-5dhLb');
-            if (oc && oc !== card && oc.classList.contains('framer-v-rhv0dy')) {
-              var oa = oc.querySelector('.framer-6bywzt');
-              var oh = oc.querySelector('.framer-1z6a0z');
-              var ov = oc.querySelector('.framer-1gm2mbo');
-              var ot = oc.querySelector('.framer-vtny4s');
+            var oc = oq.querySelector('.faq__card');
+            if (oc && oc !== card && oc.classList.contains('is-open')) {
+              var oa = oc.querySelector('.faq__answer');
+              var oh = oc.querySelector('.faq__bar--h');
+              var ov = oc.querySelector('.faq__bar--v');
+              var ot = oc.querySelector('.faq__answer-text');
               var openH2 = oc.getBoundingClientRect().height;
-              oc.classList.remove('framer-v-rhv0dy');
-              oc.classList.add('framer-v-fa4ci');
+              oc.classList.remove('is-open');
+              oc.classList.add('is-closed');
               var targetH2 = oc.getBoundingClientRect().height;
-              oc.classList.remove('framer-v-fa4ci');
-              oc.classList.add('framer-v-rhv0dy');
+              oc.classList.remove('is-closed');
+              oc.classList.add('is-open');
               oc.style.height = openH2 + 'px';
               oc.style.overflow = 'hidden';
               requestAnimationFrame(function () {
@@ -231,8 +231,8 @@ function setupReveal() {
                 if (ov) { ov.style.transition = 'transform 0.3s ease'; ov.style.transform = 'rotate(-180deg)'; }
                 if (ot) ot.style.setProperty('--extracted-r6o4lv', 'var(--token-cc359361-be1d-443c-b3d4-114af3dda3d6, rgba(255, 255, 255, 0.8))');
                 setTimeout(function () {
-                  oc.classList.remove('framer-v-rhv0dy');
-                  oc.classList.add('framer-v-fa4ci');
+                  oc.classList.remove('is-open');
+                  oc.classList.add('is-closed');
                   oc.setAttribute('data-framer-name', 'Closed');
                   oc.style.height = '';
                   oc.style.transition = '';
