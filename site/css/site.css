@@ -2925,7 +2925,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   width:59px;
   height:19px;
   position:absolute;
-  top:0;
+  top:-15px;
   left:21px
 }
 
@@ -8327,7 +8327,6 @@ nav.nav--mobile {
   }
 
   .download__cta {
-    opacity: 0.001;
     transform: translateY(10px);
   }
 
