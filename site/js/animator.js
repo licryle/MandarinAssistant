@@ -598,12 +598,10 @@ function setupReveal() {
   }
 
   function setupPhoneSequence() {
-    // Only one phone stack exists in the markup. The two other entries this used
-    // to carry (.framer-wTPp6, .framer-9gPJy) matched nothing.
     const layouts = [
       {
         selector: '.preparer__phone-frame',
-        states: ['framer-v-12ruknm', 'framer-v-trghup']
+        states: ['preparer__phone-frame-1', 'preparer__phone-frame-2']
       }
     ];
 
