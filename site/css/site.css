@@ -8827,7 +8827,36 @@ nav.nav--mobile {
     container-type: inline-size;
   }
 
-  /* ---- Widget demo animations -------------------------------------------
+  
+  .vocab-card .ma-card {
+    --ma-card-drop: 2cqw;
+    position: relative;
+    width: 100%;
+    height: 58.666667cqw;
+  }
+
+  .vocab-card--revise .ma-card {
+    --ma-card-drop: 3.363229cqw;
+    position: absolute;
+    left: 0px;
+    top: 0.130325cqw;
+    width: 125cqw;
+    height: 119.114375cqw;
+    border-radius: 16.816125cqw;
+    background: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.14) 0px 5.605381cqw 12.612125cqw;
+  }
+
+
+
+
+
+    .ma-flash-track {
+    position: absolute;
+    inset: 0;
+  }
+
+    /* ---- Widget demo animations -------------------------------------------
      Moved out of the <style data-widget-css> block that used to sit in
      <head>. The markup and animator.js drive them through --ma-play
      (running/paused) and --ma-card-drop.
