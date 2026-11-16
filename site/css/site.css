@@ -8365,6 +8365,39 @@ nav.nav--mobile {
     transform: translateY(10px);
   }
 
+  .showcase__float {
+    transform: translateX(-50%);
+  }
+
+  .showcase__heading h3 {
+    --framer-text-color: var(--color-ink);
+  }
+
+  .showcase__subtitle p {
+    --framer-text-color: var(--color-ink-muted);
+  }
+
+  .showcase__image-frame {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    corner-shape: inherit;
+  }
+
+  .showcase__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    corner-shape: inherit;
+    object-position: center;
+    object-fit: fill;
+  }
+
+  .showcase__image--cover {
+    object-fit: cover;
+  }
+
   /* ---- Testimonials ------------------------------------------------------ */
 
   .testimonials__heading span,
