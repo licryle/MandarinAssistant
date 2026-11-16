@@ -252,21 +252,25 @@ function setupReveal() {
   }
 
   var DEFAULT_WORDS = [
-    { pinyin: 'n\u01D0 h\u01CEo', hanzi: '\u4F60\u597D', translation: 'Bonjour', level: 'HSK 1', audio: 'audio/ni-hao.webm' },
-    { pinyin: 'c\u01CEo m\xE9i', hanzi: '\u8349\u8393', translation: 'Fraise', level: 'HSK 3', audio: 'audio/cao-mei.webm' },
-    { pinyin: 'gu\u0101n xi', hanzi: '\u5173\u7CFB', translation: 'Relation', level: 'HSK 3', audio: 'audio/guan-xi.webm' },
-    { pinyin: 'ji\u0101 t\xEDng', hanzi: '\u5BB6\u5EAD', translation: 'Famille', level: 'HSK 3', audio: 'audio/jia-ting.webm' },
-    { pinyin: 'ji\xE0n sh\xE8', hanzi: '\u5EFA\u8BBE', translation: 'Construction', level: 'HSK 5', audio: 'audio/jian-she.webm' },
-    { pinyin: 'li\xE0n x\xED', hanzi: '\u7EC3\u4E60', translation: 'Exercice', level: 'HSK 3', audio: 'audio/lian-xi.webm' }
+    { id: 'ni-hao', pinyin: 'n\u01D0 h\u01CEo', hanzi: '\u4F60\u597D', level: 'HSK 1', audio: 'audio/ni-hao.webm' },
+    { id: 'cao-mei', pinyin: 'c\u01CEo m\xE9i', hanzi: '\u8349\u8393', level: 'HSK 3', audio: 'audio/cao-mei.webm' },
+    { id: 'guan-xi', pinyin: 'gu\u0101n xi', hanzi: '\u5173\u7CFB', level: 'HSK 3', audio: 'audio/guan-xi.webm' },
+    { id: 'jia-ting', pinyin: 'ji\u0101 t\xEDng', hanzi: '\u5BB6\u5EAD', level: 'HSK 3', audio: 'audio/jia-ting.webm' },
+    { id: 'jian-she', pinyin: 'ji\xE0n sh\xE8', hanzi: '\u5EFA\u8BBE', level: 'HSK 5', audio: 'audio/jian-she.webm' },
+    { id: 'lian-xi', pinyin: 'li\xE0n x\xED', hanzi: '\u7EC3\u4E60', level: 'HSK 3', audio: 'audio/lian-xi.webm' }
   ];
   var SET2_WORDS = [
-    { pinyin: 'x\u01D0 ji\u01CEn chu\u012B', hanzi: '\u6D17\u526A\u5439', translation: 'Shampoing, coiffure, et sèche-cheveux', level: '', audio: 'audio/xi-jian-chui.webm' },
-    { pinyin: 'l\u01D0 f\xE0 di\xE0n', hanzi: '\u7406\u53D1\u5E97', translation: 'Salon de coiffure', level: '', audio: 'audio/li-fa-dian.webm' },
-    { pinyin: 'ju\u01CEn f\xE0', hanzi: '\u5377\u53D1', translation: 'Friser les cheveux', level: '', audio: 'audio/juan-fa.webm' },
-    { pinyin: 'r\u01CEn f\xE0', hanzi: '\u67D3\u53D1', translation: 'Teindre ses cheveux', level: '', audio: 'audio/ran-fa.webm' },
-    { pinyin: 'ji\u01CEn d\u0101o', hanzi: '\u526A\u5200', translation: 'ciseaux', level: 'HSK5', audio: 'audio/jian-dao.webm' },
-    { pinyin: 'x\u01D0 f\xE0 shu\u01D0', hanzi: '\u6D17\u53D1\u6C34', translation: 'Shampoing', level: '', audio: 'audio/xi-fa-shui.webm' }
+    { id: 'xi-jian-chui', pinyin: 'x\u01D0 ji\u01CEn chu\u012B', hanzi: '\u6D17\u526A\u5439', level: '', audio: 'audio/xi-jian-chui.webm' },
+    { id: 'li-fa-dian', pinyin: 'l\u01D0 f\xE0 di\xE0n', hanzi: '\u7406\u53D1\u5E97', level: '', audio: 'audio/li-fa-dian.webm' },
+    { id: 'juan-fa', pinyin: 'ju\u01CEn f\xE0', hanzi: '\u5377\u53D1', level: '', audio: 'audio/juan-fa.webm' },
+    { id: 'ran-fa', pinyin: 'r\u01CEn f\xE0', hanzi: '\u67D3\u53D1', level: '', audio: 'audio/ran-fa.webm' },
+    { id: 'jian-dao', pinyin: 'ji\u01CEn d\u0101o', hanzi: '\u526A\u5200', level: 'HSK5', audio: 'audio/jian-dao.webm' },
+    { id: 'xi-fa-shui', pinyin: 'x\u01D0 f\xE0 shu\u01D0', hanzi: '\u6D17\u53D1\u6C34', level: '', audio: 'audio/xi-fa-shui.webm' }
   ];
+
+  var translations = JSON.parse(
+    document.getElementById('ma-widgets').textContent
+  );
 
   function setupCards() {
     var cards = Array.prototype.slice.call(document.querySelectorAll('.ma-card'));
@@ -276,12 +280,8 @@ function setupReveal() {
       var words = (i === 0) ? DEFAULT_WORDS : SET2_WORDS;
       card._words = words;
 
-      var audioBtns = Array.prototype.slice.call(card.querySelectorAll('.ma-snd')).filter(function (b) {
-        return /Écouter|ecouter/i.test(b.getAttribute('aria-label') || '');
-      });
-      var nextBtns = Array.prototype.slice.call(card.querySelectorAll('.ma-snd')).filter(function (b) {
-        return /Mot suivant/i.test(b.getAttribute('aria-label') || '');
-      });
+      var audioBtns = card.querySelectorAll('[data-action="play-audio"]')
+      var nextBtns = card.querySelectorAll('[data-action="next-word"]')
 
       audioBtns.forEach(function (btn) {
         btn.addEventListener('click', function (e) {
@@ -338,7 +338,7 @@ function setupReveal() {
           setTimeout(function () {
             if (pinyinSpan) pinyinSpan.textContent = nextWord.pinyin + ' ';
             if (hanziSpan) hanziSpan.textContent = nextWord.hanzi;
-            if (transSpan) transSpan.textContent = nextWord.translation;
+            if (transSpan) transSpan.textContent = translations.words[nextWord.id] || '';
             if (levelSpan && levelParent) {
               if (nextWord.level) {
                 levelSpan.textContent = nextWord.level;
@@ -347,10 +347,7 @@ function setupReveal() {
                 levelParent.style.visibility = 'hidden';
               }
             }
-            
-            audioBtns.forEach(function (b) {
-              b.setAttribute('aria-label', 'Écouter la prononciation de ' + nextWord.pinyin + ' ');
-            });
+ 
             if (audio) {
               var audioFile = nextWord.audio || '';
               if (audioFile) {
