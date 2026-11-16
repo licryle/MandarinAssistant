@@ -3629,7 +3629,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:absolute;
   top:50%;
   left:50%;
-  transform:translate(-50%,-50%)
+  transform:translate(-50%,-50%);
+  justify-content: center;
 }
 
 .framer-GX8Xm .framer-3d5ot0 {
@@ -8342,6 +8343,15 @@ nav.nav--mobile {
     border-radius: inherit;
     corner-shape: inherit;
   }
+.telecharger__image--cover {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    corner-shape: inherit;
+    object-position: center;
+    object-fit: cover;
+  }
 
   .framer-idbpmy-container {
     opacity: 0.001;
@@ -8859,4 +8869,12 @@ nav.nav--mobile {
       display: none;
     }
   }
+  /* Pixel-art SVG glyphs in the download demo's floating cards. */
+  .framer-bbizg3, .framer-1s3o9g3, .framer-1lit37z, .framer-lyfivx, .framer-1ej506w, .framer-v62bgx {
+    image-rendering: pixelated;
+    flex-shrink: 0;
+    fill: rgba(0, 0, 0, 1);
+    color: rgba(0, 0, 0, 1);
+  }
+
 }
