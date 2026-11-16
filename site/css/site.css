@@ -7497,6 +7497,7 @@ nav.nav--mobile {
      be inherited rather than restated as plain declarations on one element. */
 
   .nav__logo-glyph {
+    display: flex;
     justify-content: center;
     --framer-font-size: 18px;
     --framer-text-alignment: center;
