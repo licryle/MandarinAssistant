@@ -698,18 +698,6 @@ function setupReveal() {
     update();
   }
 
-  function revealAppearFallback() {
-    setTimeout(function () {
-      document.querySelectorAll('[data-framer-appear-id]').forEach(function (el) {
-        var cs = getComputedStyle(el);
-        if (parseFloat(cs.opacity) < 0.5) {
-          el.style.opacity = '1';
-          el.style.transform = 'none';
-        }
-      });
-    }, 2000);
-  }
-
   function init() {
     stripWhitespace();
     setupReveal();
@@ -723,7 +711,6 @@ function setupReveal() {
     setupBreathing();
     setupVideoSync();
     setupScrollLogo();
-    revealAppearFallback();
   }
 
   if (document.body) {

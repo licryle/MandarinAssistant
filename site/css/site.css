@@ -7671,7 +7671,6 @@ nav.nav--mobile {
      fallback in animator.js) animates them to opacity 1. These rules replace
      the SSR inline initial states. */
   .hero__reviews {
-    opacity: 0.001;
     transform: translateX(-50%) translateY(-20px) !important;
   }
 
@@ -7680,14 +7679,9 @@ nav.nav--mobile {
   .hero__sticker--3,
   .hero__sticker--4,
   .hero__sticker--5,
-  .hero__sticker--7 {
-    will-change: transform;
-    opacity: 0.001;
-    transform: translateY(10px);
-  }
-
+  .hero__sticker--7,
   .hero__sticker--8 {
-    opacity: 0.001;
+    will-change: transform;
     transform: translateY(10px);
   }
 
