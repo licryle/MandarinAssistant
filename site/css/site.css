@@ -7667,24 +7667,7 @@ nav.nav--mobile {
 
   /* ---- Hero -------------------------------------------------------------- */
 
-  /* Framer's appear animation starts these hidden and the runtime (or the 2s
-     fallback in animator.js) animates them to opacity 1. These rules replace
-     the SSR inline initial states. */
-  .hero__reviews {
-    transform: translateX(-50%) translateY(-20px) !important;
-  }
-
-  .hero__sticker--1,
-  .hero__sticker--2,
-  .hero__sticker--3,
-  .hero__sticker--4,
-  .hero__sticker--5,
-  .hero__sticker--7,
-  .hero__sticker--8 {
-    will-change: transform;
-    transform: translateY(10px);
-  }
-
+  
   /* Not an appear element: it stays faint and tilted. */
   .hero__sticker--6 {
     will-change: transform;
@@ -7876,12 +7859,7 @@ nav.nav--mobile {
     --framer-text-color: var(--color-ink-muted);
   }
 
-  /* Framer's appear animation starts the CTA hidden; the runtime animates it. */
-  .usecase__cta {
-    opacity: 0.001;
-    transform: translateY(10px);
-  }
-
+  
   /* The widget card wraps its preview so the 305px frame fills the card. */
   .usecase__preview-wrap {
     width: 100%;
@@ -8848,6 +8826,43 @@ nav.nav--mobile {
     .ma-flash-track {
     position: absolute;
     inset: 0;
+  }
+
+  .ma-flash-track > div {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 0;
+    overflow: visible;
+  }
+
+  .ma-flash-track > div:nth-child(2) {
+    top: 30.985915cqw;
+  }
+
+  .ma-flash-track > div > div {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2.112676cqw;
+  }
+
+  .ma-flash-track > div > div:first-child {
+    background: var(--color-rule);
+  }
+
+  .ma-flash-track > div > .ma-flash-line {
+    background: linear-gradient(90deg, transparent 0%, var(--color-brand) 100%);
+  }
+
+  .ma-flash-track > div:nth-child(1) > .ma-flash-line {
+    animation-delay: 0s;
+  }
+
+  .ma-flash-track > div:nth-child(2) > .ma-flash-line {
+    animation-delay: 0.12s;
   }
 
     /* ---- Widget demo animations -------------------------------------------
