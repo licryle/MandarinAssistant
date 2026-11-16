@@ -9159,3 +9159,9 @@ nav.nav--mobile {
   }
 
 }
+
+
+.download__phone-badge-text--2,
+.download__phone-badge-text--3 {
+  height: unset;
+}
