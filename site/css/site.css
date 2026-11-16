@@ -4983,8 +4983,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   box-shadow:0 6px 14px #0000001a,0 25px 25px #00000017,0 56px 34px #0000000d,0 100px 40px #00000003,0 156px 44px #0000
 }
 
-.framer-Cz6rZ .framer-styles-preset-byaisv:not(.rich-text-wrapper),
-.framer-Cz6rZ .framer-styles-preset-byaisv.rich-text-wrapper h1 {
+.framer-Cz6rZ .type--display:not(.rich-text-wrapper),
+.framer-Cz6rZ .type--display.rich-text-wrapper h1 {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5012,7 +5012,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (810px <= width < 1200px) {
-  .framer-Cz6rZ .framer-styles-preset-byaisv:not(.rich-text-wrapper),.framer-Cz6rZ .framer-styles-preset-byaisv.rich-text-wrapper h1 {
+  .framer-Cz6rZ .type--display:not(.rich-text-wrapper),.framer-Cz6rZ .type--display.rich-text-wrapper h1 {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5042,7 +5042,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (width < 810px) {
-  .framer-Cz6rZ .framer-styles-preset-byaisv:not(.rich-text-wrapper),.framer-Cz6rZ .framer-styles-preset-byaisv.rich-text-wrapper h1 {
+  .framer-Cz6rZ .type--display:not(.rich-text-wrapper),.framer-Cz6rZ .type--display.rich-text-wrapper h1 {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5072,7 +5072,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (810px <= width < 1200px) {
-  .framer-e0bMd .framer-styles-preset-1wyvkrv:not(.rich-text-wrapper),.framer-e0bMd .framer-styles-preset-1wyvkrv.rich-text-wrapper p {
+  .framer-e0bMd .type--body:not(.rich-text-wrapper),.framer-e0bMd .type--body.rich-text-wrapper p {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5102,7 +5102,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (width < 810px) {
-  .framer-e0bMd .framer-styles-preset-1wyvkrv:not(.rich-text-wrapper),.framer-e0bMd .framer-styles-preset-1wyvkrv.rich-text-wrapper p {
+  .framer-e0bMd .type--body:not(.rich-text-wrapper),.framer-e0bMd .type--body.rich-text-wrapper p {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5131,8 +5131,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   
 }
 
-.framer-S8QK3 .framer-styles-preset-6z6jlz:not(.rich-text-wrapper),
-.framer-S8QK3 .framer-styles-preset-6z6jlz.rich-text-wrapper p {
+.framer-S8QK3 .type--eyebrow:not(.rich-text-wrapper),
+.framer-S8QK3 .type--eyebrow.rich-text-wrapper p {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5160,7 +5160,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (810px <= width < 1200px) {
-  .framer-S8QK3 .framer-styles-preset-6z6jlz:not(.rich-text-wrapper),.framer-S8QK3 .framer-styles-preset-6z6jlz.rich-text-wrapper p {
+  .framer-S8QK3 .type--eyebrow:not(.rich-text-wrapper),.framer-S8QK3 .type--eyebrow.rich-text-wrapper p {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5190,7 +5190,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (width < 810px) {
-  .framer-S8QK3 .framer-styles-preset-6z6jlz:not(.rich-text-wrapper),.framer-S8QK3 .framer-styles-preset-6z6jlz.rich-text-wrapper p {
+  .framer-S8QK3 .type--eyebrow:not(.rich-text-wrapper),.framer-S8QK3 .type--eyebrow.rich-text-wrapper p {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5219,8 +5219,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   
 }
 
-.framer-jcXSE .framer-styles-preset-iacqyp:not(.rich-text-wrapper),
-.framer-jcXSE .framer-styles-preset-iacqyp.rich-text-wrapper p {
+.framer-jcXSE .type--body-lg:not(.rich-text-wrapper),
+.framer-jcXSE .type--body-lg.rich-text-wrapper p {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5248,7 +5248,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (810px <= width < 1200px) {
-  .framer-jcXSE .framer-styles-preset-iacqyp:not(.rich-text-wrapper),.framer-jcXSE .framer-styles-preset-iacqyp.rich-text-wrapper p {
+  .framer-jcXSE .type--body-lg:not(.rich-text-wrapper),.framer-jcXSE .type--body-lg.rich-text-wrapper p {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5278,7 +5278,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (width < 810px) {
-  .framer-jcXSE .framer-styles-preset-iacqyp:not(.rich-text-wrapper),.framer-jcXSE .framer-styles-preset-iacqyp.rich-text-wrapper p {
+  .framer-jcXSE .type--body-lg:not(.rich-text-wrapper),.framer-jcXSE .type--body-lg.rich-text-wrapper p {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5307,8 +5307,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   
 }
 
-.framer-YFeJr .framer-styles-preset-1301gs4:not(.rich-text-wrapper),
-.framer-YFeJr .framer-styles-preset-1301gs4.rich-text-wrapper h2 {
+.framer-YFeJr .type--title:not(.rich-text-wrapper),
+.framer-YFeJr .type--title.rich-text-wrapper h2 {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5336,7 +5336,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (810px <= width < 1200px) {
-  .framer-YFeJr .framer-styles-preset-1301gs4:not(.rich-text-wrapper),.framer-YFeJr .framer-styles-preset-1301gs4.rich-text-wrapper h2 {
+  .framer-YFeJr .type--title:not(.rich-text-wrapper),.framer-YFeJr .type--title.rich-text-wrapper h2 {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5366,7 +5366,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (width < 810px) {
-  .framer-YFeJr .framer-styles-preset-1301gs4:not(.rich-text-wrapper),.framer-YFeJr .framer-styles-preset-1301gs4.rich-text-wrapper h2 {
+  .framer-YFeJr .type--title:not(.rich-text-wrapper),.framer-YFeJr .type--title.rich-text-wrapper h2 {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5395,8 +5395,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   
 }
 
-.framer-BUQ4R .framer-styles-preset-ox9fz6:not(.rich-text-wrapper),
-.framer-BUQ4R .framer-styles-preset-ox9fz6.rich-text-wrapper p {
+.framer-BUQ4R .type--card-title:not(.rich-text-wrapper),
+.framer-BUQ4R .type--card-title.rich-text-wrapper p {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5423,8 +5423,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   --framer-text-transform:none
 }
 
-.framer-P58eD .framer-styles-preset-i4g4pt:not(.rich-text-wrapper),
-.framer-P58eD .framer-styles-preset-i4g4pt.rich-text-wrapper p {
+.framer-P58eD .type--body-sm:not(.rich-text-wrapper),
+.framer-P58eD .type--body-sm.rich-text-wrapper p {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5451,8 +5451,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   --framer-text-transform:none
 }
 
-.framer-SyRCb .framer-styles-preset-muuqmc:not(.rich-text-wrapper),
-.framer-SyRCb .framer-styles-preset-muuqmc.rich-text-wrapper h3 {
+.framer-SyRCb .type--subtitle:not(.rich-text-wrapper),
+.framer-SyRCb .type--subtitle.rich-text-wrapper h3 {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5480,7 +5480,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (810px <= width < 1200px) {
-  .framer-SyRCb .framer-styles-preset-muuqmc:not(.rich-text-wrapper),.framer-SyRCb .framer-styles-preset-muuqmc.rich-text-wrapper h3 {
+  .framer-SyRCb .type--subtitle:not(.rich-text-wrapper),.framer-SyRCb .type--subtitle.rich-text-wrapper h3 {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5510,7 +5510,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (width < 810px) {
-  .framer-SyRCb .framer-styles-preset-muuqmc:not(.rich-text-wrapper),.framer-SyRCb .framer-styles-preset-muuqmc.rich-text-wrapper h3 {
+  .framer-SyRCb .type--subtitle:not(.rich-text-wrapper),.framer-SyRCb .type--subtitle.rich-text-wrapper h3 {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5540,7 +5540,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (810px <= width < 1200px) {
-  .framer-x9N9e .framer-styles-preset-251r4c:not(.rich-text-wrapper),.framer-x9N9e .framer-styles-preset-251r4c.rich-text-wrapper h4 {
+  .framer-x9N9e .type--heading:not(.rich-text-wrapper),.framer-x9N9e .type--heading.rich-text-wrapper h4 {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5570,7 +5570,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (width < 810px) {
-  .framer-x9N9e .framer-styles-preset-251r4c:not(.rich-text-wrapper),.framer-x9N9e .framer-styles-preset-251r4c.rich-text-wrapper h4 {
+  .framer-x9N9e .type--heading:not(.rich-text-wrapper),.framer-x9N9e .type--heading.rich-text-wrapper h4 {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -5599,8 +5599,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   
 }
 
-.framer-ZiHET .framer-styles-preset-vz7gla:not(.rich-text-wrapper),
-.framer-ZiHET .framer-styles-preset-vz7gla.rich-text-wrapper p {
+.framer-ZiHET .type--group-title:not(.rich-text-wrapper),
+.framer-ZiHET .type--group-title.rich-text-wrapper p {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -6600,8 +6600,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   margin-left: min(max(calc(+40vw - 172px), 0px), 1200px - 600px - 172px - 40px);
 }
 
-.framer-DDAER .framer-styles-preset-17oqnu:not(.rich-text-wrapper),
-.framer-DDAER .framer-styles-preset-17oqnu.rich-text-wrapper p {
+.framer-DDAER .type--caption:not(.rich-text-wrapper),
+.framer-DDAER .type--caption.rich-text-wrapper p {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -6744,8 +6744,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   top:-1141px
 }
 
-.framer-x9N9e .framer-styles-preset-251r4c:not(.rich-text-wrapper),
-.framer-x9N9e .framer-styles-preset-251r4c.rich-text-wrapper h4 {
+.framer-x9N9e .type--heading:not(.rich-text-wrapper),
+.framer-x9N9e .type--heading.rich-text-wrapper h4 {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -6773,7 +6773,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (810px <= width < 1200px) {
-  .framer-x9N9e .framer-styles-preset-251r4c:not(.rich-text-wrapper),.framer-x9N9e .framer-styles-preset-251r4c.rich-text-wrapper h4 {
+  .framer-x9N9e .type--heading:not(.rich-text-wrapper),.framer-x9N9e .type--heading.rich-text-wrapper h4 {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -6803,7 +6803,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (width < 810px) {
-  .framer-x9N9e .framer-styles-preset-251r4c:not(.rich-text-wrapper),.framer-x9N9e .framer-styles-preset-251r4c.rich-text-wrapper h4 {
+  .framer-x9N9e .type--heading:not(.rich-text-wrapper),.framer-x9N9e .type--heading.rich-text-wrapper h4 {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -6832,8 +6832,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   
 }
 
-.framer-e0bMd .framer-styles-preset-1wyvkrv:not(.rich-text-wrapper),
-.framer-e0bMd .framer-styles-preset-1wyvkrv.rich-text-wrapper p {
+.framer-e0bMd .type--body:not(.rich-text-wrapper),
+.framer-e0bMd .type--body.rich-text-wrapper p {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -6861,7 +6861,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (810px <= width < 1200px) {
-  .framer-e0bMd .framer-styles-preset-1wyvkrv:not(.rich-text-wrapper),.framer-e0bMd .framer-styles-preset-1wyvkrv.rich-text-wrapper p {
+  .framer-e0bMd .type--body:not(.rich-text-wrapper),.framer-e0bMd .type--body.rich-text-wrapper p {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -6891,7 +6891,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (width < 810px) {
-  .framer-e0bMd .framer-styles-preset-1wyvkrv:not(.rich-text-wrapper),.framer-e0bMd .framer-styles-preset-1wyvkrv.rich-text-wrapper p {
+  .framer-e0bMd .type--body:not(.rich-text-wrapper),.framer-e0bMd .type--body.rich-text-wrapper p {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -6983,8 +6983,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:28px
 }
 
-.testimonials__card .framer-styles-preset-1tjsnqs:not(.rich-text-wrapper),
-.testimonials__card .framer-styles-preset-1tjsnqs.rich-text-wrapper p {
+.testimonials__card .type--author:not(.rich-text-wrapper),
+.testimonials__card .type--author.rich-text-wrapper p {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -7011,8 +7011,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   --framer-text-transform:none
 }
 
-.testimonials__card .framer-styles-preset-hwaiz9:not(.rich-text-wrapper),
-.testimonials__card .framer-styles-preset-hwaiz9.rich-text-wrapper p {
+.testimonials__card .type--quote:not(.rich-text-wrapper),
+.testimonials__card .type--quote.rich-text-wrapper p {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -7040,7 +7040,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (810px <= width < 1200px) {
-  .testimonials__card .framer-styles-preset-hwaiz9:not(.rich-text-wrapper),.testimonials__card .framer-styles-preset-hwaiz9.rich-text-wrapper p {
+  .testimonials__card .type--quote:not(.rich-text-wrapper),.testimonials__card .type--quote.rich-text-wrapper p {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -7070,7 +7070,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 @media (width < 810px) {
-  .testimonials__card .framer-styles-preset-hwaiz9:not(.rich-text-wrapper),.testimonials__card .framer-styles-preset-hwaiz9.rich-text-wrapper p {
+  .testimonials__card .type--quote:not(.rich-text-wrapper),.testimonials__card .type--quote.rich-text-wrapper p {
     --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
@@ -7099,8 +7099,8 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   
 }
 
-.testimonials__card .framer-styles-preset-2fmxkt:not(.rich-text-wrapper),
-.testimonials__card .framer-styles-preset-2fmxkt.rich-text-wrapper p {
+.testimonials__card .type--meta:not(.rich-text-wrapper),
+.testimonials__card .type--meta.rich-text-wrapper p {
   --framer-font-family:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold:"Geist", "Geist Placeholder", sans-serif;
   --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
