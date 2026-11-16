@@ -146,7 +146,7 @@ function setupReveal() {
         if (answerText) {
           answerText.style.setProperty(
             '--extracted-r6o4lv',
-            'var(--token-1e3ba35f-81ae-45f1-957d-fdbc8b701e2d, rgba(18, 19, 23, 0.58))'
+            'var(--color-ink-muted)'
           );
         }
 
@@ -193,7 +193,7 @@ function setupReveal() {
           }
           if (hBar) { hBar.style.transition = 'transform 0.3s ease'; hBar.style.transform = 'rotate(-90deg)'; }
           if (vBar) { vBar.style.transition = 'transform 0.3s ease'; vBar.style.transform = 'rotate(-180deg)'; }
-          if (answerText) answerText.style.setProperty('--extracted-r6o4lv', 'var(--token-cc359361-be1d-443c-b3d4-114af3dda3d6, rgba(255, 255, 255, 0.8))');
+          if (answerText) answerText.style.setProperty('--extracted-r6o4lv', 'var(--color-on-brand-muted)');
           setTimeout(function () {
             card.classList.remove('is-open');
             card.classList.add('is-closed');
@@ -229,7 +229,7 @@ function setupReveal() {
                 if (oa) { oa.style.transition = 'opacity 0.3s ease, transform 0.3s ease'; oa.style.opacity = '0'; oa.style.transform = 'translateY(32px)'; }
                 if (oh) { oh.style.transition = 'transform 0.3s ease'; oh.style.transform = 'rotate(-90deg)'; }
                 if (ov) { ov.style.transition = 'transform 0.3s ease'; ov.style.transform = 'rotate(-180deg)'; }
-                if (ot) ot.style.setProperty('--extracted-r6o4lv', 'var(--token-cc359361-be1d-443c-b3d4-114af3dda3d6, rgba(255, 255, 255, 0.8))');
+                if (ot) ot.style.setProperty('--extracted-r6o4lv', 'var(--color-on-brand-muted)');
                 setTimeout(function () {
                   oc.classList.remove('is-open');
                   oc.classList.add('is-closed');
