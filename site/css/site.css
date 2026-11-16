@@ -8750,4 +8750,118 @@ nav.nav--mobile {
     --framer-text-color: rgba(0, 0, 0, 0.5);
   }
 
+  /* ---- Screen-reader-only text ------------------------------------------
+     Same box as the inline style the SEO <h1> carried, so the heading is read
+     by crawlers and assistive tech without taking up layout.
+  ---------------------------------------------------------------------- */
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ---- Widget demo animations -------------------------------------------
+     Moved out of the <style data-widget-css> block that used to sit in
+     <head>. The markup and animator.js drive them through --ma-play
+     (running/paused) and --ma-card-drop.
+  ---------------------------------------------------------------------- */
+
+  @keyframes ma-flash-slow {
+    0% {
+      left: -84.507042cqw;
+    }
+    82.64%,
+    100% {
+      left: calc(100% - 12.676056cqw);
+    }
+  }
+
+  @keyframes ma-flash {
+    0% {
+      left: -84.507042cqw;
+    }
+    78.12%,
+    100% {
+      left: calc(100% - 12.676056cqw);
+    }
+  }
+
+  .ma-flash-slow .ma-flash-line,
+  .ma-flash .ma-flash-line {
+    position: absolute;
+    left: -84.507042cqw;
+    width: 84.507042cqw;
+    will-change: left;
+  }
+
+  .ma-flash-slow .ma-flash-line {
+    animation: ma-flash-slow 2.42s linear infinite both;
+    /* After the shorthand, which would reset it to running. */
+    animation-play-state: var(--ma-play);
+  }
+
+  .ma-flash .ma-flash-line {
+    animation: ma-flash 1.92s linear infinite both;
+    /* After the shorthand, which would reset it to running. */
+    animation-play-state: var(--ma-play);
+  }
+
+  @keyframes ma-card-in {
+    from {
+      opacity: 0;
+      transform: translateY(var(--ma-card-drop)) scale(.96);
+      filter: blur(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+    }
+  }
+
+  @keyframes ma-card-wave {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: .2;
+    }
+  }
+
+  .ma-card.on .ma-wave-1 {
+    animation: ma-card-wave .7s ease-in-out infinite;
+  }
+
+  .ma-card.on .ma-wave-2 {
+    animation: ma-card-wave .7s ease-in-out .15s infinite;
+  }
+
+  .ma-card .ma-snd {
+    transition: scale .15s ease, background .2s ease;
+    cursor: pointer;
+  }
+
+  .ma-card .ma-snd:hover {
+    background: #EAEAEA !important;
+  }
+
+  .ma-card .ma-snd:active {
+    scale: .94;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ma-flash-slow .ma-flash-line,
+    .ma-flash .ma-flash-line {
+      display: none;
+    }
+  }
 }
