@@ -6566,6 +6566,10 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   bottom:113px;
   left:50%;
   margin-left: max(min(calc(-40vw + 172px), 0px), -1200px + 600px + 172px + 40px);
+
+  background-color: var(--color-brand);
+  border-radius: 8px;
+  transform: translateX(-50%);
 }
 
 .analyse__phone-frame .analyse__caption-text {
@@ -6597,7 +6601,10 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   bottom:462px;
   left:50%;
   margin-left: min(max(calc(+40vw - 172px), 0px), 1200px - 600px - 172px - 40px);
-}
+
+  background-color: var(--color-brand);
+  border-radius: 8px;
+  transform: translateX(-50%);}
 
 .framer-DDAER .type--caption:not(.rich-text-wrapper),
 .framer-DDAER .type--caption.rich-text-wrapper p {
