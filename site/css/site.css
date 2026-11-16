@@ -1343,7 +1343,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 
 .framer-GX8Xm .hero__cta,
 .framer-GX8Xm .usecase__cta,
-.framer-GX8Xm .framer-idbpmy-container,
+.framer-GX8Xm .download__cta,
 .framer-GX8Xm .footer__cta {
   will-change:var(--framer-will-change-effect-override,transform);
   flex:none;
@@ -1746,7 +1746,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 .framer-GX8Xm .usecase__inner,
 .framer-GX8Xm .revise__inner,
 .framer-GX8Xm .analyse__inner,
-.framer-GX8Xm .framer-bn4aki {
+.framer-GX8Xm .download__inner {
   max-width:1200px;
   height:min-content;
   overflow:var(--overflow-clip-fallback,clip);
@@ -1765,7 +1765,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 .framer-GX8Xm .revise__header,
 .framer-GX8Xm .analyse__header,
 .framer-GX8Xm .preparer__inner,
-.framer-GX8Xm .framer-1sdv330,
+.framer-GX8Xm .download__copy,
 .framer-GX8Xm .testimonials__header,
 .framer-GX8Xm .faq__header {
   flex-flow:column;
@@ -1783,7 +1783,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 
 .framer-GX8Xm .usecase__heading,
 .framer-GX8Xm .revise__heading,
-.framer-GX8Xm .framer-u4go2j {
+.framer-GX8Xm .download__heading {
   --framer-link-text-color:#09f;
   --framer-link-text-decoration:underline;
   white-space:pre-wrap;
@@ -2267,7 +2267,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 .framer-GX8Xm .revise__glow,
-.framer-GX8Xm .framer-1ymfuqg {
+.framer-GX8Xm .download__phone-bg {
   filter:blur(100px);
   opacity:.5;
   height:568px;
@@ -2284,7 +2284,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
 }
 
 .framer-GX8Xm .revise__phone,
-.framer-GX8Xm .framer-1n4ef1f {
+.framer-GX8Xm .download__phone-frame {
   aspect-ratio:.490352;
   border-radius:50px;
   flex:none;
@@ -3519,7 +3519,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-4uah04,
+.framer-GX8Xm .download,
 .framer-GX8Xm .faq {
   background-color:var(--color-surface);
   height:min-content;
@@ -3536,7 +3536,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-1yjzbl7 {
+.framer-GX8Xm .download__stage {
   --border-bottom-width:1px;
   --border-color:#00000008;
   --border-left-width:1px;
@@ -3559,7 +3559,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-1o1ehtu {
+.framer-GX8Xm .download__subtitle {
   --framer-link-text-color:#09f;
   --framer-link-text-decoration:underline;
   white-space:pre-wrap;
@@ -3571,7 +3571,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-q4s76s {
+.framer-GX8Xm .download__glow {
   height:248px;
   overflow:var(--overflow-clip-fallback,clip);
   flex:none;
@@ -3579,7 +3579,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   position:relative
 }
 
-.framer-GX8Xm .framer-vlzp34 {
+.framer-GX8Xm .download__phone {
   z-index:2;
   flex:none;
   width:313px;
@@ -3590,7 +3590,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   overflow:visible
 }
 
-.framer-GX8Xm .framer-1ig0wti {
+.framer-GX8Xm .download__phone-content {
   flex:none;
   width:109px;
   height:109px;
@@ -3646,7 +3646,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   box-shadow:0 6px 14px #00000005,0 25px 25px #00000003,0 56px 34px #00000003,0 100px 40px #0000,0 156px 44px #0000,0 .602187px .843062px -1.25px #00000038,0 2.28853px 3.20395px -2.5px #0003,0 10px 14px -3.75px #00000014
 }
 
-.framer-GX8Xm .framer-1p4xjty {
+.framer-GX8Xm .download__float-card-inner {
   --border-bottom-width:1.2px;
   --border-color:#00000014;
   --border-left-width:1.2px;
@@ -3712,7 +3712,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   left:calc(14.0969% - 17.5px)
 }
 
-.framer-GX8Xm .framer-1kexfj6 {
+.framer-GX8Xm .download__phone-badge-label {
   --border-bottom-width:1.2px;
   --border-color:#0000000d;
   --border-left-width:1.2px;
@@ -5653,7 +5653,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .hero__glyph {
     width:61px
   }
-  .framer-GX8Xm .hero__subtitle, .framer-GX8Xm .usecase__subtitle, .framer-GX8Xm .revise__subtitle, .framer-GX8Xm .analyse__subtitle, .framer-GX8Xm .preparer__subtitle, .framer-GX8Xm .framer-1o1ehtu {
+  .framer-GX8Xm .hero__subtitle, .framer-GX8Xm .usecase__subtitle, .framer-GX8Xm .revise__subtitle, .framer-GX8Xm .analyse__subtitle, .framer-GX8Xm .preparer__subtitle, .framer-GX8Xm .download__subtitle {
     width:358px
   }
   .framer-GX8Xm .hero__stickers {
@@ -5663,7 +5663,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .features__row {
     gap:90px
   }
-  .framer-GX8Xm .usecase, .framer-GX8Xm .framer-4uah04, .framer-GX8Xm .testimonials, .framer-GX8Xm .faq {
+  .framer-GX8Xm .usecase, .framer-GX8Xm .download, .framer-GX8Xm .testimonials, .framer-GX8Xm .faq {
     padding:90px 32px 120px
   }
   .framer-GX8Xm .usecase__cards {
@@ -5822,7 +5822,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .features__row {
     flex-direction:column
   }
-  .framer-GX8Xm .usecase, .framer-GX8Xm .framer-4uah04, .framer-GX8Xm .testimonials {
+  .framer-GX8Xm .usecase, .framer-GX8Xm .download, .framer-GX8Xm .testimonials {
     padding:90px 18px 120px
   }
   .framer-GX8Xm .usecase__inner {
@@ -5841,7 +5841,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .analyse__phone,
   .framer-GX8Xm .preparer__heading,
   .framer-GX8Xm .preparer__subtitle,
-  .framer-GX8Xm .framer-u4go2j,
+  .framer-GX8Xm .download__heading,
   .framer-GX8Xm .testimonials__heading,
   .framer-GX8Xm .faq__heading,
   .framer-GX8Xm .faq__list,
@@ -5867,7 +5867,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .revise,.framer-GX8Xm .analyse {
     padding:100px 18px 120px
   }
-  .framer-GX8Xm .revise__phone,.framer-GX8Xm .framer-1n4ef1f {
+  .framer-GX8Xm .revise__phone,.framer-GX8Xm .download__phone-frame {
     left:50%;
     right:unset;
     width:271px;
@@ -5937,7 +5937,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
   .framer-GX8Xm .preparer__phone-wrap {
     top:65px
   }
-  .framer-GX8Xm .framer-1o1ehtu {
+  .framer-GX8Xm .download__subtitle {
     width:201px
   }
   .framer-GX8Xm .framer-3d5ot0 {
@@ -8326,20 +8326,20 @@ nav.nav--mobile {
 
   /* ---- Download demo ----------------------------------------------------- */
 
-  .framer-u4go2j span,
-  .framer-1o1ehtu span {
+  .download__heading span,
+  .download__subtitle span {
     display: inline-block;
     opacity: 0.001;
     filter: blur(10px);
     transform: translateX(0) translateY(10px) scale(1) rotate(0deg) skewX(0deg) skewY(0deg);
   }
 
-  .framer-u4go2j h2 {
+  .download__heading h2 {
     --framer-text-alignment: center;
     --framer-text-color: var(--color-ink);
   }
 
-  .framer-1o1ehtu p {
+  .download__subtitle p {
     --framer-text-alignment: center;
     --framer-text-color: var(--color-ink-muted);
   }
@@ -8360,7 +8360,7 @@ nav.nav--mobile {
     object-fit: cover;
   }
 
-  .framer-idbpmy-container {
+  .download__cta {
     opacity: 0.001;
     transform: translateY(10px);
   }
