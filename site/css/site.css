@@ -8818,6 +8818,15 @@ nav.nav--mobile {
     border: 0;
   }
 
+  .ma-flash {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    --ma-play: running;
+    container-type: inline-size;
+  }
+
   /* ---- Widget demo animations -------------------------------------------
      Moved out of the <style data-widget-css> block that used to sit in
      <head>. The markup and animator.js drive them through --ma-play
