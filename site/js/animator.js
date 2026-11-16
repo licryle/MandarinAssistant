@@ -395,7 +395,7 @@ function setupReveal() {
   }
 
   function setupFlashes() {
-    document.querySelectorAll('.ma-flash, .ma-flash-slow').forEach(function (el) {
+    document.querySelectorAll('.ma-flash').forEach(function (el) {
       el.style.setProperty('--ma-play', 'running');
     });
   }

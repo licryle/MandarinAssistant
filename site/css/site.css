@@ -8774,16 +8774,6 @@ nav.nav--mobile {
      (running/paused) and --ma-card-drop.
   ---------------------------------------------------------------------- */
 
-  @keyframes ma-flash-slow {
-    0% {
-      left: -84.507042cqw;
-    }
-    82.64%,
-    100% {
-      left: calc(100% - 12.676056cqw);
-    }
-  }
-
   @keyframes ma-flash {
     0% {
       left: -84.507042cqw;
@@ -8794,18 +8784,11 @@ nav.nav--mobile {
     }
   }
 
-  .ma-flash-slow .ma-flash-line,
   .ma-flash .ma-flash-line {
     position: absolute;
     left: -84.507042cqw;
     width: 84.507042cqw;
     will-change: left;
-  }
-
-  .ma-flash-slow .ma-flash-line {
-    animation: ma-flash-slow 2.42s linear infinite both;
-    /* After the shorthand, which would reset it to running. */
-    animation-play-state: var(--ma-play);
   }
 
   .ma-flash .ma-flash-line {
@@ -8872,7 +8855,6 @@ nav.nav--mobile {
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ma-flash-slow .ma-flash-line,
     .ma-flash .ma-flash-line {
       display: none;
     }
