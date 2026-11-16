@@ -8858,6 +8858,19 @@ nav.nav--mobile {
     scale: .94;
   }
 
+  /* ---- Vocab card word swap ---------------------------------------------
+     The level badge, pinyin, hanzi and translation lines inside a demo card.
+     animator.js fades these, swaps the text and fades them back in.
+  ---------------------------------------------------------------------- */
+
+  .ma-swap {
+    display: inline-block;
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+    filter: blur(0px);
+    transition: opacity .26s ease, transform .26s ease, filter .26s ease;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .ma-flash-slow .ma-flash-line,
     .ma-flash .ma-flash-line {

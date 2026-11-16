@@ -307,12 +307,14 @@ function setupReveal() {
             var cur = m ? parseFloat(m[1]) : 0;
             svg.style.transform = 'rotate(' + (cur + 360) + 'deg)';
           }
-          var spans = Array.prototype.slice.call(card.querySelectorAll('span[style*="transition: opacity 0.26s"]'));
-          var levelSpan = spans[0];
-          var levelParent = levelSpan.parentElement;
-          var pinyinSpan = spans[1];
-          var hanziSpan = spans[2];
-          var transSpan = spans[3];
+          // Look the four word lines up by the block they sit in rather than by
+          // a style string, so restyling them cannot break the swap.
+          var levelSpan = card.querySelector('.vocab-card__badge .ma-swap');
+          var pinyinSpan = card.querySelector('.vocab-card__pinyin .ma-swap');
+          var hanziSpan = card.querySelector('.vocab-card__hanzi .ma-swap');
+          var transSpan = card.querySelector('.vocab-card__definition .ma-swap');
+          var spans = [levelSpan, pinyinSpan, hanziSpan, transSpan].filter(Boolean);
+          var levelParent = levelSpan ? levelSpan.parentElement : null;
 
           var curHanzi = hanziSpan ? hanziSpan.textContent.trim() : '';
           var idx = 0;
