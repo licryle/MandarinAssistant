@@ -5038,7 +5038,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
     --framer-font-family-bold-italic:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-family-italic:"Geist", "Geist Placeholder", sans-serif;
     --framer-font-open-type-features:"blwf" on, "cv03" on, "cv04" on, "cv09" on, "cv11" on;
-    --framer-font-size:49px;
+    --framer-font-size:40px;
     --framer-font-style:normal;
     --framer-font-style-bold:normal;
     --framer-font-style-bold-italic:italic;
@@ -5798,7 +5798,7 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
     width:357px
   }
   .body-root .hero__widget {
-    width:358px
+    top: -5cqw;
   }
   .body-root .hero__stickers {
     top:558px
@@ -5808,10 +5808,12 @@ NavigationContainer [data-framer-component-type=NavigationContainer]>*,
     left:calc(49.7436% - 262px)
   }
   .body-root .features {
-    padding:90px 0 120px
+    padding:90px 0 120px;
+    gap: 40px;
   }
   .body-root .features__row {
-    flex-direction:column
+    flex-direction:column;
+    gap: 40px;
   }
   .body-root .usecase, .body-root .download, .body-root .testimonials {
     padding:90px 18px 120px
