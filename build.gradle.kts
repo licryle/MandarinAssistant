@@ -76,3 +76,26 @@ tasks.register<Exec>("maestroTest") {
         if (!e2eDir.isDirectory) throw GradleException("e2e/ directory missing at $e2eDir.")
     }
 }
+
+// iOS Firebase configuration verification stage
+val verifyIosFirebase = tasks.register("verifyIosFirebase") {
+    group = "verification"
+    description = "Ensures GoogleService-Info.plist is present in the iOS app directory."
+    doLast {
+        val plistFile = file("${rootProject.projectDir}/iosApp/hskwidget/GoogleService-Info.plist")
+        if (!plistFile.exists()) {
+            throw GradleException(
+                "Firebase configuration missing: GoogleService-Info.plist not found in iosApp/hskwidget/ (${plistFile.absolutePath}). " +
+                "Please download GoogleService-Info.plist from Firebase Console and place it in the iosApp/hskwidget directory."
+            )
+        }
+        println("iOS Firebase configuration verified: GoogleService-Info.plist is present.")
+    }
+}
+
+tasks.matching {
+    it.name.contains("ios", ignoreCase = true) ||
+    it.name.contains("framework", ignoreCase = true)
+}.configureEach {
+    dependsOn(verifyIosFirebase)
+}

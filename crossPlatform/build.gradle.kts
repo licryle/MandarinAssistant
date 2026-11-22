@@ -1,6 +1,16 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.*
 import org.gradle.internal.os.OperatingSystem
 
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath(libs.sqlite.bundled)
+    }
+}
+
 var os: OperatingSystem? = OperatingSystem.current()
 val isMac = OperatingSystem.current().isMacOsX
 
@@ -261,6 +271,24 @@ val copyGeneratedDatabase = tasks.register("copyGeneratedDatabase") {
             from(dbFile)
             into(file("${rootProject.projectDir}/iosApp/hskwidget/databases"))
         }
+
+        // Ensure the number of rows inside the db file is higher than 100k in the chinese_word table
+        val driver = androidx.sqlite.driver.bundled.BundledSQLiteDriver()
+        val connection = driver.open(dbFile.absolutePath)
+        val statement = connection.prepare("SELECT count(*) FROM chinese_word;")
+        var rowCount = 0
+        if (statement.step()) {
+            rowCount = statement.getLong(0).toInt()
+        }
+        statement.close()
+        connection.close()
+
+        if (rowCount <= 100_000) {
+            throw GradleException(
+                "Database validation failed: chinese_word table has $rowCount rows (must be > 100,000)."
+            )
+        }
+        println("Database validation passed: chinese_word table has $rowCount rows (> 100,000).")
     }
 }
 

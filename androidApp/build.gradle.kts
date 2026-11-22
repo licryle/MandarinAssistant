@@ -65,3 +65,12 @@ dependencies {
     
     implementation(platform(libs.firebase.bom))
 }
+
+val googleServicesFile = file("google-services.json")
+if (!googleServicesFile.exists()) {
+    throw GradleException(
+        "Google Services configuration missing: google-services.json not found in androidApp folder (${googleServicesFile.absolutePath}). " +
+        "Please download google-services.json from Firebase Console and place it in the androidApp directory."
+    )
+}
+
