@@ -19,6 +19,7 @@
             python
             pkgs.sqlite
             pkgs.sqldiff
+            pkgs.sqlitebrowser
           ];
         };
       });
