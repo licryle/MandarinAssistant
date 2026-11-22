@@ -136,7 +136,7 @@ kotlin {
 
 
     sourceSets {
-        val commonMain by getting {
+        val commonMain = getByName("commonMain") {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.normalize)
@@ -168,7 +168,7 @@ kotlin {
             }
         }
 
-        val androidMain by getting {
+        val androidMain = getByName("androidMain") {
             dependencies {
                 implementation(libs.compose.ui.tooling)
                 implementation(libs.compose.ui.tooling.preview)
@@ -197,7 +197,7 @@ kotlin {
             }
         }
 
-        val commonTest by getting {
+        val commonTest = getByName("commonTest") {
             dependencies {
                 implementation(libs.kotlin.test)
                 implementation(libs.turbine)
@@ -205,13 +205,13 @@ kotlin {
             }
         }
 
-        val iosMain by creating {
+        val iosMain = create("iosMain") {
             dependsOn(commonMain)
             dependencies {
                 api(project(":googledrivebackup"))
             }
         }
-        val iosTest by creating {
+        val iosTest = create("iosTest") {
             dependsOn(commonTest)
         }
         listOf(iosArm64(), iosSimulatorArm64()).forEach { target ->

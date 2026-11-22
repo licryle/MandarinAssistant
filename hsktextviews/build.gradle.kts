@@ -88,7 +88,7 @@ kotlin {
             }
         }
 
-        val iosMain by creating {
+        create("iosMain") {
             // ...
         }
     }
