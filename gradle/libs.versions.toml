@@ -36,7 +36,7 @@ billingKtx = "9.1.0"
 reviewKtx = "2.0.2"
 workRuntimeKtxVersion = "2.12.0"
 documentfile = "1.1.0"
-androidGradlePlugin = "9.3.3"
+androidGradlePlugin = "9.5.2"
 googleServices = "4.6.0"
 crashlytics = "3.0.8"
 navigation = "2.10.2"
@@ -91,7 +91,7 @@ play-services-auth = { module = "com.google.android.gms:play-services-auth", ver
 room-runtime = { module = "androidx.room3:room3-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room3:room3-compiler", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
-sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version = "sqljdbc" }
+sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqljdbc" }
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 androidx-room-sqlite-wrapper = { module = "androidx.room3:room3-sqlite-wrapper", version.ref = "room" }
 text-recognition-chinese = { module = "com.google.mlkit:text-recognition-chinese", version.ref = "textRecognitionChinese" }
