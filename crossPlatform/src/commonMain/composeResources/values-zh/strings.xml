@@ -247,6 +247,9 @@ AI 字段覆盖率：
     <string name="googledrive_backup_failed_message">备份失败，错误信息为：%1$s。</string>
     <string name="googledrive_backup_nogoogleapi">此设备上没有可用的 Google API</string>
     <string name="googledrive_backup_noaccountselected">未选择 Google 账号，正在取消。</string>
+    <string name="googledrive_error_dev_notified">Google 云端硬盘出现意外错误，已通知开发者。</string>
+    <string name="googledrive_error_transient">Google 云端硬盘暂时不可用，请稍后重试。</string>
+    <string name="googledrive_error_auth">Google 云端硬盘授权已过期，请重新登录。</string>
     <string name="googledrive_restore_start_title">来自 Google 的恢复启动中</string>
     <string name="googledrive_restore_start_message">来自 Google Drive 恢复已开始。</string>
     <string name="googledrive_restore_success_title">来自 Google 的恢复下载完成</string>

@@ -21,8 +21,9 @@ import fr.berliat.hskwidget.dbrestore_start
 import fr.berliat.hskwidget.dbrestore_success
 import fr.berliat.hskwidget.domain.GoogleBackupFlowState
 import fr.berliat.hskwidget.domain.GoogleBackupService
-import fr.berliat.hskwidget.ui.navigation.NavigationManager
-import fr.berliat.hskwidget.ui.navigation.Screen
+import fr.berliat.hskwidget.domain.reportGoogleDriveError
+import fr.berliat.hskwidget.googledrive_backup_denied_scope
+import fr.berliat.hskwidget.googledrive_backup_nogoogleapi
 import fr.berliat.hskwidget.ui.widget.FlashcardWidgetProvider
 
 import io.github.vinceglb.filekit.FileKit
@@ -38,6 +39,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -95,6 +97,46 @@ class BackupCloudViewModel (
         viewModelScope.launch {
             GoogleBackupFlowState.globalRestoreFileFrom.collect { instant ->
                 restoreFileFrom.value = instant
+            }
+        }
+        viewModelScope.launch {
+            // Skip the current state: opening the screen must not show an
+            // error message for a failure that happened earlier.
+            gDriveBackup.state.drop(1).collect { state ->
+                when (state) {
+                    is GoogleDriveState.Error ->
+                        reportGoogleDriveError(state.error, "LOGIN")
+
+                    is GoogleDriveState.NoGoogleAPI -> {
+                        Logging.logAnalyticsError(
+                            module = "GOOGLE_DRIVE_LOGIN",
+                            error = "NO_GOOGLE_API",
+                            details = state.exception.message ?: ""
+                        )
+                        HSKAppServices.snackbar.show(
+                            SnackbarType.WARNING,
+                            Res.string.googledrive_backup_nogoogleapi
+                        )
+                    }
+
+                    is GoogleDriveState.ScopeDenied -> {
+                        Logging.logAnalyticsError(
+                            module = "GOOGLE_DRIVE_LOGIN",
+                            error = "SCOPE_DENIED",
+                            details = state.exception.message ?: ""
+                        )
+                        HSKAppServices.snackbar.show(
+                            SnackbarType.WARNING,
+                            Res.string.googledrive_backup_denied_scope
+                        )
+                    }
+
+                    // Cancellation is a normal control signal, not an error.
+                    GoogleDriveState.NoAccountSelected,
+                    GoogleDriveState.LoggedOut,
+                    GoogleDriveState.Ready,
+                    GoogleDriveState.Busy -> Unit
+                }
             }
         }
     }

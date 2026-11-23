@@ -2,11 +2,18 @@ package fr.berliat.hskwidget.domain
 
 import fr.berliat.googledrivebackup.BackupEvent
 import fr.berliat.googledrivebackup.GoogleDriveBackupFile
+import fr.berliat.googledrivebackup.GoogleDriveError
 import fr.berliat.googledrivebackup.RestoreEvent
 import fr.berliat.hskwidget.Res
 import fr.berliat.hskwidget.core.HSKAppServices
+import fr.berliat.hskwidget.core.Logging
+import fr.berliat.hskwidget.core.SnackbarType
 import fr.berliat.hskwidget.core.fromKBToMB
+import fr.berliat.hskwidget.googledrive_backup_nogoogleapi
 import fr.berliat.hskwidget.googledrive_backup_progress_message
+import fr.berliat.hskwidget.googledrive_error_auth
+import fr.berliat.hskwidget.googledrive_error_dev_notified
+import fr.berliat.hskwidget.googledrive_error_transient
 import fr.berliat.hskwidget.googledrive_restore_progress_message
 import fr.berliat.hskwidget.ui.screens.config.backupCloud.BackupCloudTransferEvent
 import io.github.vinceglb.filekit.FileKit
@@ -63,6 +70,7 @@ object GoogleBackupSharedLogic {
                         GoogleBackupFlowState.globalTransferState.emit(BackupCloudTransferEvent.BackupCancelled)
                     }
                     is BackupEvent.Failed -> {
+                        reportGoogleDriveErrorIfNeeded(event.exception, "BACKUP")
                         GoogleBackupFlowState.globalTransferState.emit(BackupCloudTransferEvent.BackupFailed(event.exception))
                     }
                     is BackupEvent.Progress -> {
@@ -92,6 +100,7 @@ object GoogleBackupSharedLogic {
                 }
             }
         } catch (e: Exception) {
+            reportGoogleDriveErrorIfNeeded(e, "BACKUP")
             GoogleBackupFlowState.globalTransferState.emit(BackupCloudTransferEvent.BackupFailed(e))
         }
     }
@@ -123,6 +132,7 @@ object GoogleBackupSharedLogic {
                         GoogleBackupFlowState.globalTransferState.emit(BackupCloudTransferEvent.RestorationCancelled)
                     }
                     is RestoreEvent.Failed -> {
+                        reportGoogleDriveErrorIfNeeded(event.exception, "RESTORE")
                         GoogleBackupFlowState.globalTransferState.emit(BackupCloudTransferEvent.RestorationFailed(event.exception))
                     }
                     is RestoreEvent.Empty -> {
@@ -156,8 +166,69 @@ object GoogleBackupSharedLogic {
                 }
             }
         } catch (e: Exception) {
+            reportGoogleDriveErrorIfNeeded(e, "RESTORE")
             GoogleBackupFlowState.globalTransferState.emit(BackupCloudTransferEvent.RestorationFailed(e))
         }
+    }
+}
+
+/**
+ * Reports a typed [GoogleDriveError] from the Google Drive library.
+ *
+ * Always logs an analytics error; only [GoogleDriveError.isReportable] failures
+ * (developer / unknown) are sent to Crashlytics. Every failure also gets a
+ * user-facing snackbar so the user knows what happened and whether the
+ * developer was notified.
+ *
+ * Call this only for failures originating in the Google Drive library. App-side
+ * errors (file preparation, "no backup file", ...) are not Google bugs and
+ * must not be reported as such.
+ */
+internal fun reportGoogleDriveError(error: GoogleDriveError, operation: String) {
+    try {
+        Logging.logAnalyticsError(
+            module = "GOOGLE_DRIVE_$operation",
+            error = error.detailsString(),
+            details = error.message ?: ""
+        )
+    } catch (_: Throwable) {
+        // Analytics must never break the transfer.
+    }
+
+    if (error.isReportable) {
+        try {
+            Logging.logCrashalytics(error)
+        } catch (_: Throwable) {
+            // Crash reporting must never break the transfer.
+        }
+    }
+
+    try {
+        showGoogleDriveErrorFeedback(error)
+    } catch (_: Throwable) {
+        // A snackbar failure must not prevent the transfer event from being emitted.
+    }
+}
+
+/** Reports [exception] only when it is a typed [GoogleDriveError]. */
+internal fun reportGoogleDriveErrorIfNeeded(exception: Throwable, operation: String) {
+    (exception as? GoogleDriveError)?.let { reportGoogleDriveError(it, operation) }
+}
+
+private fun showGoogleDriveErrorFeedback(error: GoogleDriveError) {
+    when (error.kind) {
+        GoogleDriveError.Kind.AUTH_REQUIRED ->
+            HSKAppServices.snackbar.show(SnackbarType.WARNING, Res.string.googledrive_error_auth)
+
+        GoogleDriveError.Kind.TRANSIENT ->
+            HSKAppServices.snackbar.show(SnackbarType.WARNING, Res.string.googledrive_error_transient)
+
+        GoogleDriveError.Kind.UNAVAILABLE ->
+            HSKAppServices.snackbar.show(SnackbarType.ERROR, Res.string.googledrive_backup_nogoogleapi)
+
+        GoogleDriveError.Kind.DEVELOPER,
+        GoogleDriveError.Kind.UNKNOWN ->
+            HSKAppServices.snackbar.show(SnackbarType.ERROR, Res.string.googledrive_error_dev_notified)
     }
 }
 

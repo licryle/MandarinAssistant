@@ -253,6 +253,9 @@ Nous vous recommandons de choisir le niveau où vous en êtes plus celui du dess
     <string name="googledrive_backup_failed_message">La sauvegarde a échoué avec le message d'erreur : %1$s.</string>
     <string name="googledrive_backup_nogoogleapi">Aucune API Google disponible sur cet appareil</string>
     <string name="googledrive_backup_noaccountselected">Aucun compte Google n'a été sélectionné, annulation.</string>
+    <string name="googledrive_error_dev_notified">Google Drive a échoué de manière inattendue. Le développeur a été prévenu.</string>
+    <string name="googledrive_error_transient">Google Drive est temporairement indisponible. Veuillez réessayer plus tard.</string>
+    <string name="googledrive_error_auth">L'autorisation Google Drive a expiré. Veuillez vous reconnecter.</string>
     <string name="googledrive_restore_start_title">Restauration Google en cours</string>
     <string name="googledrive_restore_start_message">Restauration depuis Google Drive commencée.</string>
     <string name="googledrive_restore_success_title">Téléchargement de la restauration Google terminé</string>

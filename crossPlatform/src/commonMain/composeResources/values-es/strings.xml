@@ -253,6 +253,9 @@ Te recomendamos elegir el nivel en el que estás más uno por debajo, o por enci
     <string name="googledrive_backup_failed_message">La copia de seguridad falló con el mensaje de error: %1$s.</string>
     <string name="googledrive_backup_nogoogleapi">No hay API de Google disponible en este dispositivo</string>
     <string name="googledrive_backup_noaccountselected">No se seleccionó ninguna cuenta de Google, cancelando.</string>
+    <string name="googledrive_error_dev_notified">Google Drive falló de forma inesperada. Se ha notificado al desarrollador.</string>
+    <string name="googledrive_error_transient">Google Drive no está disponible temporalmente. Inténtalo de nuevo más tarde.</string>
+    <string name="googledrive_error_auth">La autorización de Google Drive ha caducado. Vuelve a iniciar sesión.</string>
     <string name="googledrive_restore_start_title">Restauración desde Google en curso</string>
     <string name="googledrive_restore_start_message">Iniciada la restauración desde Google Drive.</string>
     <string name="googledrive_restore_success_title">Descarga de restauración desde Google completada</string>

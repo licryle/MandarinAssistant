@@ -253,6 +253,9 @@ We recommend to choose the level you're at plus the one below, or above dependin
     <string name="googledrive_backup_failed_message">Backup failed with error message: %1$s.</string>
     <string name="googledrive_backup_nogoogleapi">No Google API available on this device</string>
     <string name="googledrive_backup_noaccountselected">No Google account was selected, cancelling.</string>
+    <string name="googledrive_error_dev_notified">Google Drive failed unexpectedly. The developer has been notified.</string>
+    <string name="googledrive_error_transient">Google Drive is temporarily unavailable. Please try again later.</string>
+    <string name="googledrive_error_auth">Google Drive authorization expired. Please sign in again.</string>
     <string name="googledrive_restore_start_title">Google Restoration in progress</string>
     <string name="googledrive_restore_start_message">Restoration from Google Drive started.</string>
     <string name="googledrive_restore_success_title">Google Restoration download complete</string>
