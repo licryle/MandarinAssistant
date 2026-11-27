@@ -140,7 +140,7 @@ We recommend to choose the level you're at plus the one below, or above dependin
     <string name="dialog_tts_error">Text-to-Speech Error</string>
     <string name="speech_failure_toast_unknown">Unknown speech error</string>
     <string name="speech_failure_toast_muted">Unmute to hear the word</string>
-    <string name="speech_failure_toast_chinese_unsupported">The "Chinese (China)" voice if missing from your Text-To-Speech. Please install it.</string>
+    <string name="speech_failure_toast_chinese_unsupported">The "Chinese (China)" voice is missing from your Text-To-Speech engine. Please install it.</string>
     <string name="speech_failure_toast_init">Failed to initialize the Text-To-Speech service, we need to activate, download or configure it in Settings.</string>
 
     <string name="annotation_edit_notes_hint">Enter your notes:</string>
