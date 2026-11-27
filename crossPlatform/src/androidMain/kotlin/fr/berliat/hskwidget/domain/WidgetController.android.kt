@@ -8,6 +8,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
@@ -59,18 +60,22 @@ actual class WidgetController(
         const val ACTION_AUTO_UPDATE = "fr.berliat.hskwidget.ACTION_AUTOUPDATE"
         const val ACTION_CONFIGURE_LATEST = "fr.berliat.hskwidget.APPWIDGET_CONFIGURE_LATEST"
 
-        fun requestAddDesktopWidget(context: Context, appWidgetManager: AppWidgetManager) {
+        fun requestAddDesktopWidget(context: Context, appWidgetManager: AppWidgetManager): Boolean {
             val myProvider = ComponentName(context, FlashcardWidgetProvider::class.java)
-            val confIntent = Intent(context, FlashcardWidgetProvider::class.java)
-            confIntent.action = ACTION_CONFIGURE_LATEST
+            val confIntent = Intent(context, FlashcardWidgetProvider::class.java).apply {
+                action = ACTION_CONFIGURE_LATEST
+            }
+            // System injects EXTRA_APPWIDGET_ID via fill-in -> must be mutable.
+            val flags = PendingIntent.FLAG_UPDATE_CURRENT or
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE else 0
+            val callbackIntent = PendingIntent.getBroadcast(context, 0, confIntent, flags)
 
-            val callbackIntent = PendingIntent.getBroadcast(
-                /* context = */ context,
-                /* requestCode = */ 0,
-                /* intent = */ confIntent,
-                /* flags = */ PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-
-            appWidgetManager.requestPinAppWidget(myProvider, null, callbackIntent)
+            return try {
+                appWidgetManager.requestPinAppWidget(myProvider, null, callbackIntent)
+            } catch (e: IllegalStateException) {
+                // No foreground activity / user locked.
+                false
+            }
         }
 
         /** Thanks to https://gist.github.com/manishcm/bd05dff09b5b1640d25f **/

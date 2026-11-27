@@ -9,6 +9,7 @@ import android.content.ClipboardManager
 import android.content.Intent
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
@@ -135,13 +136,51 @@ actual object ExpectedUtils {
         }
     }
 
+    /**
+     * Launcher packages that break the pin-widget flow on specific ROMs (the request
+     * is silently ignored, the config activity fails, or the success callback never
+     * arrives). Both the package and the manufacturer must match: generic packages
+     * such as com.android.launcher / com.android.launcher3 are also used by devices
+     * where pinning works fine. Users on affected combos get manual instructions.
+     */
+    private val unsupportedPinWidgetLaunchers = mapOf(
+        "com.android.launcher" to setOf("oneplus")
+    )
+
+    private fun defaultLauncherPackage(): String? = context.packageManager.resolveActivity(
+        Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME),
+        PackageManager.MATCH_DEFAULT_ONLY
+    )?.activityInfo?.packageName
+
+    private fun hasUnsupportedLauncher(): Boolean {
+        val launcher = defaultLauncherPackage() ?: return false
+        val manufacturers = unsupportedPinWidgetLaunchers[launcher] ?: return false
+        if (Build.MANUFACTURER.lowercase() !in manufacturers) return false
+
+        Logger.i(
+            tag = TAG,
+            messageString = "Widget pinning disabled for launcher $launcher on ${Build.MANUFACTURER}"
+        )
+        return true
+    }
+
+    /**
+     * Drop-in replacement for [AppWidgetManager.isRequestPinAppWidgetSupported].
+     * The platform property only says that the default launcher advertises the API;
+     * some advertised launchers simply don't implement it correctly.
+     */
+    internal fun isRequestPinAppWidgetSupported(appWidgetManager: AppWidgetManager): Boolean {
+        if (!appWidgetManager.isRequestPinAppWidgetSupported) return false
+
+        return !hasUnsupportedLauncher()
+    }
+
     internal actual fun attemptAddDesktopWidget(): Boolean {
         val appWidgetManager = AppWidgetManager.getInstance(context)
 
-        if (!appWidgetManager.isRequestPinAppWidgetSupported) return false
+        if (!isRequestPinAppWidgetSupported(appWidgetManager)) return false
 
-        WidgetController.requestAddDesktopWidget(context, appWidgetManager)
-        return true
+        return WidgetController.requestAddDesktopWidget(context, appWidgetManager)
     }
 
     internal actual fun isBackgroundRestricted(): BackgroundRestrictionType {
