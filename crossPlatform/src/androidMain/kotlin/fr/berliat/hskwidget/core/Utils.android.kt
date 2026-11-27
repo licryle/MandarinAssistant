@@ -37,10 +37,12 @@ import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.databasesDir
 import io.github.vinceglb.filekit.filesDir
 
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.getString
@@ -134,78 +136,234 @@ actual object ExpectedUtils {
         return musicVolume == 0
     }
 
-    internal actual fun playWordInBackground(word: String) {
-        data class SpeechError(val errStringId: StringResource, var errRemedyIntent: String? = null)
-        val TAG = TAG
+    private data class SpeechError(
+        val errStringId: StringResource,
+        val errRemedyIntent: String? = null
+    )
 
-        var err : SpeechError? = null
-        var tts: TextToSpeech? = null
+    private data class TtsInitResult(
+        val tts: TextToSpeech? = null,
+        val error: SpeechError? = null
+    )
 
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                tts = TextToSpeech(context) { status ->
-                    if (status != TextToSpeech.SUCCESS) {
-                        err = SpeechError(
-                            Res.string.speech_failure_toast_init,
-                            Settings.ACTION_ACCESSIBILITY_SETTINGS
-                        )
-                    } else {
-                        val result = tts?.setLanguage(Locale.SIMPLIFIED_CHINESE)
+    // Engines may report LANG_NOT_SUPPORTED for one Chinese locale while
+    // supporting another (zh vs zh-CN vs cmn, simplified vs traditional).
+    private val chineseLocales: List<Locale> = listOf(
+        Locale.SIMPLIFIED_CHINESE,
+        Locale.CHINA,
+        Locale.CHINESE,
+        Locale.TRADITIONAL_CHINESE,
+        Locale.TAIWAN,
+        Locale.forLanguageTag("zh-Hans-CN"),
+        Locale.forLanguageTag("zh-Hans"),
+        Locale.forLanguageTag("zh-Hant"),
+        Locale.forLanguageTag("cmn-CN"),
+        Locale.forLanguageTag("cmn")
+    ).distinctBy { it.toLanguageTag() }
 
-                        Log.i(TAG, "Setting language to play $word out loud.")
-                        if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                            err = SpeechError(Res.string.speech_failure_toast_chinese_unsupported)
-                            Log.e(TAG, "Simplified_chinese not supported on this phone.")
+    private fun canResolveActivity(intent: Intent): Boolean = try {
+        intent.resolveActivity(context.packageManager) != null ||
+            context.packageManager.queryIntentActivities(intent, 0).isNotEmpty()
+    } catch (_: Exception) {
+        false
+    }
 
-                            val installIntent = Intent()
-                            installIntent.action = TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA
-                            installIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            context.startActivity(installIntent)
-                        } else {
-                            Log.i(TAG, "Playing $word out loud.")
-                            tts?.speak(
-                                word,
-                                TextToSpeech.QUEUE_FLUSH,
-                                null,
-                                "tts-${word.hashCode()}"
-                            )
+    private fun startActivitySafely(intent: Intent): Boolean {
+        if (!canResolveActivity(intent)) return false
+
+        return try {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+            true
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    private fun ttsLanguageRemedyIntent(): String {
+        val installDataIntent = Intent(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA)
+        return if (canResolveActivity(installDataIntent)) {
+            TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA
+        } else {
+            Settings.ACTION_ACCESSIBILITY_SETTINGS
+        }
+    }
+
+    private fun TextToSpeech.trySetChineseLanguage(): Boolean {
+        for (locale in chineseLocales) {
+            val result = setLanguage(locale)
+            if (result >= TextToSpeech.LANG_AVAILABLE) {
+                Log.i(TAG, "TTS language set to $locale (result=$result)")
+                return true
+            }
+        }
+
+        Log.e(TAG, "No Chinese locale supported by TTS engine.")
+        return false
+    }
+
+    private suspend fun initTts(engine: String?): Pair<TextToSpeech?, Int> {
+        val initStatus = CompletableDeferred<Int>()
+        val tts = try {
+            if (engine == null) {
+                TextToSpeech(context) { status -> initStatus.complete(status) }
+            } else {
+                TextToSpeech(context, { status -> initStatus.complete(status) }, engine)
+            }
+        } catch (_: Exception) {
+            return null to TextToSpeech.ERROR
+        }
+
+        val status = withTimeoutOrNull(TTS_INIT_TIMEOUT_MS) { initStatus.await() }
+            ?: TextToSpeech.ERROR
+        return tts to status
+    }
+
+    private suspend fun createTtsForChinese(): TtsInitResult {
+        var anyEngineInitialized = false
+
+        // Try the user's default engine first.
+        val (defaultTts, defaultStatus) = initTts(null)
+        var engines: List<String> = emptyList()
+        var defaultEngine: String? = null
+
+        if (defaultTts != null) {
+            if (defaultStatus == TextToSpeech.SUCCESS) {
+                anyEngineInitialized = true
+                if (defaultTts.trySetChineseLanguage()) {
+                    return TtsInitResult(tts = defaultTts)
+                }
+            }
+
+            // Keep the engine list before shutting the instance down so we can
+            // fall back to another engine that may have the Chinese voice.
+            engines = try {
+                defaultTts.engines.map { it.name }
+            } catch (_: Exception) {
+                emptyList()
+            }
+            defaultEngine = try {
+                defaultTts.defaultEngine
+            } catch (_: Exception) {
+                null
+            }
+            defaultTts.shutdown()
+        }
+
+        val fallbackEngines = engines
+            .filter { it != defaultEngine }
+            .distinct()
+            .sortedByDescending { it == GOOGLE_TTS_ENGINE }
+            .take(MAX_FALLBACK_ENGINES)
+
+        for (engine in fallbackEngines) {
+            val (tts, status) = initTts(engine)
+            if (tts == null) continue
+
+            if (status == TextToSpeech.SUCCESS) {
+                anyEngineInitialized = true
+                if (tts.trySetChineseLanguage()) {
+                    return TtsInitResult(tts = tts)
+                }
+            }
+
+            tts.shutdown()
+        }
+
+        return if (anyEngineInitialized) {
+            TtsInitResult(
+                error = SpeechError(
+                    Res.string.speech_failure_toast_chinese_unsupported,
+                    ttsLanguageRemedyIntent()
+                )
+            )
+        } else {
+            TtsInitResult(
+                error = SpeechError(
+                    Res.string.speech_failure_toast_init,
+                    Settings.ACTION_ACCESSIBILITY_SETTINGS
+                )
+            )
+        }
+    }
+
+    private suspend fun showSpeechError(err: SpeechError, word: String) {
+        val errString = getString(err.errStringId)
+        val titleString = getString(Res.string.dialog_tts_error)
+        val yesButton = getString(Res.string.fix_it)
+        val noButton = getString(Res.string.cancel)
+
+        withContext(Dispatchers.Main) {
+            val activity = context.getActivity()
+            val remedyIntent = err.errRemedyIntent
+            val remedyAction: (() -> Unit)? = remedyIntent?.let { action ->
+                {
+                    startActivitySafely(Intent(action))
+                    Unit
+                }
+            }
+
+            if (remedyIntent == null ||
+                activity == null || activity.isFinishing || activity.isDestroyed) {
+                HSKAppServices.snackbar.show(
+                    type = SnackbarType.ERROR,
+                    messageRes = err.errStringId,
+                    actionLabelRes = if (remedyAction != null) Res.string.fix_it else null,
+                    onAction = remedyAction
+                )
+            } else {
+                AlertDialog.Builder(activity)
+                    .setTitle(titleString)
+                    .setMessage(errString)
+                    .setPositiveButton(yesButton) { _, _ ->
+                        if (!startActivitySafely(Intent(remedyIntent))) {
+                            Log.w(TAG, "No activity found to handle $remedyIntent")
                         }
+                    }
+                    .setNegativeButton(noButton, null)
+                    .show()
+            }
+        }
+
+        logAnalyticsError(
+            "SPEECH",
+            getString(err.errStringId),
+            "hasRemedy=${err.errRemedyIntent != null} WORD_LEN=${word.length}"
+        )
+    }
+
+    internal actual fun playWordInBackground(word: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            var tts: TextToSpeech? = null
+
+            val err = try {
+                val result = createTtsForChinese()
+                val workingTts = result.tts
+                tts = workingTts
+
+                if (workingTts == null) {
+                    result.error
+                } else {
+                    Log.i(TAG, "Playing $word out loud.")
+                    val speakResult = workingTts.speak(
+                        word,
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        "tts-${word.hashCode()}"
+                    )
+                    if (speakResult == TextToSpeech.ERROR) {
+                        SpeechError(Res.string.speech_failure_toast_unknown)
+                    } else {
+                        null
                     }
                 }
             } catch (_: Exception) {
-                err = SpeechError(Res.string.speech_failure_toast_unknown)
+                SpeechError(Res.string.speech_failure_toast_unknown)
             }
 
-            err?.let {
-                val errString = getString(err.errStringId)
-                val titleString = getString(Res.string.dialog_tts_error)
-                val yesButton = getString(Res.string.fix_it)
-                val noButton = getString(Res.string.cancel)
-
-                withContext(Dispatchers.Main) {
-                    val activity = context.getActivity()
-                    if (err.errRemedyIntent == null ||
-                        activity == null || activity.isFinishing || activity.isDestroyed) {
-                        HSKAppServices.snackbar.show(SnackbarType.ERROR, err.errStringId)
-                    } else {
-                        AlertDialog.Builder(activity)
-                            .setTitle(titleString)
-                            .setMessage(errString)
-                            .setPositiveButton(yesButton) { _, _ ->
-                                val intent = Intent(err.errRemedyIntent)
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                context.startActivity(intent)
-                            }
-                            .setNegativeButton(noButton, null)
-                            .show()
-                    }
-                }
-
-                logAnalyticsError(
-                    "SPEECH",
-                    getString(err.errStringId),
-                    "hasRemedy=${err.errRemedyIntent != null} WORD_LEN=${word.length}"
-                )
+            if (err != null) {
+                tts?.shutdown()
+                showSpeechError(err, word)
             }
         }
     }
@@ -286,5 +444,8 @@ actual object ExpectedUtils {
     internal actual fun getPlatformName(): String = "Android"
 
     private const val TAG = "Utils"
+    private const val GOOGLE_TTS_ENGINE = "com.google.android.tts"
+    private const val TTS_INIT_TIMEOUT_MS = 5_000L
+    private const val MAX_FALLBACK_ENGINES = 3
     const val INTENT_SEARCH_WORD = "INTENT_SEARCH_WORD"
 }

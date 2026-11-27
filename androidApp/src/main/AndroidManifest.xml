@@ -117,4 +117,16 @@
             <data android:scheme="mailto" />
         </intent>
     </queries>
+
+    <!--
+        Android 11+ package visibility: without this, the app cannot bind to the
+        Text-To-Speech engine. Some OEM ROMs (MIUI, ColorOS, ...) enforce this
+        strictly, causing TextToSpeech initialization to fail even though the
+        engine works in other apps.
+    -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
 </manifest>
