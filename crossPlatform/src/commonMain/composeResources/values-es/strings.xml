@@ -493,4 +493,6 @@ Describe el problema que estás experimentando:
     <string name="enum_system_list_annotated_words">Palabras anotadas</string>
     <string name="enum_system_list_at_exam">En el examen</string>
 
+    <string name="definition_search_hint">Buscar o analizar este texto</string>
+
 </resources>

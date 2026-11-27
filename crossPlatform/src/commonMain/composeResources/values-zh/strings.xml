@@ -352,4 +352,6 @@ AI 字段覆盖率：
     <string name="enum_system_list_annotated_words">已注释单词</string>
     <string name="enum_system_list_at_exam">在考试中</string>
 
+    <string name="definition_search_hint">搜索或分析此文本</string>
+
 </resources>

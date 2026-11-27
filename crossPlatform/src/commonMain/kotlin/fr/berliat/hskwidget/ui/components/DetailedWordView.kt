@@ -85,6 +85,7 @@ import fr.berliat.hskwidget.core.containsHanzi
 import fr.berliat.hskwidget.data.model.ChineseWord
 import fr.berliat.hskwidget.data.model.ChineseWordAnnotation
 import kotlinx.datetime.Instant
+import fr.berliat.hskwidget.definition_search_hint
 
 /**
  * When [verticallyConstrained] is true, the center column must not contribute to the
@@ -548,7 +549,7 @@ private fun SearchableLine(
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.search_24px),
-                    contentDescription = stringResource(Res.string.search_hint),
+                    contentDescription = stringResource(Res.string.definition_search_hint),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }

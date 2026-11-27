@@ -492,5 +492,6 @@ Please describe the issue you are facing:
     <string name="enum_system_list_hsk_7">HSK7</string>
     <string name="enum_system_list_annotated_words">Annotated words</string>
     <string name="enum_system_list_at_exam">At the exam</string>
+    <string name="definition_search_hint">Search or analyze this text</string>
 
 </resources>
